@@ -6,7 +6,8 @@ namespace Assignment1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string test = BigNumberCalculator.GetOnesComplementOrNull("0b0110101011101011100000");
+            Console.WriteLine(test);
         }
     }
 }
