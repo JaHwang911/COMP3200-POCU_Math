@@ -27,7 +27,29 @@ namespace Assignment1
 
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000111010110") == "0b1111000101010");
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1000") == "0b1000");
-            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
+            // Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
+
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-0") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-01") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0101") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0023") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("--11") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("00000000") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("+11") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b0b") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b0x") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0xx0b") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("    ") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("  24aA1  ") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull(" 123 3VXCa  ") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0bAA") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0x") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("KJDSLF:N(&#") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("#$@#$@#$") == null);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("SER#$V@$V") == null);
 
             Console.WriteLine("No prob");
         }

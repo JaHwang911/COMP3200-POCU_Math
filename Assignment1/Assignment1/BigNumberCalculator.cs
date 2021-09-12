@@ -133,8 +133,42 @@ namespace Assignment1
 
         public static string ToBinaryOrNull(string num)
         {
+            if (String.IsNullOrWhiteSpace(num))
+            {
+                return null;
+            }
+            else if (num[0] == '0')
+            {
+                if (num.Length <= 2)
+                {
+                    return null;
+                }
+                else if (num[1] != 'b' && num[1] != 'x')
+                {
+                    return null;
+                }
+            }
+            else if ((int)num[0] < 49 || (int)num[0] > 57)
+            {
+                if (num[0] == '-')
+                {
+                    if (num.Length < 2)
+                    {
+                        return null;
+                    }
+                    if ((int)num[1] < 49 || (int)num[1] > 57)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
             int inputDecimal;
-            bool bIsNum = Int32.TryParse(num, out inputDecimal);
+            bool bIsNum = int.TryParse(num, out inputDecimal);
 
             if (bIsNum)
             {
@@ -159,11 +193,12 @@ namespace Assignment1
 
                     resultValue = num;
                     break;
-                case "0x":
+                case "0x": // 대문자 소문자 구분 아스키로
                     
                     break;
                 default:
-                    return null;
+                    resultValue = null;
+                    break;
             }
 
             return resultValue;
