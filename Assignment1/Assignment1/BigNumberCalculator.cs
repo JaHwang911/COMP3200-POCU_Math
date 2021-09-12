@@ -74,6 +74,12 @@ namespace Assignment1
             return binary.ToString();
         }
 
+        private static int ConvertHexToDecimal(string num)
+        {
+
+            return 0;
+        }
+
         public static string GetOnesComplementOrNull(string num)
         {
             if (num.Length <= 2)
@@ -125,6 +131,9 @@ namespace Assignment1
 
         public static string ToBinaryOrNull(string num)
         {
+            int asciiNumberOfOne = 49;
+            int asciiNumberOfNine = 57;
+
             if (String.IsNullOrWhiteSpace(num))
             {
                 return null;
@@ -140,7 +149,7 @@ namespace Assignment1
                     return null;
                 }
             }
-            else if ((int)num[0] < 49 || (int)num[0] > 57)
+            else if ((int)num[0] < asciiNumberOfOne || (int)num[0] > asciiNumberOfNine)
             {
                 if (num[0] == '-')
                 {
@@ -161,6 +170,7 @@ namespace Assignment1
 
             int inputDecimal;
             bool bIsNum = int.TryParse(num, out inputDecimal);
+            StringBuilder convertedBinary = new StringBuilder();
 
             if (bIsNum)
             {
@@ -171,10 +181,10 @@ namespace Assignment1
                     bIsNegative = true;
                 }
 
-                StringBuilder binary = new StringBuilder();
-                binary.Append(ConvertDecimalToBinary(inputDecimal));
-                binary.Insert(0, '0');
-                string result = binary.ToString();
+                char sign = '0';
+                convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
+                convertedBinary.Insert(0, sign);
+                string result = convertedBinary.ToString();
 
                 if (bIsNegative)
                 {
@@ -204,7 +214,46 @@ namespace Assignment1
                     resultValue = num;
                     break;
                 case "0x": // 대문자 소문자 구분 아스키로
+                    int asciiNumberOfFirstUpper = 65;
+                    int asciiNumberOfLastUpper = 90;
+                    int asciiNumberOfZero = 48;
+                    StringBuilder resultBinary = new StringBuilder();
+
+                    for (int i = 2; i < num.Length; i++)
+                    {
+                        if ((int)num[i] < asciiNumberOfZero || (int)num[i] > asciiNumberOfNine)
+                        {
+                            if ((int)num[i] < asciiNumberOfFirstUpper || (int)num[i] > asciiNumberOfLastUpper)
+                            {
+                                return null;
+                            }
+                        }
+
+                        int asciiIndex = 55;
+
+                        if ((int)num[i] <= asciiNumberOfNine)
+                        {
+                            asciiIndex = 48;
+                        }
+
+                        int convertedDecimal = num[i] - asciiIndex;
+                        convertedBinary.Clear();
+                        convertedBinary.Append(ConvertDecimalToBinary(convertedDecimal));
+
+                        if (convertedBinary.Length < 4)
+                        {
+                            int loopCount = 4 - convertedBinary.Length;
+
+                            for (int j = 0; j < loopCount; j++)
+                            {
+                                convertedBinary.Insert(0, '0');
+                            }
+                        }
+
+                        resultBinary.Append(convertedBinary);
+                    }
                     
+                    resultValue = "0b" + resultBinary.ToString();
                     break;
                 default:
                     resultValue = null;

@@ -28,8 +28,11 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000111010110") == "0b1111000101010");
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1000") == "0b1000");
 
-            string binary = BigNumberCalculator.ToBinaryOrNull("-3");
-            Console.WriteLine(binary);
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b00001101011") == "0b00001101011");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0x00F24") == "0b00000000111100100100");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-123") == "0b10000101");
+
             //Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-0") == null);
             //Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-01") == null);
             //Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-") == null);
