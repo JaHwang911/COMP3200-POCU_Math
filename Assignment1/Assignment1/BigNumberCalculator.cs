@@ -11,6 +11,29 @@ namespace Assignment1
 
         }
 
+        private static string ReverseBit(string inputBinary)
+        {
+            StringBuilder resultString = new StringBuilder(inputBinary.Length);
+
+            foreach (var bit in inputBinary)
+            {
+                switch (bit)
+                {
+                    case '0':
+                        resultString.Append('1');
+                        break;
+                    case '1':
+                        resultString.Append('0');
+                        break;
+                    default:
+                        Debug.Assert(false, "Wrong input binary");
+                        break;
+                }
+            }
+
+            return resultString.ToString();
+        }
+
         private static int ConvertBinaryToDecimal(string num)
         {
             int index = 1;
@@ -36,16 +59,17 @@ namespace Assignment1
                 return "0000";
             }
 
-            StringBuilder binary = new StringBuilder();
+            int insertIndex = 0;
+            StringBuilder binary = new StringBuilder(64);
 
-            while(num > 1)
+            while (num > 1)
             {
                 int bit = num % 2;
-                binary.Insert(0, bit);
+                binary.Insert(insertIndex, bit);
                 num /= 2;
             }
 
-            binary.Insert(0, num);
+            binary.Insert(insertIndex, num);
 
             return binary.ToString();
         }
@@ -70,25 +94,9 @@ namespace Assignment1
             }
 
             string inputBinary = num.Substring(2);
-            StringBuilder resultString = new StringBuilder("0b", num.Length);
+            string resultString = ReverseBit(inputBinary);
 
-            foreach(var bit in inputBinary)
-            {
-                switch (bit)
-                {
-                    case '0':
-                        resultString.Append('1');
-                        break;
-                    case '1':
-                        resultString.Append('0');
-                        break;
-                    default:
-                        Debug.Assert(false, "Wrong input binary");
-                        break;
-                }
-            }
-
-            return resultString.ToString();
+            return $"0b{resultString}";
         }
 
         public static string GetTwosComplementOrNull(string num)
@@ -107,25 +115,9 @@ namespace Assignment1
             }
 
             string inputBinary = num.Substring(2);
-            StringBuilder resultString = new StringBuilder(num.Length);
+            string resultString = ReverseBit(inputBinary);
 
-            foreach (var bit in inputBinary)
-            {
-                switch (bit)
-                {
-                    case '0':
-                        resultString.Append('1');
-                        break;
-                    case '1':
-                        resultString.Append('0');
-                        break;
-                    default:
-                        Debug.Assert(false, "Wrong input binary");
-                        break;
-                }
-            }
-
-            int resultDecimal = ConvertBinaryToDecimal(resultString.ToString()) + 1;
+            int resultDecimal = ConvertBinaryToDecimal(resultString) + 1;
             string resultbinary = ConvertDecimalToBinary(resultDecimal);
 
             return $"0b{resultbinary}";
@@ -172,9 +164,27 @@ namespace Assignment1
 
             if (bIsNum)
             {
-                string binary = ConvertDecimalToBinary(inputDecimal); // 자리 계산 해야함
+                bool bIsNegative = false;
+                if (inputDecimal < 0)
+                {
+                    inputDecimal *= -1;
+                    bIsNegative = true;
+                }
 
-                return binary;
+                StringBuilder binary = new StringBuilder();
+                binary.Append(ConvertDecimalToBinary(inputDecimal));
+                binary.Insert(0, '0');
+                string result = binary.ToString();
+
+                if (bIsNegative)
+                {
+                    string reverseBinary = ReverseBit(result);
+                    int resultDecimal = ConvertBinaryToDecimal(reverseBinary) + 1;
+                    string resultbinary = ConvertDecimalToBinary(resultDecimal);
+                    return $"0b{resultbinary}";
+                }
+
+                return $"0b{result}";
             }
 
             string profix = num.Substring(0, 2);
