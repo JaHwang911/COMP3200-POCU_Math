@@ -11,6 +11,104 @@ namespace Assignment1
 
         }
 
+        private static string CheckInputNumberType(string input)
+        {
+            if (String.IsNullOrWhiteSpace(input))
+            {
+                return "NaN";
+            }
+
+            bool bResult = true;
+            int asciiNumberOfZero = 48;
+            int asciiNumberOfOne = 49;
+            int asciiNumberOfNine = 57;
+            int asciiNumberOfFirstUpper = 65;
+            int asciiNumberOfLastUpper = 90;
+
+            switch (input[0])
+            {
+                case '0':
+                    if (input.Length <= 2)
+                    {
+                        bResult = false;
+                    }
+                    else if (input[1] != 'b' && input[1] != 'x')
+                    {
+                        bResult = false;
+                    }
+                    break;
+                case '-':
+                    if (input.Length < 2 || input[1] == '0')
+                    {
+                        bResult = false;
+                    }
+                    else if (input[1] < asciiNumberOfOne || input[1] > asciiNumberOfNine)
+                    {
+                        bResult = false;
+                    }
+                    break;
+                default:
+                    if (input[0] < asciiNumberOfOne || input[0] > asciiNumberOfNine)
+                    {
+                        bResult = false;
+                    }
+                    break;
+            }
+
+            if (!bResult)
+            {
+                return "NaN";
+            }
+
+            string inputType = "";
+            string profix = input.Substring(0, 2);
+
+            switch (profix)
+            {
+                case "0b":
+                    for (int i = 2; i < input.Length; i++)
+                    {
+                        if (input[i] != '0' && input[i] != '1')
+                        {
+                            bResult = false;
+                            break;
+                        }
+                    }
+
+                    inputType = bResult ? "bin" : "NaN";
+                    break;
+                case "0x":
+                    for (int i = 2; i < input.Length; i++)
+                    {
+                        if (input[i] < asciiNumberOfZero || input[i] > asciiNumberOfNine)
+                        {
+                            if (input[i] < asciiNumberOfFirstUpper || input[i] > asciiNumberOfLastUpper)
+                            {
+                                bResult = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    inputType = bResult ? "hex" : "NaN";
+                    break;
+                default:
+                    for (int i = 1; i < input.Length; i++)
+                    {
+                        if (input[i] < asciiNumberOfZero || input[i] > asciiNumberOfNine)
+                        {
+                            bResult = false;
+                            break;
+                        }
+                    }
+
+                    inputType = bResult ? "dec" : "NaN";
+                    break;
+            }
+
+            return inputType;
+        }
+
         private static string ReverseBit(string inputBinary)
         {
             StringBuilder resultString = new StringBuilder(inputBinary.Length);
@@ -74,29 +172,31 @@ namespace Assignment1
             return binary.ToString();
         }
 
-        private static int ConvertHexToDecimal(string num)
+        private static int ConvertHexToDecimal(char num)
         {
+            int asciiNumberOfNine = 57;
+            int asciiIndex = 55;
 
-            return 0;
+            if (num <= asciiNumberOfNine)
+            {
+                asciiIndex = 48;
+            }
+
+            return num - asciiIndex;
+        }
+
+        private static string ConvertHexToBinary(string num)
+        {
+            return null;
         }
 
         public static string GetOnesComplementOrNull(string num)
         {
-            if (num.Length <= 2)
-            {
-                return null;
-            }
-            else if (num[0] != '0' || num[1] != 'b')
-            {
-                return null;
-            }
+            string numberType = CheckInputNumberType(num);
 
-            for (int i = 2; i < num.Length; i++)
+            if (numberType != "bin")
             {
-                if (num[i] != '0' && num[i] != '1')
-                {
-                    return null;
-                }
+                return null;
             }
 
             string inputBinary = num.Substring(2);
@@ -107,22 +207,15 @@ namespace Assignment1
 
         public static string GetTwosComplementOrNull(string num)
         {
-            if (num[0] != '0' || num[1] != 'b')
+            string numberType = CheckInputNumberType(num);
+
+            if (numberType != "bin")
             {
                 return null;
             }
 
-            for (int i = 2; i < num.Length; i++)
-            {
-                if (num[i] != '0' && num[i] != '1')
-                {
-                    return null;
-                }
-            }
-
             string inputBinary = num.Substring(2);
             string resultString = ReverseBit(inputBinary);
-
             int resultDecimal = ConvertBinaryToDecimal(resultString) + 1;
             string resultbinary = ConvertDecimalToBinary(resultDecimal);
 
@@ -131,112 +224,26 @@ namespace Assignment1
 
         public static string ToBinaryOrNull(string num)
         {
-            int asciiNumberOfOne = 49;
-            int asciiNumberOfNine = 57;
+            string numberType = CheckInputNumberType(num);
 
-            if (String.IsNullOrWhiteSpace(num))
+            if (numberType == "NaN")
             {
                 return null;
             }
-            else if (num[0] == '0')
-            {
-                if (num.Length <= 2)
-                {
-                    return null;
-                }
-                else if (num[1] != 'b' && num[1] != 'x')
-                {
-                    return null;
-                }
-            }
-            else if ((int)num[0] < asciiNumberOfOne || (int)num[0] > asciiNumberOfNine)
-            {
-                if (num[0] == '-')
-                {
-                    if (num.Length < 2)
-                    {
-                        return null;
-                    }
-                    if ((int)num[1] < 49 || (int)num[1] > 57)
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
 
-            int inputDecimal;
-            bool bIsNum = int.TryParse(num, out inputDecimal);
+            string resultValue = "";
             StringBuilder convertedBinary = new StringBuilder();
 
-            if (bIsNum)
+            switch (numberType)
             {
-                bool bIsNegative = false;
-                if (inputDecimal < 0)
-                {
-                    inputDecimal *= -1;
-                    bIsNegative = true;
-                }
-
-                char sign = '0';
-                convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
-                convertedBinary.Insert(0, sign);
-                string result = convertedBinary.ToString();
-
-                if (bIsNegative)
-                {
-                    string reverseBinary = ReverseBit(result);
-                    int resultDecimal = ConvertBinaryToDecimal(reverseBinary) + 1;
-                    string resultbinary = ConvertDecimalToBinary(resultDecimal);
-                    return $"0b{resultbinary}";
-                }
-
-                return $"0b{result}";
-            }
-
-            string profix = num.Substring(0, 2);
-            string resultValue = "";
-
-            switch(profix)
-            {
-                case "0b":
-                    for (int i = 2; i < num.Length; i++)
-                    {
-                        if (num[i] != '0' && num[i] != '1')
-                        {
-                            return null;
-                        }
-                    }
-
+                case "bin":
                     resultValue = num;
                     break;
-                case "0x": // 대문자 소문자 구분 아스키로
-                    int asciiNumberOfFirstUpper = 65;
-                    int asciiNumberOfLastUpper = 90;
-                    int asciiNumberOfZero = 48;
+                case "hex":
                     StringBuilder resultBinary = new StringBuilder();
-
                     for (int i = 2; i < num.Length; i++)
                     {
-                        if ((int)num[i] < asciiNumberOfZero || (int)num[i] > asciiNumberOfNine)
-                        {
-                            if ((int)num[i] < asciiNumberOfFirstUpper || (int)num[i] > asciiNumberOfLastUpper)
-                            {
-                                return null;
-                            }
-                        }
-
-                        int asciiIndex = 55;
-
-                        if ((int)num[i] <= asciiNumberOfNine)
-                        {
-                            asciiIndex = 48;
-                        }
-
-                        int convertedDecimal = num[i] - asciiIndex;
+                        int convertedDecimal = ConvertHexToDecimal(num[i]);
                         convertedBinary.Clear();
                         convertedBinary.Append(ConvertDecimalToBinary(convertedDecimal));
 
@@ -252,11 +259,103 @@ namespace Assignment1
 
                         resultBinary.Append(convertedBinary);
                     }
-                    
+
                     resultValue = "0b" + resultBinary.ToString();
                     break;
+                case "dec":
+                    int inputDecimal = int.Parse(num);
+                    bool bIsNegative = false;
+
+                    if (inputDecimal < 0)
+                    {
+                        inputDecimal *= -1;
+                        bIsNegative = true;
+                    }
+
+                    char sign = '0';
+                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
+                    convertedBinary.Insert(0, sign);
+                    string possitiveBinary = convertedBinary.ToString();
+
+                    if (bIsNegative)
+                    {
+                        string reverseBinary = ReverseBit(possitiveBinary);
+                        int resultDecimal = ConvertBinaryToDecimal(reverseBinary) + 1;
+                        string negativebinary = ConvertDecimalToBinary(resultDecimal);
+                        resultValue = $"0b{negativebinary}";
+                    }
+                    else
+                    {
+                        resultValue = $"0b{possitiveBinary}";
+                    }
+                    break;
                 default:
-                    resultValue = null;
+                    Debug.Assert(false, "Wrong CheckInputDataType");
+                    break;
+            }
+
+            return resultValue;
+        }
+
+        public static string ToDecimalOrNull(string num)
+        {
+            string numberType = CheckInputNumberType(num);
+
+            if (numberType == "NaN")
+            {
+                return null;
+            }
+
+            string resultValue = "";
+
+            switch(numberType)
+            {
+                case "bin":
+                    string binary = num.Substring(2);
+                    if (binary[0] == '0')
+                    {
+                        int convertedDecimal = ConvertBinaryToDecimal(binary);
+                        resultValue = convertedDecimal.ToString();
+                    }
+                    else
+                    {
+                        string reverseBinary = ReverseBit(binary);
+                        int tempDecimal = ConvertBinaryToDecimal(reverseBinary) + 1;
+                        resultValue = $"-{tempDecimal.ToString()}";
+                    }
+                    break;
+                case "hex":
+                    string hex = num.Substring(2);
+                    //int index = 1;
+                    //int sum = 0;
+                    StringBuilder convertedBinary = new StringBuilder();
+                    StringBuilder tempBinary = new StringBuilder();
+
+                    for (int i = hex.Length - 1; i >= 0; i--)
+                    {
+                        int convertedDecimal = ConvertHexToDecimal(hex[i]);
+                        tempBinary.Clear();
+                        tempBinary.Append(ConvertDecimalToBinary(convertedDecimal));
+
+                        if (tempBinary.Length < 4)
+                        {
+                            int loopCount = 4 - tempBinary.Length;
+
+                            for (int j = 0; j < loopCount; j++)
+                            {
+                                tempBinary.Insert(0, '0');
+                            }
+                        }
+                        convertedBinary.Insert(0, tempBinary.ToString());
+                    }
+                    convertedBinary.Insert(0, "0b");
+                    resultValue = ToDecimalOrNull(convertedBinary.ToString());
+                    break;
+                case "dec":
+                    resultValue = num;
+                    break;
+                default:
+                    Debug.Assert(false, "Wrong CheckInputNumberType function");
                     break;
             }
 
