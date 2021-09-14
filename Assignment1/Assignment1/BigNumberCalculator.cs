@@ -135,9 +135,10 @@ namespace Assignment1
         private static int ConvertBinaryToDecimal(string num)
         {
             int index = 1;
+            ulong test = 1;
             int resultInt = 0;
 
-            for (int i = num.Length - 1; i >=0; i--)
+            for (int i = num.Length - 1; i >= 0; i--)
             {
                 if (num[i] == '1')
                 {
@@ -145,6 +146,7 @@ namespace Assignment1
                 }
 
                 index *= 2;
+                test *= 2;
             }
 
             return resultInt;
@@ -326,8 +328,6 @@ namespace Assignment1
                     break;
                 case "hex":
                     string hex = num.Substring(2);
-                    //int index = 1;
-                    //int sum = 0;
                     StringBuilder convertedBinary = new StringBuilder();
                     StringBuilder tempBinary = new StringBuilder();
 

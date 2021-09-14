@@ -55,12 +55,12 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("#$@#$@#$") == null);
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("SER#$V@$V") == null);
 
+            Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0x843FF66FFCDDCDDDCDFFF") == "-9350296660948911804063745");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b10000000") == "-128");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b10000001") == "-127");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("-144") == "-144");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0x443FF") == "279551");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0x843FF") == "-506881");
-            Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0x843FF66FFCDDCDDDCDFFF") == "-9350296660948911804063745");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b011110001111010101011") == "990891");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b11110000") == "-16");
 
