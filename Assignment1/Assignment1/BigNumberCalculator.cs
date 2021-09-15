@@ -101,7 +101,7 @@ namespace Assignment1
 
             while (true)
             {
-                string sum = MultiplyOperatingByString(numerator, value);
+                string sum = StringCalculator.MultiplyOperatingByString(numerator, value);
                 resultComparison = SizeComparison(denominator, sum);
 
                 if (resultComparison == "same")
@@ -112,12 +112,12 @@ namespace Assignment1
                 else if (resultComparison == "smaller")
                 {
                     value = MinusOperatingByString(value, "1");
-                    sum = MultiplyOperatingByString(numerator, value);
+                    sum = StringCalculator.MultiplyOperatingByString(numerator, value);
                     result[0] = value;
                     result[1] = MinusOperatingByString(denominator, sum);
                 }
 
-                value = PlusOperatingByString(value, "1");
+                value = StringCalculator.PlusOperatingByString(value, "1");
             }
 
             return result;
