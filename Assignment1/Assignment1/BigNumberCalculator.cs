@@ -58,11 +58,11 @@ namespace Assignment1
                 return "0000";
             }
 
-            StringBuilder binary = new StringBuilder(64);
+            StringBuilder binary = new StringBuilder(256);
 
             while (input != "1" && input != "0")
             {
-                string[] bit = StringCalculator.DivideOperatingByString(input, "2");
+                string[] bit = StringCalculator.DivideOperatingByString(input, "2"); // 4861110
                 binary.Insert(0, bit[1]);
                 input = bit[0];
             }
@@ -158,7 +158,7 @@ namespace Assignment1
                         resultBinary.Append(convertedBinary);
                     }
 
-                    resultValue = "0b" + resultBinary.ToString();
+                    resultValue = $"0b{resultBinary}";
                     break;
                 case "dec":
                     string inputDecimal = num;
@@ -279,7 +279,107 @@ namespace Assignment1
         }
         public static string ToHexOrNull(string num)
         {
-            return null;
+            string numberType = StringCalculator.CheckInputNumberType(num);
+
+            if (numberType == "NaN")
+            {
+                return null;
+            }
+
+            string resultValue = "";
+
+            switch (numberType)
+            {
+                case "bin":
+                    string binary = num.Substring(2);
+                    StringBuilder result = new StringBuilder(256);
+                    StringBuilder convertedHex = new StringBuilder(4);
+
+                    for (int i = binary.Length - 1; i >= 0; i--)
+                    {
+                        convertedHex.Insert(0, binary[i]);
+
+                        if (convertedHex.Length == 4)
+                        {
+                            string convertedDecimal = ConvertBinaryToDecimal(convertedHex.ToString());
+                            int tempDecimal = int.Parse(convertedDecimal);
+
+                            if (tempDecimal >= 10)
+                            {
+                                tempDecimal += 55;
+                                result.Insert(0, (char)tempDecimal);
+                            }
+                            else
+                            {
+                                result.Insert(0, convertedDecimal);
+                            }
+
+                            convertedHex.Clear();
+                        }
+                        else if(i == 0)
+                        {
+                            int loopCount = 4 - convertedHex.Length;
+
+                            for (int j = 0; j < loopCount; j++)
+                            {
+                                convertedHex.Insert(0, binary[i]);
+                            }
+                            string convertedDecimal = ConvertBinaryToDecimal(convertedHex.ToString());
+                            int tempDecimal = int.Parse(convertedDecimal);
+
+                            if (tempDecimal >= 10)
+                            {
+                                tempDecimal += 55;
+                                result.Insert(0, (char)tempDecimal);
+                            }
+                            else
+                            {
+                                result.Insert(0, convertedDecimal);
+                            }
+                        }
+                    }
+
+                    resultValue = $"0x{result}";
+                    break;
+                case "hex":
+                    resultValue = num;
+                    break;
+                case "dec":
+                    string inputDecimal = num;
+                    bool bIsNegative = false;
+                    StringBuilder convertedBinary = new StringBuilder(256);
+                    if (inputDecimal[0] == '-')
+                    {
+                        inputDecimal = inputDecimal.Substring(1);
+                        bIsNegative = true;
+                    }
+
+                    char sign = '0';
+                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
+                    convertedBinary.Insert(0, sign);
+                    string possitiveBinary = convertedBinary.ToString();
+                    convertedBinary.Clear();
+
+                    if (bIsNegative)
+                    {
+                        string reverseBinary = ReverseBit(possitiveBinary);
+                        string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
+                        resultDecimal = StringCalculator.PlusOperatingByString(resultDecimal, "1");
+                        string negativebinary = ConvertDecimalToBinary(resultDecimal);
+                        convertedBinary.Append($"0b{negativebinary}");
+                    }
+                    else
+                    {
+                        convertedBinary.Append($"0b{possitiveBinary}");
+                    }
+                    resultValue = ToHexOrNull(convertedBinary.ToString());
+                    break;
+                default:
+                    Debug.Assert(false, "Wrong CheckInputNumberType function");
+                    break;
+            }
+
+            return resultValue;
         }
     }
 }

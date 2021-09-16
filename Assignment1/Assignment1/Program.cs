@@ -7,7 +7,6 @@ namespace Assignment1
     {
         static void Main(string[] args)
         {
-            string[] testDivide = StringCalculator.DivideOperatingByString("135799753113579", "2");
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("as89fdf0") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0xFAKEHEX") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0bFAKEBINARY") == null);
@@ -66,6 +65,11 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b011110001111010101011") == "990891");
             Debug.Assert(BigNumberCalculator.ToDecimalOrNull("0b11110000") == "-16");
 
+            string[] testDivide = StringCalculator.DivideOperatingByString("1981", "2");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-155555551") == "0xF6BA6921");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("0b110001001") == "0xF89");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("0b000000110001001") == "0x0189" || BigNumberCalculator.ToHexOrNull("0b000000110001001") == "0x189");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("5258") == "0x148A");
             Console.WriteLine("No prob");
         }
     }

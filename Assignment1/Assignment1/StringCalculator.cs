@@ -317,14 +317,13 @@ namespace Assignment1
                 tempDigit.Append(denominator[i]);
                 remainder *= 10;
                 int digitValue = int.Parse(tempDigit.ToString()) + remainder;
-                int digitQuotient = 0;
 
-                if (digitValue < integerNumerator && i < denominator.Length - 1)
+                if (digitValue < integerNumerator && i == 0)
                 {
                     continue;
                 }
 
-                digitQuotient = digitValue / integerNumerator;
+                int digitQuotient = digitValue / integerNumerator;
                 remainder = digitValue % integerNumerator;
 
                 resultQuotient.Append(digitQuotient);
