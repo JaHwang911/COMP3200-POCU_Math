@@ -161,17 +161,17 @@ namespace Assignment1
                     resultValue = "0b" + resultBinary.ToString();
                     break;
                 case "dec":
-                    int inputDecimal = int.Parse(num);
+                    string inputDecimal = num;
                     bool bIsNegative = false;
-                    
-                    if (inputDecimal < 0)
+
+                    if (num[0] == '-')
                     {
-                        inputDecimal *= -1;
+                        inputDecimal = inputDecimal.Substring(1);
                         bIsNegative = true;
                     }
 
                     char sign = '0';
-                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal.ToString()));
+                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
                     convertedBinary.Insert(0, sign);
                     string possitiveBinary = convertedBinary.ToString();
 
@@ -180,7 +180,6 @@ namespace Assignment1
                         string reverseBinary = ReverseBit(possitiveBinary);
                         string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
                         resultDecimal = StringCalculator.PlusOperatingByString(resultDecimal, "1");
-                        //int resultDecimal = ConvertBinaryToDecimal(reverseBinary) + 1;
                         string negativebinary = ConvertDecimalToBinary(resultDecimal);
                         resultValue = $"0b{negativebinary}";
                     }

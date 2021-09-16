@@ -7,6 +7,7 @@ namespace Assignment1
     {
         static void Main(string[] args)
         {
+            string[] testDivide = StringCalculator.DivideOperatingByString("135799753113579", "2");
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("as89fdf0") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0xFAKEHEX") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0bFAKEBINARY") == null);

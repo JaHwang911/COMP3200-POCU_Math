@@ -106,20 +106,21 @@ namespace Assignment1
 
         public static string PlusOperatingByString(string x, string y)
         {
-            StringBuilder result = new StringBuilder();
-            StringBuilder bigger = new StringBuilder();
-            StringBuilder smaller = new StringBuilder();
+            StringBuilder result = new StringBuilder(256);
+            string bigger = x;
+            StringBuilder smaller = new StringBuilder(256);
+
             int asciiNumberOfZero = 48;
             int difference = x.Length - y.Length;
 
             if (difference >= 0)
             {
-                bigger.Append(x);
+                bigger = x;
                 smaller.Append(y);
             }
             else
             {
-                bigger.Append(y);
+                bigger = y;
                 smaller.Append(x);
                 difference *= -1;
             }
@@ -146,10 +147,9 @@ namespace Assignment1
 
         public static string MultiplyOperatingByString(string x, string y)
         {
-            StringBuilder result = new StringBuilder();
-            StringBuilder tempResult = new StringBuilder();
-            StringBuilder bigger = new StringBuilder();
-            StringBuilder smaller = new StringBuilder();
+            StringBuilder result = new StringBuilder(256);
+            StringBuilder bigger = new StringBuilder(256);
+            StringBuilder smaller = new StringBuilder(256);
             int asciiNumberOfZero = 48;
 
             if (x.Length - y.Length >= 0)
@@ -170,6 +170,7 @@ namespace Assignment1
             {
                 int smallNum = smaller[i] - asciiNumberOfZero;
                 int remainder = 0;
+                StringBuilder tempResult = new StringBuilder(256);
 
                 for (int j = bigger.Length - 1; j >= 0; j--)
                 {
@@ -187,7 +188,6 @@ namespace Assignment1
 
                 string multiplyResult = PlusOperatingByString(result.ToString(), tempResult.ToString());
                 result.Clear();
-                tempResult.Clear();
                 result.Append(multiplyResult);
                 multiplyCount++;
             }
@@ -204,8 +204,8 @@ namespace Assignment1
                 return null;
             }
 
-            StringBuilder result = new StringBuilder();
-            StringBuilder bigger = new StringBuilder(x);
+            StringBuilder result = new StringBuilder(256);
+            string bigger = x;
             StringBuilder smaller = new StringBuilder(y);
             int difference = x.Length - y.Length;
             int asciiNumberOfZero = 48;
@@ -235,9 +235,18 @@ namespace Assignment1
 
                 result.Insert(0, sum);
             }
-            int temp = int.Parse(result.ToString());
-            result.Clear();
-            result.Append(temp);
+
+            while (true)
+            {
+                if (result[0] == '0')
+                {
+                    result.Remove(0, 1);
+                }
+                else
+                {
+                    break;
+                }
+            }
 
             return result.ToString();
         }
@@ -298,30 +307,32 @@ namespace Assignment1
             }
 
             string[] result = new string[2];
-            string value = "1";
+            StringBuilder tempDigit = new StringBuilder(256); // re
+            StringBuilder resultQuotient = new StringBuilder(256);
+            int integerNumerator = int.Parse(numerator); // numerator가 너무 크면 불가능함
+            int remainder = 0;
 
-            while (true)
+            for (int i = 0; i < denominator.Length; i++)
             {
-                string sum = StringCalculator.MultiplyOperatingByString(numerator, value);
-                resultComparison = SizeComparison(denominator, sum);
+                tempDigit.Append(denominator[i]);
+                remainder *= 10;
+                int digitValue = int.Parse(tempDigit.ToString()) + remainder;
+                int digitQuotient = 0;
 
-                if (resultComparison == "same")
+                if (digitValue < integerNumerator && i < denominator.Length - 1)
                 {
-                    result[0] = value;
-                    result[1] = "0";
-                    break;
-                }
-                else if (resultComparison == "smaller")
-                {
-                    value = MinusOperatingByString(value, "1");
-                    sum = StringCalculator.MultiplyOperatingByString(numerator, value);
-                    result[0] = value;
-                    result[1] = MinusOperatingByString(denominator, sum);
-                    break;
+                    continue;
                 }
 
-                value = StringCalculator.PlusOperatingByString(value, "1");
+                digitQuotient = digitValue / integerNumerator;
+                remainder = digitValue % integerNumerator;
+
+                resultQuotient.Append(digitQuotient);
+                tempDigit.Clear();
             }
+
+            result[0] = resultQuotient.ToString();
+            result[1] = remainder.ToString();
 
             return result;
         }
