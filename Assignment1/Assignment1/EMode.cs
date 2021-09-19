@@ -5,4 +5,19 @@
         Decimal,
         Binary
     }
+
+    public enum ENumberType
+    {
+        NaN,
+        Binary,
+        Decimal,
+        Hex
+    }
+
+    public enum EComparison
+    {
+        Bigger,
+        Smaller,
+        Same
+    }
 }

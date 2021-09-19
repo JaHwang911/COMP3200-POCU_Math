@@ -6,11 +6,11 @@ namespace Assignment1
 {
     class StringCalculator
     {
-        public static string CheckInputNumberType(string input)
+        public static ENumberType CheckInputNumberType(string input)
         {
             if (String.IsNullOrWhiteSpace(input))
             {
-                return "NaN";
+                return ENumberType.NaN;
             }
 
             bool bResult = true;
@@ -52,10 +52,10 @@ namespace Assignment1
 
             if (!bResult)
             {
-                return "NaN";
+                return ENumberType.NaN;
             }
 
-            string inputType = "";
+            ENumberType inputType = ENumberType.NaN;
             string profix = input.Substring(0, 2);
 
             switch (profix)
@@ -70,7 +70,7 @@ namespace Assignment1
                         }
                     }
 
-                    inputType = bResult ? "bin" : "NaN";
+                    inputType = bResult ? ENumberType.Binary : ENumberType.NaN;
                     break;
                 case "0x":
                     for (int i = 2; i < input.Length; i++)
@@ -85,7 +85,7 @@ namespace Assignment1
                         }
                     }
 
-                    inputType = bResult ? "hex" : "NaN";
+                    inputType = bResult ? ENumberType.Hex : ENumberType.NaN;
                     break;
                 default:
                     for (int i = 1; i < input.Length; i++)
@@ -97,14 +97,52 @@ namespace Assignment1
                         }
                     }
 
-                    inputType = bResult ? "dec" : "NaN";
+                    inputType = bResult ? ENumberType.Decimal : ENumberType.NaN;
                     break;
             }
 
             return inputType;
         }
 
-        public static string PlusOperatingByString(string x, string y)
+        public static EComparison SizeComparison(string x, string y)
+        {
+            EComparison result = EComparison.Same;
+
+            if (x.Length > y.Length)
+            {
+                return EComparison.Bigger;
+            }
+            else if (x.Length < y.Length)
+            {
+                return EComparison.Smaller;
+            }
+            else if (x[0] != '-' && y[0] == '-')
+            {
+                return EComparison.Bigger;
+            }
+            else if(x[0] == '-' && y[0] != '-')
+            {
+                return EComparison.Smaller;
+            }
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (x[i] > y[i])
+                {
+                    result = EComparison.Bigger;
+                    break;
+                }
+                else if (x[i] < y[i])
+                {
+                    result = EComparison.Smaller;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        public static string PlusOperating(string x, string y)
         {
             StringBuilder result = new StringBuilder(256);
             string bigger = x;
@@ -145,7 +183,7 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string MultiplyOperatingByString(string x, string y)
+        public static string MultiplyOperating(string x, string y)
         {
             StringBuilder result = new StringBuilder(256);
             StringBuilder bigger = new StringBuilder(256);
@@ -186,7 +224,7 @@ namespace Assignment1
                     tempResult.Append('0');
                 }
 
-                string multiplyResult = PlusOperatingByString(result.ToString(), tempResult.ToString());
+                string multiplyResult = PlusOperating(result.ToString(), tempResult.ToString());
                 result.Clear();
                 result.Append(multiplyResult);
                 multiplyCount++;
@@ -195,11 +233,11 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string MinusOperatingByString(string x, string y)
+        public static string MinusOperating(string x, string y)
         {
-            string resultComparison = SizeComparison(x, y);
+            EComparison resultComparison = SizeComparison(x, y);
 
-            if (resultComparison == "smaller")
+            if (resultComparison == EComparison.Smaller)
             {
                 return null;
             }
@@ -251,57 +289,12 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string ConvertBigBinaryToDecimal(string input)
+        public static string[] DivideOperating(string denominator, string numerator)
         {
-            string index = "1";
-            string resultDecimal = "0";
 
-            for (int i = input.Length - 1; i >= 0; i--)
-            {
-                if (input[i] == '1')
-                {
-                    resultDecimal = PlusOperatingByString(resultDecimal, index);
-                }
+            EComparison resultComparison = SizeComparison(denominator, numerator);
 
-                index = MultiplyOperatingByString(index, "2");
-            }
-
-            return resultDecimal;
-        }
-
-        private static string SizeComparison(string x, string y)
-        {
-            string result = "same";
-
-            if (x.Length > y.Length)
-            {
-                return "bigger";
-            }
-            else if (x.Length < y.Length)
-            {
-                return "smaller";
-            }
-
-            for (int i = 0; i < x.Length; i++)
-            {
-                if (x[i] > y[i])
-                {
-                    return "bigger";
-                }
-                else if (x[i] < y[i])
-                {
-                    return "smaller";
-                }
-            }
-
-            return result;
-        }
-
-        public static string[] DivideOperatingByString(string denominator, string numerator)
-        {
-            string resultComparison = SizeComparison(denominator, numerator);
-
-            if (resultComparison == "smaller")
+            if (resultComparison == EComparison.Smaller)
             {
                 return null;
             }
