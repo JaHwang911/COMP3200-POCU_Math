@@ -32,7 +32,7 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0x00F24") == "0b00000000111100100100");
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-123") == "0b10000101");
-            //Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-135799753113579") == "0b100001000111110110100111111101001000000000010101");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-135799753113579") == "0b100001000111110110100111111101001000000000010101");
             Debug.Assert(BigNumberCalculator.ConvertDecimalToBinary("255") == "11111111");
 
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-0") == null);
