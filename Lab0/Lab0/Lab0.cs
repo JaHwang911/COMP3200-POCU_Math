@@ -17,32 +17,71 @@ namespace Lab0
                 return bResult;
             }
 
-            decimal sum = (decimal)numerator / (decimal)denominator;
-            stringDecimal = sum.ToString();
+            List<int> quotient = new List<int>();
+            List<int> remainder = new List<int>();
+            int loopCount = 1;
+            int startIndex = 0;
+            int endIndex = 0;
+            quotient.Add(numerator / denominator);
+            remainder.Add(numerator % denominator);
 
-            if (stringDecimal.Length <= 10)
+            while (loopCount <= 100)
             {
-                return false;
+                int remainderLastIndex = remainder.Count - 1;
+                int tempNumerator = remainder[remainderLastIndex] * 10;
+                quotient.Add(tempNumerator / denominator);
+                int tempRemainder = tempNumerator % denominator;
+                int hasSameRemainder = remainder.IndexOf(tempRemainder);
+
+                if (tempRemainder == 0)
+                {
+                    bResult = false;
+                    break;
+                }
+                else if (hasSameRemainder >= 0)
+                {
+                    startIndex = hasSameRemainder + 1;
+                    endIndex = loopCount;
+                    bResult = true;
+                    break;
+                }
+
+                remainder.Add(tempRemainder);
+                loopCount++;
             }
 
-            //Dictionary<char, int> cycleValue = new Dictionary<char, int>(10);
-            List<char> cycleValue = new List<char>(14);
-            int cycleCount = 0;
-
-            for (int i = 2; i < stringDecimal.Length; i++)
+            if (!bResult)
             {
-                if (i == 15 || cycleCount == 0)
+                double sum = (double)numerator / (double)denominator;
+                stringDecimal = sum.ToString();
+            }
+            else
+            {
+                StringBuilder tempResult = new StringBuilder(100);
+                for (int i = 0; i < quotient.Count; i++)
                 {
-                    return false;
+                    if (i == startIndex)
+                    {
+                        tempResult.Append("*");
+                    }
+                    else if(i == endIndex)
+                    {
+                        tempResult.Append("*");
+                    }
+                    else if(i == 1)
+                    {
+                        tempResult.Append(".");
+                    }
+
+                    tempResult.Append(quotient[i]);
                 }
-                else if (cycleValue.Contains(stringDecimal[i]))
+
+                if (startIndex == endIndex)
                 {
-                    cycleCount++;
+                    tempResult.Append("*");
                 }
-                else
-                {
-                    cycleValue.Add(stringDecimal[i]);
-                }
+
+                stringDecimal = tempResult.ToString();
             }
 
             return bResult;
