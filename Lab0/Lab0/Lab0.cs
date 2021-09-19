@@ -22,6 +22,7 @@ namespace Lab0
             int loopCount = 1;
             int startIndex = 0;
             int endIndex = 0;
+
             quotient.Add(numerator / denominator);
             remainder.Add(numerator % denominator);
 
@@ -58,29 +59,23 @@ namespace Lab0
             else
             {
                 StringBuilder tempResult = new StringBuilder(100);
+
                 for (int i = 0; i < quotient.Count; i++)
                 {
                     if (i == startIndex)
                     {
                         tempResult.Append("*");
                     }
-                    else if(i == endIndex)
+
+                    tempResult.Append(quotient[i]);
+
+                    if (i == endIndex)
                     {
                         tempResult.Append("*");
                     }
-                    else if(i == 1)
-                    {
-                        tempResult.Append(".");
-                    }
-
-                    tempResult.Append(quotient[i]);
                 }
 
-                if (startIndex == endIndex)
-                {
-                    tempResult.Append("*");
-                }
-
+                tempResult.Insert(1, ".");
                 stringDecimal = tempResult.ToString();
             }
 

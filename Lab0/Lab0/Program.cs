@@ -14,16 +14,12 @@ namespace Lab0
             string stringDecimal4;
             string stringDecimal5;
 
-            bool bResult1 = Lab0.TryGetRepeatingDecimal(1, 6, out stringDecimal1); // False, "0"
-            bool bResult2 = Lab0.TryGetRepeatingDecimal(1, 7, out stringDecimal2); // True, "0.*3*"
+            bool bResult1 = Lab0.TryGetRepeatingDecimal(0, 1, out stringDecimal1); // False, "0"
+            bool test = Lab0.TryGetRepeatingDecimal(1, 38, out stringDecimal1); // False, "0"
+            bool bResult2 = Lab0.TryGetRepeatingDecimal(1, 3, out stringDecimal2); // True, "0.*3*"
             bool bResult3 = Lab0.TryGetRepeatingDecimal(1, 4, out stringDecimal3); // false, "0.25"
             bool bResult4 = Lab0.TryGetRepeatingDecimal(2, 9, out stringDecimal4); // True, "0.*2*"
             bool bResult5 = Lab0.TryGetRepeatingDecimal(1, -3, out stringDecimal5); // False, ""
-            //bool bResult1 = Lab0.TryGetRepeatingDecimal(0, 1, out stringDecimal1); // False, "0"
-            //bool bResult2 = Lab0.TryGetRepeatingDecimal(1, 3, out stringDecimal2); // True, "0.*3*"
-            //bool bResult3 = Lab0.TryGetRepeatingDecimal(1, 4, out stringDecimal3); // false, "0.25"
-            //bool bResult4 = Lab0.TryGetRepeatingDecimal(2, 9, out stringDecimal4); // True, "0.*2*"
-            //bool bResult5 = Lab0.TryGetRepeatingDecimal(1, -3, out stringDecimal5); // False, ""
 
             //Console.WriteLine($"{bResult1}, \"{stringDecimal1}\"");
             //Console.WriteLine($"{bResult2}, \"{stringDecimal2}\"");

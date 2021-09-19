@@ -381,5 +381,12 @@ namespace Assignment1
 
             return resultValue;
         }
+
+        public string AddOrNull(string num1, string num2, out bool bOverflow)
+        {
+            bOverflow = false;
+            
+            return null;
+        }
     }
 }
