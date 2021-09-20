@@ -23,9 +23,13 @@ namespace Assignment1
             switch (input[0])
             {
                 case '0':
-                    if (input.Length <= 2)
+                    if (input.Length == 2)
                     {
                         bResult = false;
+                    }
+                    else if (input.Length == 1)
+                    {
+                        return ENumberType.Decimal;
                     }
                     else if (input[1] != 'b' && input[1] != 'x')
                     {
@@ -46,6 +50,10 @@ namespace Assignment1
                     if (input[0] < asciiNumberOfOne || input[0] > asciiNumberOfNine)
                     {
                         bResult = false;
+                    }
+                    else
+                    {
+                        return ENumberType.Decimal;
                     }
                     break;
             }
@@ -107,22 +115,31 @@ namespace Assignment1
         public static EComparison SizeComparison(string x, string y)
         {
             EComparison result = EComparison.Same;
+            bool bNegativeComparison = false;
 
-            if (x.Length > y.Length)
-            {
-                return EComparison.Bigger;
-            }
-            else if (x.Length < y.Length)
-            {
-                return EComparison.Smaller;
-            }
-            else if (x[0] != '-' && y[0] == '-')
+            
+            if (x[0] != '-' && y[0] == '-')
             {
                 return EComparison.Bigger;
             }
             else if(x[0] == '-' && y[0] != '-')
             {
                 return EComparison.Smaller;
+            }
+            else if(x[0] == '-' && y[0] == '-')
+            {
+                bNegativeComparison = true;
+                x = x.Substring(1);
+                y = y.Substring(1);
+            }
+
+            if (x.Length > y.Length)
+            {
+                return bNegativeComparison ? EComparison.Smaller : EComparison.Bigger;
+            }
+            else if (x.Length < y.Length)
+            {
+                return bNegativeComparison ? EComparison.Bigger : EComparison.Smaller;
             }
 
             for (int i = 0; i < x.Length; i++)
@@ -139,6 +156,19 @@ namespace Assignment1
                 }
             }
 
+            if (bNegativeComparison && result != EComparison.Same)
+            {
+                switch (result)
+                {
+                    case EComparison.Bigger:
+                        result = EComparison.Smaller;
+                        break;
+                    case EComparison.Smaller:
+                        result = EComparison.Bigger;
+                        break;
+                }
+            }
+
             return result;
         }
 
@@ -147,11 +177,43 @@ namespace Assignment1
             StringBuilder result = new StringBuilder(256);
             string bigger = x;
             StringBuilder smaller = new StringBuilder(256);
+            bool bNegativeOperating = false;
+
+            if (x[0] == '-' && y[0] != '-')
+            {
+                x = x.Substring(1);
+                result.Append(MinusOperating(x, y));
+
+                if (SizeComparison(x, y) == EComparison.Bigger)
+                {
+                    result.Insert(0, '-');
+                }
+
+                return result.ToString();
+            }
+            else if (x[0] != '-' && y[0] == '-')
+            {
+                y = y.Substring(1);
+                result.Append(MinusOperating(x, y));
+
+                if (SizeComparison(x, y) == EComparison.Smaller)
+                {
+                    result.Insert(0, '-');
+                }
+
+                return result.ToString();
+            }
+            else if (x[0] == '-' && y[0] == '-')
+            {
+                bNegativeOperating = true;
+                x = x.Substring(1);
+                y = y.Substring(1);
+            }
 
             int asciiNumberOfZero = 48;
             int difference = x.Length - y.Length;
 
-            if (difference >= 0)
+            if (difference >= 0) // SizeComparison
             {
                 bigger = x;
                 smaller.Append(y);
@@ -178,6 +240,11 @@ namespace Assignment1
                 int value = i == 0 ? sum : sum % 10;
                 remainder = sum / 10;
                 result.Insert(0, value);
+            }
+
+            if (bNegativeOperating)
+            {
+                result.Insert(0, '-');
             }
 
             return result.ToString();
@@ -235,18 +302,63 @@ namespace Assignment1
 
         public static string MinusOperating(string x, string y)
         {
-            EComparison resultComparison = SizeComparison(x, y);
+            //EComparison resultComparison = SizeComparison(x, y);
 
-            if (resultComparison == EComparison.Smaller)
-            {
-                return null;
-            }
+            //if (resultComparison == EComparison.Smaller)
+            //{
+            //    return null;
+            //}
 
             StringBuilder result = new StringBuilder(256);
             string bigger = x;
-            StringBuilder smaller = new StringBuilder(y);
-            int difference = x.Length - y.Length;
+            StringBuilder smaller = new StringBuilder(256);
             int asciiNumberOfZero = 48;
+            bool bNegativeOperating = false;
+
+            if (x[0] == '-' && y[0] != '-')
+            {
+                x = x.Substring(1);
+                result.Append(PlusOperating(x, y));
+
+                if (SizeComparison(x, y) == EComparison.Bigger)
+                {
+                    result.Insert(0, '-');
+                }
+
+                return result.ToString();
+            }
+            else if (x[0] != '-' && y[0] == '-')
+            {
+                y = y.Substring(1);
+                result.Append(PlusOperating(x, y));
+
+                if (SizeComparison(x, y) == EComparison.Smaller)
+                {
+                    result.Insert(0, '-');
+                }
+
+                return result.ToString();
+            }
+            else if (x[0] == '-' && y[0] == '-')
+            {
+                bNegativeOperating = true;
+                x = x.Substring(1);
+                y = y.Substring(1);
+            }
+
+            int difference = x.Length - y.Length;
+
+            if (difference >= 0) // SizeComparison
+            {
+                bigger = x;
+                smaller.Append(y);
+            }
+            else
+            {
+                bigger = y;
+                smaller.Append(x);
+                difference *= -1;
+            }
 
             for (int i = 0; i < difference; i++)
             {
@@ -269,6 +381,7 @@ namespace Assignment1
                 else
                 {
                     sum = bigNum - smallNum - remainder;
+                    remainder = 0;
                 }
 
                 result.Insert(0, sum);
@@ -276,7 +389,7 @@ namespace Assignment1
 
             while (true)
             {
-                if (result[0] == '0')
+                if (result[0] == '0' && result.Length > 1)
                 {
                     result.Remove(0, 1);
                 }
@@ -284,6 +397,11 @@ namespace Assignment1
                 {
                     break;
                 }
+            }
+
+            if (bNegativeOperating)
+            {
+                result.Insert(0, '-');
             }
 
             return result.ToString();

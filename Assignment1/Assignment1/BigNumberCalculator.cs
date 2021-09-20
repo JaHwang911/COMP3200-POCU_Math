@@ -8,7 +8,6 @@ namespace Assignment1
     {
         public int BitCount { get; private set; }
         public EMode OutputType { get; private set; }
-
         public string MaxNumber { get; private set; }
         public string MinNumber { get; private set; }
 
@@ -16,7 +15,7 @@ namespace Assignment1
         {
             BitCount = bitCount;
             OutputType = mode;
-            GetMaxAndMinByBit();
+            GetMaxAndMinByBitCount();
         }
 
         public string[] GetMaxAndMinByBitCount()
@@ -87,7 +86,7 @@ namespace Assignment1
 
             while (input != "1" && input != "0")
             {
-                string[] bit = StringCalculator.DivideOperating(input, "2"); // 4861110
+                string[] bit = StringCalculator.DivideOperating(input, "2");
                 binary.Insert(0, bit[1]);
                 input = bit[0];
             }
@@ -302,6 +301,7 @@ namespace Assignment1
 
             return resultValue;
         }
+
         public static string ToHexOrNull(string num)
         {
             ENumberType numberType = StringCalculator.CheckInputNumberType(num);
@@ -411,11 +411,59 @@ namespace Assignment1
         {
             bOverflow = false;
 
-            string result = StringCalculator.PlusOperating(num1, num2);
+            if (StringCalculator.SizeComparison(MaxNumber, num1) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, num1) == EComparison.Bigger)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MaxNumber, num2) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, num2) == EComparison.Bigger)
+            {
+                return null;
+            }
 
+            string input1 = ToDecimalOrNull(num1);
+            string input2 = ToDecimalOrNull(num2);
+            string result = StringCalculator.PlusOperating(input1, input2);
+            EComparison comparison = EComparison.Same;
 
-            
-            return null;
+            if (result[0] == '-')
+            {
+                comparison = StringCalculator.SizeComparison(MinNumber, result);
+
+                if (comparison == EComparison.Bigger)
+                {
+                    bOverflow = true;
+                    result = StringCalculator.MinusOperating(result, MinNumber);
+                    result = StringCalculator.PlusOperating(result, "1");
+                    result = StringCalculator.PlusOperating(MaxNumber, result);
+                }
+            }
+            else
+            {
+                comparison = StringCalculator.SizeComparison(MaxNumber, result);
+
+                if (comparison == EComparison.Smaller)
+                {
+                    bOverflow = true;
+                    result = StringCalculator.MinusOperating(result, MaxNumber);
+                    result = StringCalculator.MinusOperating(result, "1");
+                    result = StringCalculator.PlusOperating(MinNumber, result);
+                }
+            }
+
+            if (OutputType == EMode.Binary) // BitCount 만큼 제한 비트 수 제한
+            {
+                result = ToBinaryOrNull(result);
+            }
+
+            return result;
         }
     }
 }
