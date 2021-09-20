@@ -410,26 +410,26 @@ namespace Assignment1
         public string AddOrNull(string num1, string num2, out bool bOverflow)
         {
             bOverflow = false;
-
-            if (StringCalculator.SizeComparison(MaxNumber, num1) == EComparison.Smaller)
-            {
-                return null;
-            }
-            else if (StringCalculator.SizeComparison(MinNumber, num1) == EComparison.Bigger)
-            {
-                return null;
-            }
-            else if (StringCalculator.SizeComparison(MaxNumber, num2) == EComparison.Smaller)
-            {
-                return null;
-            }
-            else if (StringCalculator.SizeComparison(MinNumber, num2) == EComparison.Bigger)
-            {
-                return null;
-            }
-
             string input1 = ToDecimalOrNull(num1);
             string input2 = ToDecimalOrNull(num2);
+
+            if (StringCalculator.SizeComparison(MaxNumber, input1) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, input1) == EComparison.Bigger)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MaxNumber, input2) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, input2) == EComparison.Bigger)
+            {
+                return null;
+            }
+
             string result = StringCalculator.PlusOperating(input1, input2);
             EComparison comparison = EComparison.Same;
 
@@ -461,6 +461,25 @@ namespace Assignment1
             if (OutputType == EMode.Binary) // BitCount 만큼 제한 비트 수 제한
             {
                 result = ToBinaryOrNull(result);
+                result = result.Substring(2);
+                StringBuilder tempResult = new StringBuilder(result);
+                int digitGap = result.Length - BitCount;
+
+                if (digitGap > 0)
+                {
+                    tempResult.Remove(0, digitGap);
+                }
+                else if(digitGap < 0)
+                {
+                    digitGap *= -1;
+
+                    for (int i = 0; i < digitGap; i++)
+                    {
+                        tempResult.Insert(0, tempResult[0]);
+                    }
+                }
+
+                result = $"0b{tempResult}";
             }
 
             return result;

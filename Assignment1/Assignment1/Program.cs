@@ -110,9 +110,6 @@ namespace Assignment1
             Debug.Assert(calc3.AddOrNull("0b1", "0b11111111", out bOverflow) == "0b11111110");
             Debug.Assert(!bOverflow);
 
-
-
-
             //Debug.Assert(calc1.SubtractOrNull("25", "52", out bOverflow) == "-27");
             //Debug.Assert(!bOverflow);
 
