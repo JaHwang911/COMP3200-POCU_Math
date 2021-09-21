@@ -9,6 +9,10 @@ namespace Assignment1
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
+
+            Debug.Assert(StringCalculator.MinusOperatingByBinary("25", "125") == "-100");
+            Debug.Assert(StringCalculator.PlusOperatingByBinary("25", "-125") == "-100");
+            Debug.Assert(StringCalculator.MinusOperatingByBinary("15", "9") == "6");
             Debug.Assert(StringCalculator.PlusOperating("-1", "1") == "0");
             Debug.Assert(StringCalculator.MinusOperating("10", "5") == "5");
             Debug.Assert(StringCalculator.MinusOperating("10", "-5") == "15");
@@ -110,17 +114,15 @@ namespace Assignment1
             Debug.Assert(calc3.AddOrNull("0b1", "0b11111111", out bOverflow) == "0b11111110");
             Debug.Assert(!bOverflow);
 
-            //Debug.Assert(calc1.SubtractOrNull("25", "52", out bOverflow) == "-27");
-            //Debug.Assert(!bOverflow);
-
-            //Debug.Assert(calc1.SubtractOrNull("0b100110", "-12", out bOverflow) == "-14");
-            //Debug.Assert(!bOverflow);
-
-            //Debug.Assert(calc1.SubtractOrNull("0b0001101", "10", out bOverflow) == "3");
-            //Debug.Assert(!bOverflow);
-
-            //Debug.Assert(calc1.SubtractOrNull("-125", "100", out bOverflow) == "31");
-            //Debug.Assert(bOverflow);
+            Debug.Assert(StringCalculator.MinusOperatingByBinary("25", "52") == "-27");
+            Debug.Assert(calc1.SubtractOrNull("25", "52", out bOverflow) == "-27");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("0b100110", "-12", out bOverflow) == "-14");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("0b0001101", "10", out bOverflow) == "3");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("-125", "100", out bOverflow) == "31");
+            Debug.Assert(bOverflow);
 
             sw.Stop();
             Console.WriteLine($"Operating time : {sw.ElapsedMilliseconds.ToString()} ms");

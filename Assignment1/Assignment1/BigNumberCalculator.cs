@@ -484,5 +484,83 @@ namespace Assignment1
 
             return result;
         }
+
+        public string SubtractOrNull(string num1, string num2, out bool bOverflow)
+        {
+            bOverflow = false;
+            string input1 = ToDecimalOrNull(num1);
+            string input2 = ToDecimalOrNull(num2);
+
+            if (StringCalculator.SizeComparison(MaxNumber, input1) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, input1) == EComparison.Bigger)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MaxNumber, input2) == EComparison.Smaller)
+            {
+                return null;
+            }
+            else if (StringCalculator.SizeComparison(MinNumber, input2) == EComparison.Bigger)
+            {
+                return null;
+            }
+
+            string result = StringCalculator.MinusOperating(input1, input2);
+            EComparison comparison = EComparison.Same;
+
+            if (result[0] == '-')
+            {
+                comparison = StringCalculator.SizeComparison(MinNumber, result);
+
+                if (comparison == EComparison.Bigger)
+                {
+                    bOverflow = true;
+                    result = StringCalculator.MinusOperating(result, MinNumber);
+                    result = StringCalculator.PlusOperating(result, "1");
+                    result = StringCalculator.PlusOperating(MaxNumber, result);
+                }
+            }
+            else
+            {
+                comparison = StringCalculator.SizeComparison(MaxNumber, result);
+
+                if (comparison == EComparison.Smaller)
+                {
+                    bOverflow = true;
+                    result = StringCalculator.MinusOperating(result, MaxNumber);
+                    result = StringCalculator.MinusOperating(result, "1");
+                    result = StringCalculator.PlusOperating(MinNumber, result);
+                }
+            }
+
+            if (OutputType == EMode.Binary) // BitCount 만큼 제한 비트 수 제한
+            {
+                result = ToBinaryOrNull(result);
+                result = result.Substring(2);
+                StringBuilder tempResult = new StringBuilder(result);
+                int digitGap = result.Length - BitCount;
+
+                if (digitGap > 0)
+                {
+                    tempResult.Remove(0, digitGap);
+                }
+                else if (digitGap < 0)
+                {
+                    digitGap *= -1;
+
+                    for (int i = 0; i < digitGap; i++)
+                    {
+                        tempResult.Insert(0, tempResult[0]);
+                    }
+                }
+
+                result = $"0b{tempResult}";
+            }
+
+            return result;;
+        }
     }
 }
