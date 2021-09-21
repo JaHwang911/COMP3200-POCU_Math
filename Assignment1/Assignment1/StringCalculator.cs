@@ -172,59 +172,6 @@ namespace Assignment1
             return result;
         }
 
-        public static string PlusOperatingByBinary(string x, string y)
-        {
-            StringBuilder tempResult = new StringBuilder(256);
-            string minuend = x;
-            StringBuilder subtrahend = new StringBuilder(y);
-
-            minuend = BigNumberCalculator.ToBinaryOrNull(minuend);
-            y = BigNumberCalculator.ToBinaryOrNull(subtrahend.ToString());
-
-            if (minuend == null || y == null)
-            {
-                return null;
-            }
-
-            subtrahend.Clear();
-            subtrahend.Append(y);
-
-            int difference = minuend.Length - subtrahend.Length;
-
-            if (difference < 0)
-            {
-                string temp = minuend;
-                minuend = subtrahend.ToString();
-                subtrahend.Clear();
-                subtrahend.Append(temp);
-                difference *= -1;
-            }
-
-            for (int i = 0; i < difference; i++)
-            {
-                subtrahend.Insert(2, '0');
-            }
-
-            int remainder = 0;
-            int sum = 0;
-            int asciiNumberOfZero = 48;
-
-            for (int i = minuend.Length - 1; i >= 2; i--)
-            {
-                int bigNum = minuend[i] - asciiNumberOfZero;
-                int smallNum = subtrahend[i] - asciiNumberOfZero;
-                sum = bigNum + smallNum + remainder;
-
-                remainder = sum > 1 ? 1 : 0;
-                sum = sum % 2 == 1 ? 1 : 0;
-
-                tempResult.Insert(0, sum);
-            }
-
-            tempResult.Insert(0, "0b");
-
-            return BigNumberCalculator.ToDecimalOrNull(tempResult.ToString());
-        }
 
         public static string PlusOperating(string x, string y)
         {
@@ -352,69 +299,6 @@ namespace Assignment1
             }
 
             return result.ToString();
-        }
-
-        public static string MinusOperatingByBinary(string x, string y)
-        {
-            StringBuilder tempResult = new StringBuilder(256);
-            string minuend = x;
-            StringBuilder subtrahend = new StringBuilder(y);
-
-            if (subtrahend[0] == '-')
-            {
-                subtrahend.Remove(0, 1);
-            }
-            else
-            {
-                subtrahend.Insert(0, '-');
-            }
-
-            minuend = BigNumberCalculator.ToBinaryOrNull(minuend);
-            y = BigNumberCalculator.ToBinaryOrNull(subtrahend.ToString());
-
-            if (minuend == null || y ==null)
-            {
-                return null;
-            }
-
-            subtrahend.Clear();
-            subtrahend.Append(y);
-
-            int difference = minuend.Length - subtrahend.Length;
-
-            if (difference < 0)
-            {
-                string temp = minuend;
-                minuend = subtrahend.ToString();
-                subtrahend.Clear();
-                subtrahend.Append(temp);
-                difference *= -1;
-            }
-
-            for (int i = 0; i < difference; i++)
-            {
-                subtrahend.Insert(2, '0');
-            }
-
-            int remainder = 0;
-            int sum = 0;
-            int asciiNumberOfZero = 48;
-
-            for (int i = minuend.Length - 1; i >= 2; i--)
-            {
-                int bigNum = minuend[i] - asciiNumberOfZero;
-                int smallNum = subtrahend[i] - asciiNumberOfZero;
-                sum = bigNum + smallNum + remainder; 
-
-                remainder = sum > 1 ? 1 : 0;
-                sum = sum % 2 == 1 ? 1 : 0;
-
-                tempResult.Insert(0, sum);
-            }
-
-            tempResult.Insert(0, "0b");
-
-            return BigNumberCalculator.ToDecimalOrNull(tempResult.ToString());
         }
 
         public static string MinusOperating(string x, string y)

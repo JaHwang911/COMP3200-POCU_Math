@@ -10,9 +10,6 @@ namespace Assignment1
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Debug.Assert(StringCalculator.MinusOperatingByBinary("25", "125") == "-100");
-            Debug.Assert(StringCalculator.PlusOperatingByBinary("25", "-125") == "-100");
-            Debug.Assert(StringCalculator.MinusOperatingByBinary("15", "9") == "6");
             Debug.Assert(StringCalculator.PlusOperating("-1", "1") == "0");
             Debug.Assert(StringCalculator.MinusOperating("10", "5") == "5");
             Debug.Assert(StringCalculator.MinusOperating("10", "-5") == "15");
@@ -82,21 +79,24 @@ namespace Assignment1
 
             bool bOverflow = false;
             BigNumberCalculator calc1 = new BigNumberCalculator(8, EMode.Decimal);
-
             Debug.Assert(calc1.AddOrNull("127", "-45", out bOverflow) == "82");
             Debug.Assert(!bOverflow);
-
             Debug.Assert(calc1.AddOrNull("128", "-45", out bOverflow) == null);
             Debug.Assert(!bOverflow);
-
             Debug.Assert(calc1.AddOrNull("120", "17", out bOverflow) == "-119");
             Debug.Assert(bOverflow);
-
             Debug.Assert(calc1.AddOrNull("-127", "0xE", out bOverflow) == "127");
+            Debug.Assert(bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("25", "52", out bOverflow) == "-27");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("0b100110", "-12", out bOverflow) == "-14");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("0b0001101", "10", out bOverflow) == "3");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.SubtractOrNull("-125", "100", out bOverflow) == "31");
             Debug.Assert(bOverflow);
 
             BigNumberCalculator calc3 = new BigNumberCalculator(8, EMode.Binary);
-            // AddOrNull test
             Debug.Assert(calc3.AddOrNull("127", "0", out bOverflow) == "0b01111111");
             Debug.Assert(!bOverflow);
             Debug.Assert(calc3.AddOrNull("-128", "0", out bOverflow) == "0b10000000");
@@ -113,16 +113,12 @@ namespace Assignment1
             Debug.Assert(!bOverflow);
             Debug.Assert(calc3.AddOrNull("0b1", "0b11111111", out bOverflow) == "0b11111110");
             Debug.Assert(!bOverflow);
+            Debug.Assert(calc3.SubtractOrNull("1", "-1", out bOverflow) == "0b00000010");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc3.SubtractOrNull("0b11", "0b0001", out bOverflow) == "0b11111110");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc3.SubtractOrNull("0b10000000", "0b10000000", out bOverflow) == "0b00000000");
 
-            Debug.Assert(StringCalculator.MinusOperatingByBinary("25", "52") == "-27");
-            Debug.Assert(calc1.SubtractOrNull("25", "52", out bOverflow) == "-27");
-            Debug.Assert(!bOverflow);
-            Debug.Assert(calc1.SubtractOrNull("0b100110", "-12", out bOverflow) == "-14");
-            Debug.Assert(!bOverflow);
-            Debug.Assert(calc1.SubtractOrNull("0b0001101", "10", out bOverflow) == "3");
-            Debug.Assert(!bOverflow);
-            Debug.Assert(calc1.SubtractOrNull("-125", "100", out bOverflow) == "31");
-            Debug.Assert(bOverflow);
 
             sw.Stop();
             Console.WriteLine($"Operating time : {sw.ElapsedMilliseconds.ToString()} ms");

@@ -6,7 +6,7 @@ namespace Assignment1
 {
     public class BigNumberCalculator
     {
-        public int BitCount { get; private set; }
+        public static int BitCount { get; private set; }
         public EMode OutputType { get; private set; }
         public string MaxNumber { get; private set; }
         public string MinNumber { get; private set; }
@@ -55,6 +55,94 @@ namespace Assignment1
             }
 
             return resultString.ToString();
+        }
+
+        public static string MinusOperatingByBinary(string x, string y, out bool bOverflow)
+        {
+            bOverflow = false;
+            StringBuilder result = new StringBuilder(256);
+            string minuend = x;
+            StringBuilder subtrahend = new StringBuilder(y);
+            char signBit = '0';
+            EComparison comparison = StringCalculator.SizeComparison(x, y);
+
+            if (comparison == EComparison.Smaller)
+            {
+                signBit = '1';
+            }
+
+            if (subtrahend[0] == '-')
+            {
+                subtrahend.Remove(0, 1);
+            }
+            else
+            {
+                subtrahend.Insert(0, '-');
+            }
+
+            minuend = BigNumberCalculator.ToBinaryOrNull(minuend);
+            y = BigNumberCalculator.ToBinaryOrNull(subtrahend.ToString());
+
+            if (minuend == null || y == null)
+            {
+                return null;
+            }
+
+            subtrahend.Clear();
+            subtrahend.Append(y);
+
+            int difference = minuend.Length - subtrahend.Length;
+            
+            if (difference < 0)
+            {
+                string temp = minuend;
+                minuend = subtrahend.ToString();
+                subtrahend.Clear();
+                subtrahend.Append(temp);
+                difference *= -1;
+            }
+
+            for (int i = 0; i < difference; i++)
+            {
+                subtrahend.Insert(2, '0');
+            }
+
+            int remainder = 0;
+            int sum = 0;
+            int asciiNumberOfZero = 48;
+
+            for (int i = minuend.Length - 1; i >= 2; i--)
+            {
+                int bigNum = minuend[i] - asciiNumberOfZero;
+                int smallNum = subtrahend[i] - asciiNumberOfZero;
+                sum = bigNum + smallNum + remainder;
+
+                remainder = sum > 1 ? 1 : 0;
+                sum = sum % 2 == 1 ? 1 : 0;
+
+                result.Insert(0, sum);
+            }
+
+            if (result.Length == BitCount && remainder == 1)
+            {
+                bOverflow = true;
+            }
+            else if (result.Length < BitCount)
+            {
+                int loopCount = BitCount - result.Length;
+                for (int i = 0; i < loopCount; i++)
+                {
+                    result.Insert(0, signBit);
+                }
+            }
+            else if(result.Length > BitCount)
+            {
+                result.Remove(2, result.Length - BitCount);
+            }
+
+            result.Insert(0, "0b");
+
+            return result.ToString();
         }
 
         private static string ConvertBinaryToDecimal(string num)
@@ -238,31 +326,14 @@ namespace Assignment1
 
                     if (binary[0] == '0')
                     {
-                        if (binary.Length > 20)
-                        {
-                            string converted = ConvertBinaryToDecimal(binary);
-                            resultValue = converted;
-                        }
-                        else
-                        {
                             resultValue = ConvertBinaryToDecimal(binary);
-                        }
                     }
                     else
                     {
                         string reverseBinary = ReverseBit(binary);
-                        if (binary.Length > 20)
-                        {
-                            string converted = ConvertBinaryToDecimal(reverseBinary);
-                            string temp = StringCalculator.PlusOperating(converted, "1");
-                            resultValue = $"-{temp}";
-                        }
-                        else
-                        {
-                            string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
-                            resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
-                            resultValue = $"-{resultDecimal}";
-                        }
+                        string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
+                        resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
+                        resultValue = $"-{resultDecimal}";
                     }
                     break;
                 case ENumberType.Hex:
@@ -508,59 +579,14 @@ namespace Assignment1
                 return null;
             }
 
-            string result = StringCalculator.MinusOperating(input1, input2);
-            EComparison comparison = EComparison.Same;
+            string resultBinary = MinusOperatingByBinary(input1, input2, out bOverflow);
 
-            if (result[0] == '-')
+            if (OutputType == EMode.Decimal)
             {
-                comparison = StringCalculator.SizeComparison(MinNumber, result);
-
-                if (comparison == EComparison.Bigger)
-                {
-                    bOverflow = true;
-                    result = StringCalculator.MinusOperating(result, MinNumber);
-                    result = StringCalculator.PlusOperating(result, "1");
-                    result = StringCalculator.PlusOperating(MaxNumber, result);
-                }
-            }
-            else
-            {
-                comparison = StringCalculator.SizeComparison(MaxNumber, result);
-
-                if (comparison == EComparison.Smaller)
-                {
-                    bOverflow = true;
-                    result = StringCalculator.MinusOperating(result, MaxNumber);
-                    result = StringCalculator.MinusOperating(result, "1");
-                    result = StringCalculator.PlusOperating(MinNumber, result);
-                }
+                resultBinary = ToDecimalOrNull(resultBinary);
             }
 
-            if (OutputType == EMode.Binary) // BitCount 만큼 제한 비트 수 제한
-            {
-                result = ToBinaryOrNull(result);
-                result = result.Substring(2);
-                StringBuilder tempResult = new StringBuilder(result);
-                int digitGap = result.Length - BitCount;
-
-                if (digitGap > 0)
-                {
-                    tempResult.Remove(0, digitGap);
-                }
-                else if (digitGap < 0)
-                {
-                    digitGap *= -1;
-
-                    for (int i = 0; i < digitGap; i++)
-                    {
-                        tempResult.Insert(0, tempResult[0]);
-                    }
-                }
-
-                result = $"0b{tempResult}";
-            }
-
-            return result;;
+            return resultBinary;
         }
     }
 }
