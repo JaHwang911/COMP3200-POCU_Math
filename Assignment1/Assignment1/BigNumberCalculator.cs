@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Assignment1
@@ -256,6 +257,10 @@ namespace Assignment1
             }
 
             string inputBinary = num.Substring(2);
+            if (inputBinary == "0")
+            {
+                return "0b0";
+            }
             string resultString = ReverseBit(inputBinary);
             string resultDecimal = ConvertBinaryToDecimal(resultString);
             resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
@@ -275,6 +280,7 @@ namespace Assignment1
 
             string resultValue = "";
             StringBuilder convertedBinary = new StringBuilder();
+            List<char> converted = new List<char>(256);
 
             switch (numberType)
             {
@@ -313,10 +319,20 @@ namespace Assignment1
                         inputDecimal = inputDecimal.Substring(1);
                         bIsNegative = true;
                     }
+                    else if (num == "0")
+                    {
+                        return "0b0";
+                    }
 
+                    string tempCovnerted = ConvertDecimalToBinary(inputDecimal);
+                    int hasOneBit = tempCovnerted.IndexOf('1', 1);
+
+                    if (hasOneBit == -1 && bIsNegative)
+                    {
+                        return $"0b{tempCovnerted}";
+                    }
                     char sign = '0';
-                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
-                    convertedBinary.Insert(0, sign);
+                    convertedBinary.Append(sign + tempCovnerted);
                     string possitiveBinary = convertedBinary.ToString();
 
                     if (bIsNegative)
@@ -474,6 +490,10 @@ namespace Assignment1
                     break;
                 case ENumberType.Decimal:
                     string inputDecimal = num;
+                    if (num == "0")
+                    {
+                        return "0x0";
+                    }
                     bool bIsNegative = false;
                     StringBuilder convertedBinary = new StringBuilder(256);
                     if (inputDecimal[0] == '-')
@@ -554,7 +574,7 @@ namespace Assignment1
                 return null;
             }
 
-            string result = OperatingByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
+            string result = OperateByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
 
             if (OutputType == EMode.Decimal)
             {
@@ -608,7 +628,7 @@ namespace Assignment1
                 return null;
             }
 
-            string result = OperatingByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
+            string result = OperateByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
 
             if (OutputType == EMode.Decimal)
             {
