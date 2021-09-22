@@ -57,7 +57,7 @@ namespace Assignment1
             return resultString.ToString();
         }
 
-        public static string OperatingByBinary(string x, string y, EOperatingMode operatingMode, out bool bOverflow)
+        public static string OperateByBinary(string x, string y, EOperatingMode operatingMode, out bool bOverflow)
         {
             bOverflow = false;
             StringBuilder result = new StringBuilder(256);
@@ -112,7 +112,7 @@ namespace Assignment1
                 minuend.Remove(2, inputXBitCount - BitCount);
             }
 
-            if(inputYBitCount > BitCount)
+            if (inputYBitCount > BitCount)
             {
                 subtrahend.Remove(2, inputXBitCount - BitCount);
             }
