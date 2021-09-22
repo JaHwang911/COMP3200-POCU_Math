@@ -78,9 +78,13 @@ namespace Assignment1
 
                     EComparison comparison = StringCalculator.SizeComparison(x, subtrahend.ToString());
 
-                    if (comparison == EComparison.Smaller && bIsNegative)
+                    if (bIsNegative)
                     {
-                        signBit = '1';
+                        if (comparison == EComparison.Smaller)
+                        {
+                            signBit = '1';
+                        }
+
                         subtrahend.Insert(0, '-');
                     }
                     break;
@@ -126,7 +130,7 @@ namespace Assignment1
 
             for (int i = 0; i < difference; i++)
             {
-                subtrahend.Insert(2, '0');
+                subtrahend.Insert(2, subtrahend[2]);
             }
 
             int remainder = 0;
@@ -145,11 +149,23 @@ namespace Assignment1
                 result.Insert(0, sum);
             }
 
-            if (result.Length == BitCount && remainder == 1)
+            switch (operatingMode)
             {
-                bOverflow = true;
+                case EOperatingMode.Add:
+                    if (result[0] == '1')
+                    {
+                        bOverflow = true;
+                    }
+                    break;
+                case EOperatingMode.Substract:
+                    if (result.Length == BitCount && remainder == 1)
+                    {
+                        bOverflow = true;
+                    }
+                    break;
             }
-            else if (result.Length < BitCount)
+
+            if (result.Length < BitCount)
             {
                 int loopCount = BitCount - result.Length;
                 for (int i = 0; i < loopCount; i++)
@@ -544,59 +560,14 @@ namespace Assignment1
                 return null;
             }
 
-            string result = StringCalculator.PlusOperating(input1, input2);
-            EComparison comparison = EComparison.Same;
+            string resultBinary = OperatingByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
 
-            if (result[0] == '-')
+            if (OutputType == EMode.Decimal)
             {
-                comparison = StringCalculator.SizeComparison(MinNumber, result);
-
-                if (comparison == EComparison.Bigger)
-                {
-                    bOverflow = true;
-                    result = StringCalculator.MinusOperating(result, MinNumber);
-                    result = StringCalculator.PlusOperating(result, "1");
-                    result = StringCalculator.PlusOperating(MaxNumber, result);
-                }
-            }
-            else
-            {
-                comparison = StringCalculator.SizeComparison(MaxNumber, result);
-
-                if (comparison == EComparison.Smaller)
-                {
-                    bOverflow = true;
-                    result = StringCalculator.MinusOperating(result, MaxNumber);
-                    result = StringCalculator.MinusOperating(result, "1");
-                    result = StringCalculator.PlusOperating(MinNumber, result);
-                }
+                resultBinary = ToDecimalOrNull(resultBinary);
             }
 
-            if (OutputType == EMode.Binary) // BitCount 만큼 제한 비트 수 제한
-            {
-                result = ToBinaryOrNull(result);
-                result = result.Substring(2);
-                StringBuilder tempResult = new StringBuilder(result);
-                int digitGap = result.Length - BitCount;
-
-                if (digitGap > 0)
-                {
-                    tempResult.Remove(0, digitGap);
-                }
-                else if (digitGap < 0)
-                {
-                    digitGap *= -1;
-
-                    for (int i = 0; i < digitGap; i++)
-                    {
-                        tempResult.Insert(0, tempResult[0]);
-                    }
-                }
-
-                result = $"0b{tempResult}";
-            }
-
-            return result;
+            return resultBinary;
         }
 
         public string SubtractOrNull(string num1, string num2, out bool bOverflow)

@@ -78,8 +78,11 @@ namespace Assignment1
             Debug.Assert(StringCalculator.SizeComparison("-1234567", "-1234568") == EComparison.Bigger);
 
             bool bOverflow = false;
+
             BigNumberCalculator calc1 = new BigNumberCalculator(8, EMode.Decimal);
             Debug.Assert(calc1.AddOrNull("127", "-45", out bOverflow) == "82");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.AddOrNull("64", "63", out bOverflow) == "127");
             Debug.Assert(!bOverflow);
             Debug.Assert(calc1.AddOrNull("128", "-45", out bOverflow) == null);
             Debug.Assert(!bOverflow);
