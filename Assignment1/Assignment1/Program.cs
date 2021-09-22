@@ -84,6 +84,8 @@ namespace Assignment1
             Debug.Assert(!bOverflow);
             Debug.Assert(calc1.AddOrNull("64", "63", out bOverflow) == "127");
             Debug.Assert(!bOverflow);
+            Debug.Assert(calc1.AddOrNull("-64", "-64", out bOverflow) == "-128");
+            Debug.Assert(!bOverflow);
             Debug.Assert(calc1.AddOrNull("128", "-45", out bOverflow) == null);
             Debug.Assert(!bOverflow);
             Debug.Assert(calc1.AddOrNull("120", "17", out bOverflow) == "-119");
@@ -121,6 +123,14 @@ namespace Assignment1
             Debug.Assert(calc3.SubtractOrNull("0b11", "0b0001", out bOverflow) == "0b11111110");
             Debug.Assert(!bOverflow);
             Debug.Assert(calc3.SubtractOrNull("0b10000000", "0b10000000", out bOverflow) == "0b00000000");
+
+            calc3 = new BigNumberCalculator(100, EMode.Decimal);
+
+            Debug.Assert(calc3.AddOrNull("126585123123216548452353151521", "5646862135432184515421587", out bOverflow) == "126590769985351980636868573108");
+            Debug.Assert(!bOverflow);
+
+            Debug.Assert(calc3.SubtractOrNull("-889874837998729348827376462", "577257635827634627837676734", out bOverflow) == "-1467132473826363976665053196");
+            Debug.Assert(!bOverflow);
 
 
             sw.Stop();

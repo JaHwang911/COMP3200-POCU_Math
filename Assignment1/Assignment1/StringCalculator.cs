@@ -117,7 +117,6 @@ namespace Assignment1
             EComparison result = EComparison.Same;
             bool bNegativeComparison = false;
 
-            
             if (x[0] != '-' && y[0] == '-')
             {
                 return EComparison.Bigger;

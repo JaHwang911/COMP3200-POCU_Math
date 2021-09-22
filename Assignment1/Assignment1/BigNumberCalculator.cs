@@ -61,68 +61,69 @@ namespace Assignment1
         {
             bOverflow = false;
             StringBuilder result = new StringBuilder(256);
-            string minuend = x;
+            StringBuilder minuend = new StringBuilder(x);
             StringBuilder subtrahend = new StringBuilder(y);
+            string absoultValueX = x[0] == '-' ? x.Substring(1) : x;
+            string absoultValueY = y[0] == '-' ? y.Substring(1) : y;
             char signBit = '0';
+            bool bExpectedNegative = false;
+            EComparison comparison = StringCalculator.SizeComparison(absoultValueX, absoultValueY);
 
-            switch (operatingMode)
+            if (operatingMode == EOperatingMode.Substract)
             {
-                case EOperatingMode.Add:
-                    bool bIsNegative = false;
-
-                    if (subtrahend[0] == '-')
-                    {
-                        subtrahend.Remove(0, 1);
-                        bIsNegative = true;
-                    }
-
-                    EComparison comparison = StringCalculator.SizeComparison(x, subtrahend.ToString());
-
-                    if (bIsNegative)
-                    {
-                        if (comparison == EComparison.Smaller)
-                        {
-                            signBit = '1';
-                        }
-
-                        subtrahend.Insert(0, '-');
-                    }
-                    break;
-                case EOperatingMode.Substract:
-                    comparison = StringCalculator.SizeComparison(x, y);
-                    if (comparison == EComparison.Smaller)
-                    {
-                        signBit = '1';
-                    }
-
-                    if (subtrahend[0] == '-')
-                    {
-                        subtrahend.Remove(0, 1);
-                    }
-                    else
-                    {
-                        subtrahend.Insert(0, '-');
-                    }
-                    break;
+                if (subtrahend[0] != '-')
+                {
+                    subtrahend.Insert(0, '-');
+                }
+                else if (subtrahend[0] == '-')
+                {
+                    subtrahend.Remove(0, 1);
+                }
             }
 
-            minuend = BigNumberCalculator.ToBinaryOrNull(minuend);
-            y = BigNumberCalculator.ToBinaryOrNull(subtrahend.ToString());
-
-            if (minuend == null || y == null)
+            if (comparison == EComparison.Smaller && subtrahend[0] == '-')
             {
-                return null;
+                signBit = '1';
+                bExpectedNegative = true;
+            }
+            else if (comparison == EComparison.Bigger && minuend[0] == '-')
+            {
+                signBit = '1';
+                bExpectedNegative = true;
+            }
+            else if (minuend[0] == '-' && subtrahend[0] == '-')
+            {
+                signBit = '1';
+                bExpectedNegative = true;
             }
 
+            x = ToBinaryOrNull(minuend.ToString());
+            y = ToBinaryOrNull(subtrahend.ToString());
+            minuend.Clear();
             subtrahend.Clear();
+            minuend.Append(x);
             subtrahend.Append(y);
+
+            int inputXBitCount = minuend.Length - 2;
+            int inputYBitCount = subtrahend.Length - 2;
+
+            if (inputXBitCount > BitCount)
+            {
+                minuend.Remove(2, inputXBitCount - BitCount);
+            }
+
+            if(inputYBitCount > BitCount)
+            {
+                subtrahend.Remove(2, inputXBitCount - BitCount);
+            }
 
             int difference = minuend.Length - subtrahend.Length;
             
             if (difference < 0)
             {
-                string temp = minuend;
-                minuend = subtrahend.ToString();
+                string temp = minuend.ToString();
+                minuend.Clear();
+                minuend.Append(subtrahend.ToString());
                 subtrahend.Clear();
                 subtrahend.Append(temp);
                 difference *= -1;
@@ -149,22 +150,6 @@ namespace Assignment1
                 result.Insert(0, sum);
             }
 
-            switch (operatingMode)
-            {
-                case EOperatingMode.Add:
-                    if (result[0] == '1')
-                    {
-                        bOverflow = true;
-                    }
-                    break;
-                case EOperatingMode.Substract:
-                    if (result.Length == BitCount && remainder == 1)
-                    {
-                        bOverflow = true;
-                    }
-                    break;
-            }
-
             if (result.Length < BitCount)
             {
                 int loopCount = BitCount - result.Length;
@@ -176,6 +161,15 @@ namespace Assignment1
             else if (result.Length > BitCount)
             {
                 result.Remove(2, result.Length - BitCount);
+            }
+
+            if (bExpectedNegative && result[0] == '0')
+            {
+                bOverflow = true;
+            }
+            else if (!bExpectedNegative && result[0] == '1')
+            {
+                bOverflow = true;
             }
 
             result.Insert(0, "0b");
@@ -218,7 +212,7 @@ namespace Assignment1
             }
 
             binary.Insert(0, input);
-
+            
             return binary.ToString();
         }
 
@@ -560,14 +554,14 @@ namespace Assignment1
                 return null;
             }
 
-            string resultBinary = OperatingByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
+            string result = OperatingByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
 
             if (OutputType == EMode.Decimal)
             {
-                resultBinary = ToDecimalOrNull(resultBinary);
+                result = ToDecimalOrNull(result);
             }
 
-            return resultBinary;
+            return result;
         }
 
         public string SubtractOrNull(string num1, string num2, out bool bOverflow)
@@ -614,14 +608,14 @@ namespace Assignment1
                 return null;
             }
 
-            string resultBinary = OperatingByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
+            string result = OperatingByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
 
             if (OutputType == EMode.Decimal)
             {
-                resultBinary = ToDecimalOrNull(resultBinary);
+                result = ToDecimalOrNull(result);
             }
 
-            return resultBinary;
+            return result;
         }
     }
 }
