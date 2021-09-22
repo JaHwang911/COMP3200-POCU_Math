@@ -520,9 +520,17 @@ namespace Assignment1
                         bIsNegative = true;
                     }
 
+                    string tempConverted = ConvertDecimalToBinary(inputDecimal);
+                    int hasOneBit = tempConverted.IndexOf('1', 1);
+
+                    if (tempConverted.Length % 4 == 0 && hasOneBit == -1 && bIsNegative)
+                    {
+                        resultValue = ToHexOrNull($"0b{tempConverted}");
+                        break;
+                    }
+
                     char sign = '0';
-                    convertedBinary.Append(ConvertDecimalToBinary(inputDecimal));
-                    convertedBinary.Insert(0, sign);
+                    convertedBinary.Append(sign + tempConverted);
                     string possitiveBinary = convertedBinary.ToString();
                     convertedBinary.Clear();
 
