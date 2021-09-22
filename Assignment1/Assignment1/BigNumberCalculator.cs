@@ -30,7 +30,7 @@ namespace Assignment1
             }
 
             MaxNumber = ConvertBinaryToDecimal(allOneBit.ToString());
-            MinNumber = $"-{StringCalculator.PlusOperating(MaxNumber, "1")}";
+            MinNumber = $"-{StringCalculator.OperatePlus(MaxNumber, "1")}";
 
             return result;
         }
@@ -187,7 +187,7 @@ namespace Assignment1
             {
                 if (num[i] == '1')
                 {
-                    result = StringCalculator.PlusOperating(result, binaryIndex);
+                    result = StringCalculator.OperatePlus(result, binaryIndex);
                 }
 
                 binaryIndex = StringCalculator.MultiplyOperating(binaryIndex, "2");
@@ -247,6 +247,8 @@ namespace Assignment1
             return $"0b{resultString}";
         }
 
+        //C03_BinaryInput
+        //2진수 string을 사용할때
         public static string GetTwosComplementOrNull(string num)
         {
             ENumberType numberType = StringCalculator.CheckInputNumberType(num);
@@ -261,12 +263,29 @@ namespace Assignment1
             {
                 return "0b0";
             }
+
             string resultString = ReverseBit(inputBinary);
             string resultDecimal = ConvertBinaryToDecimal(resultString);
-            resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
-            string resultbinary = ConvertDecimalToBinary(resultDecimal);
+            resultDecimal = StringCalculator.OperatePlus(resultDecimal, "1");
+            string resultBinary = ConvertDecimalToBinary(resultDecimal);
 
-            return $"0b{resultbinary}";
+            if (resultBinary.Length > inputBinary.Length)
+            {
+                resultBinary = resultBinary.Substring(resultBinary.Length - inputBinary.Length);
+            }
+            else if (resultBinary.Length < inputBinary.Length)
+            {
+                StringBuilder temp = new StringBuilder(resultBinary);
+
+                for (int i = 0; i < inputBinary.Length - resultBinary.Length; i++)
+                {
+                    temp.Insert(0, 0);
+                }
+
+                resultBinary = temp.ToString();
+            }
+
+            return $"0b{resultBinary}";
         }
 
         public static string ToBinaryOrNull(string num)
@@ -280,7 +299,6 @@ namespace Assignment1
 
             string resultValue = "";
             StringBuilder convertedBinary = new StringBuilder();
-            List<char> converted = new List<char>(256);
 
             switch (numberType)
             {
@@ -339,7 +357,7 @@ namespace Assignment1
                     {
                         string reverseBinary = ReverseBit(possitiveBinary);
                         string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
-                        resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
+                        resultDecimal = StringCalculator.OperatePlus(resultDecimal, "1");
                         string negativebinary = ConvertDecimalToBinary(resultDecimal);
                         resultValue = $"0b{negativebinary}";
                     }
@@ -380,7 +398,7 @@ namespace Assignment1
                     {
                         string reverseBinary = ReverseBit(binary);
                         string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
-                        resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
+                        resultDecimal = StringCalculator.OperatePlus(resultDecimal, "1");
                         resultValue = $"-{resultDecimal}";
                     }
                     break;
@@ -512,7 +530,7 @@ namespace Assignment1
                     {
                         string reverseBinary = ReverseBit(possitiveBinary);
                         string resultDecimal = ConvertBinaryToDecimal(reverseBinary);
-                        resultDecimal = StringCalculator.PlusOperating(resultDecimal, "1");
+                        resultDecimal = StringCalculator.OperatePlus(resultDecimal, "1");
                         string negativebinary = ConvertDecimalToBinary(resultDecimal);
                         convertedBinary.Append($"0b{negativebinary}");
                     }

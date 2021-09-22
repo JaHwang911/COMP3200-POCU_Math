@@ -9,12 +9,6 @@ namespace Assignment1
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-
-            Debug.Assert(StringCalculator.PlusOperating("-1", "1") == "0");
-            Debug.Assert(StringCalculator.MinusOperating("10", "5") == "5");
-            Debug.Assert(StringCalculator.MinusOperating("10", "-5") == "15");
-            Debug.Assert(StringCalculator.MinusOperating("-10", "5") == "-15");
-            Debug.Assert(StringCalculator.MinusOperating("-10", "-5") == "-5");
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("as89fdf0") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0xFAKEHEX") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("0bFAKEBINARY") == null);
@@ -43,6 +37,18 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b10000") == "0b10000");
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b100000") == "0b100000");
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1000000") == "0b1000000");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0") == "0b0");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b00") == "0b00");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b000") == "0b000");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000") == "0b0000");
+
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b01") == "0b11");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1") == "0b1");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b10") == "0b10");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b100") == "0b100");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b101") == "0b011");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b110") == "0b010");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b111") == "0b001");
 
 
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b00001101011") == "0b00001101011");
@@ -122,6 +128,33 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.ToHexOrNull("8") == "0x08");
             Debug.Assert(BigNumberCalculator.ToHexOrNull("16") == "0x10");
             Debug.Assert(BigNumberCalculator.ToHexOrNull("32") == "0x20");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("0") == "0x0");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("1") == "0x1");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-1") == "0xF");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("2") == "0x2");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-2") == "0xE");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("4") == "0x4");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-4") == "0xC");
+            //Debug.Assert(BigNumberCalculator.ToHexOrNull("-10") == );
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("8") == "0x08");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-8") == "0x8");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("16") == "0x10");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-16") == "0xF0");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("9223372036854775807") == "0x7FFFFFFFFFFFFFFF");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-9223372036854775808") == "0x8000000000000000");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("18446744073709551615") == "0x0FFFFFFFFFFFFFFFF");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-18446744073709551616") == "0xF0000000000000000");
+
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("170141183460469231731687303715884105727") == "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+            Debug.Assert(BigNumberCalculator.ToHexOrNull("-170141183460469231722463931679029329920") == "0x80000000000000008000000000000000");
+
 
 
             bool bOverflow = false;

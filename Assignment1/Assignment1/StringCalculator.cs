@@ -171,7 +171,7 @@ namespace Assignment1
             return result;
         }
 
-        public static string PlusOperating(string x, string y)
+        public static string OperatePlus(string x, string y)
         {
             StringBuilder result = new StringBuilder(256);
             string bigger = x;
@@ -181,7 +181,7 @@ namespace Assignment1
             if (x[0] == '-' && y[0] != '-')
             {
                 x = x.Substring(1);
-                result.Append(MinusOperating(x, y));
+                result.Append(OperateMinus(x, y));
 
                 if (SizeComparison(x, y) == EComparison.Bigger)
                 {
@@ -193,7 +193,7 @@ namespace Assignment1
             else if (x[0] != '-' && y[0] == '-')
             {
                 y = y.Substring(1);
-                result.Append(MinusOperating(x, y));
+                result.Append(OperateMinus(x, y));
 
                 if (SizeComparison(x, y) == EComparison.Smaller)
                 {
@@ -290,7 +290,7 @@ namespace Assignment1
                     tempResult.Append('0');
                 }
 
-                string multiplyResult = PlusOperating(result.ToString(), tempResult.ToString());
+                string multiplyResult = OperatePlus(result.ToString(), tempResult.ToString());
                 result.Clear();
                 result.Append(multiplyResult);
                 multiplyCount++;
@@ -299,15 +299,8 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string MinusOperating(string x, string y)
+        public static string OperateMinus(string x, string y)
         {
-            //EComparison resultComparison = SizeComparison(x, y);
-
-            //if (resultComparison == EComparison.Smaller)
-            //{
-            //    return null;
-            //}
-
             StringBuilder result = new StringBuilder(256);
             string bigger = x;
             StringBuilder smaller = new StringBuilder(256);
@@ -317,7 +310,7 @@ namespace Assignment1
             if (x[0] == '-' && y[0] != '-')
             {
                 x = x.Substring(1);
-                result.Append(PlusOperating(x, y));
+                result.Append(OperatePlus(x, y));
 
                 if (SizeComparison(x, y) == EComparison.Bigger)
                 {
@@ -329,7 +322,7 @@ namespace Assignment1
             else if (x[0] != '-' && y[0] == '-')
             {
                 y = y.Substring(1);
-                result.Append(PlusOperating(x, y));
+                result.Append(OperatePlus(x, y));
 
                 if (SizeComparison(x, y) == EComparison.Smaller)
                 {
