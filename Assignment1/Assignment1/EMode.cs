@@ -20,4 +20,10 @@
         Smaller,
         Same
     }
+
+    public enum EOperatingMode
+    {
+        Add,
+        Substract
+    }
 }

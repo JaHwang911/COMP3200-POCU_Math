@@ -122,11 +122,11 @@ namespace Assignment1
             {
                 return EComparison.Bigger;
             }
-            else if(x[0] == '-' && y[0] != '-')
+            else if (x[0] == '-' && y[0] != '-')
             {
                 return EComparison.Smaller;
             }
-            else if(x[0] == '-' && y[0] == '-')
+            else if (x[0] == '-' && y[0] == '-')
             {
                 bNegativeComparison = true;
                 x = x.Substring(1);
@@ -171,7 +171,6 @@ namespace Assignment1
 
             return result;
         }
-
 
         public static string PlusOperating(string x, string y)
         {

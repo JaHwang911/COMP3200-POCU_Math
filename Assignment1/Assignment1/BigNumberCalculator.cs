@@ -57,27 +57,49 @@ namespace Assignment1
             return resultString.ToString();
         }
 
-        public static string MinusOperatingByBinary(string x, string y, out bool bOverflow)
+        public static string OperatingByBinary(string x, string y, EOperatingMode operatingMode, out bool bOverflow)
         {
             bOverflow = false;
             StringBuilder result = new StringBuilder(256);
             string minuend = x;
             StringBuilder subtrahend = new StringBuilder(y);
             char signBit = '0';
-            EComparison comparison = StringCalculator.SizeComparison(x, y);
 
-            if (comparison == EComparison.Smaller)
+            switch (operatingMode)
             {
-                signBit = '1';
-            }
+                case EOperatingMode.Add:
+                    bool bIsNegative = false;
 
-            if (subtrahend[0] == '-')
-            {
-                subtrahend.Remove(0, 1);
-            }
-            else
-            {
-                subtrahend.Insert(0, '-');
+                    if (subtrahend[0] == '-')
+                    {
+                        subtrahend.Remove(0, 1);
+                        bIsNegative = true;
+                    }
+
+                    EComparison comparison = StringCalculator.SizeComparison(x, subtrahend.ToString());
+
+                    if (comparison == EComparison.Smaller && bIsNegative)
+                    {
+                        signBit = '1';
+                        subtrahend.Insert(0, '-');
+                    }
+                    break;
+                case EOperatingMode.Substract:
+                    comparison = StringCalculator.SizeComparison(x, y);
+                    if (comparison == EComparison.Smaller)
+                    {
+                        signBit = '1';
+                    }
+
+                    if (subtrahend[0] == '-')
+                    {
+                        subtrahend.Remove(0, 1);
+                    }
+                    else
+                    {
+                        subtrahend.Insert(0, '-');
+                    }
+                    break;
             }
 
             minuend = BigNumberCalculator.ToBinaryOrNull(minuend);
@@ -481,8 +503,8 @@ namespace Assignment1
         public string AddOrNull(string num1, string num2, out bool bOverflow)
         {
             bOverflow = false;
-            string input1 = "";
-            string input2 = "";
+            string input1 = num1;
+            string input2 = num2;
             ENumberType numberType = StringCalculator.CheckInputNumberType(num1);
 
             if (numberType == ENumberType.NaN)
@@ -580,8 +602,8 @@ namespace Assignment1
         public string SubtractOrNull(string num1, string num2, out bool bOverflow)
         {
             bOverflow = false;
-            string input1 = "";
-            string input2 = "";
+            string input1 = num1;
+            string input2 = num2;
             ENumberType numberType = StringCalculator.CheckInputNumberType(num1);
 
             if (numberType == ENumberType.NaN)
@@ -621,7 +643,7 @@ namespace Assignment1
                 return null;
             }
 
-            string resultBinary = MinusOperatingByBinary(input1, input2, out bOverflow);
+            string resultBinary = OperatingByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
 
             if (OutputType == EMode.Decimal)
             {
