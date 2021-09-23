@@ -11,17 +11,35 @@ namespace Assignment1
         public EMode OutputType { get; private set; }
         public string MaxNumber { get; private set; }
         public string MinNumber { get; private set; }
+        public string MaxBit { get; private set; }
+        public string MinBit { get; private set; }
+        public static int AsciiNumberOfZero = 48;
 
         public BigNumberCalculator(int bitCount, EMode mode)
         {
             BitCount = bitCount;
             OutputType = mode;
-            GetMaxAndMinByBitCount();
+            GetMaxAndMinDecimal();
+            GetMaxAndMinBinary();
         }
 
-        public string[] GetMaxAndMinByBitCount()
+        public void GetMaxAndMinBinary()
         {
-            string[] result = new string[2];
+            StringBuilder maxBit = new StringBuilder(BitCount);
+            StringBuilder minBit = new StringBuilder(BitCount);
+
+            for (int i = 0; i < BitCount - 1; i++)
+            {
+                maxBit.Append('1');
+                minBit.Append('0');
+            }
+
+            MaxNumber = $"0{maxBit}";
+            MinNumber = $"1{minBit}";
+        }
+
+        public void GetMaxAndMinDecimal()
+        {
             StringBuilder allOneBit = new StringBuilder();
 
             for (int i = 0; i < BitCount - 1; i++)
@@ -31,28 +49,46 @@ namespace Assignment1
 
             MaxNumber = ConvertBinaryToDecimal(allOneBit.ToString());
             MinNumber = $"-{StringCalculator.OperatePlus(MaxNumber, "1")}";
-
-            return result;
         }
 
-        public static string ReverseBit(string inputBinary)
+        public static string ReverseBit(string inputBinary) // re Change name to TwoComplement
         {
             StringBuilder resultString = new StringBuilder(inputBinary.Length);
+            StringBuilder tempString = new StringBuilder(256);
+            StringBuilder decimalOneBinary = new StringBuilder(256);
+            decimalOneBinary.Append('1');
 
             foreach (var bit in inputBinary)
             {
                 switch (bit)
                 {
                     case '0':
-                        resultString.Append('1');
+                        tempString.Append('1');
                         break;
                     case '1':
-                        resultString.Append('0');
+                        tempString.Append('0');
                         break;
                     default:
                         Debug.Assert(false, "Wrong input binary");
                         break;
                 }
+
+                decimalOneBinary.Insert(0, '0');
+            }
+
+            decimalOneBinary.Remove(0, 1);
+            int remainder = 0;
+            
+            for (int i = tempString.Length - 1; i >= 0; i--)
+            {
+                int bigNum = tempString[i] - AsciiNumberOfZero;
+                int smallNum = decimalOneBinary[i] - AsciiNumberOfZero;
+                int sum = bigNum + smallNum + remainder;
+
+                remainder = sum > 1 ? 1 : 0;
+                sum = sum % 2 == 1 ? 1 : 0;
+
+                resultString.Insert(0, sum);
             }
 
             return resultString.ToString();
@@ -191,6 +227,102 @@ namespace Assignment1
                 }
 
                 binaryIndex = StringCalculator.MultiplyOperating(binaryIndex, "2");
+            }
+
+            return result;
+        }
+
+        public static string ConvertToBinary(string input, ENumberType numberType = ENumberType.NaN)
+        {
+            if (numberType == ENumberType.NaN)
+            {
+                numberType = StringCalculator.CheckInputNumberType(input);
+
+                if (numberType == ENumberType.NaN)
+                {
+                    return null;
+                }
+            }
+
+            if (input == "0")
+            {
+                return "0000";
+            }
+
+            string result = "";
+            StringBuilder binary = new StringBuilder(256);
+            string tempValue = input;
+
+            switch (numberType)
+            {
+                case ENumberType.Binary:
+                    result = input;
+                    break;
+                case ENumberType.Decimal:
+                    bool bIsNegative = false;
+                    if (input[0] == '-')
+                    {
+                        bIsNegative = true;
+                        tempValue = input.Substring(1);
+                    }
+
+                    while (tempValue != "1" && tempValue != "0")
+                    {
+                        string[] bit = StringCalculator.DivideOperating(tempValue, "2");
+                        binary.Insert(0, bit[1]);
+                        tempValue = bit[0];
+                    }
+
+                    char signBit = '0';
+                    binary.Insert(0, $"{signBit}{tempValue}");
+                    
+                    if (bIsNegative)
+                    {
+                        result = ReverseBit(binary.ToString());
+                    }
+                    else
+                    {
+                        result = binary.ToString();
+                    }
+                    break;
+                case ENumberType.Hex:
+                    string digitDecimal = ConvertHexToDecimal(tempValue[0]);
+                    StringBuilder digitBinary = new StringBuilder(4);
+                    digitBinary.Append(ConvertToBinary(digitDecimal, ENumberType.Decimal));
+
+                    if (digitBinary.Length < 4)
+                    {
+                        int looCount = 4 - digitBinary.Length;
+                        for (int j = 0; j < looCount; j++)
+                        {
+                            digitBinary.Insert(0, digitBinary[0]);
+                        }
+                    }
+
+                    binary.Append(digitBinary);
+
+                    for (int i = 1; i < tempValue.Length; i++)
+                    {
+                        digitDecimal = ConvertHexToDecimal(tempValue[i]);
+                        digitBinary.Append(ConvertToBinary(digitDecimal, ENumberType.Decimal));
+
+                        if (digitBinary.Length < 4)
+                        {
+                            int looCount = 4 - digitBinary.Length;
+                            for (int j = 0; j < looCount; j++)
+                            {
+                                digitBinary.Insert(0, '0');
+                            }
+                        }
+
+                        binary.Insert(0, digitBinary);
+                    }
+
+                    result = binary.ToString();
+                    break;
+                default:
+                    Debug.Assert(false, "Problem of CheckInputNumberType");
+                    break;
             }
 
             return result;

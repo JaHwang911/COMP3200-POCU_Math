@@ -10,7 +10,7 @@ namespace Assignment1
             Debug.Assert(StringCalculator.BinaryComparison("011111111", "011111110") == EComparison.Bigger);
             Debug.Assert(StringCalculator.BinaryComparison("011111111", "011111111") == EComparison.Same);
             Debug.Assert(StringCalculator.BinaryComparison("10000000", "10000001") == EComparison.Smaller);
-            
+            Debug.Assert(BigNumberCalculator.ReverseBit("01111111") == "10000001");
             //Stopwatch sw = new Stopwatch();
             //sw.Start();
             //Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("as89fdf0") == null);
