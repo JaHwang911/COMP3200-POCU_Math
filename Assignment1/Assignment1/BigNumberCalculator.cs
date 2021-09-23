@@ -247,8 +247,6 @@ namespace Assignment1
             return $"0b{resultString}";
         }
 
-        //C03_BinaryInput
-        //2진수 string을 사용할때
         public static string GetTwosComplementOrNull(string num)
         {
             ENumberType numberType = StringCalculator.CheckInputNumberType(num);
