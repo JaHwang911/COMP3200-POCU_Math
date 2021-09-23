@@ -112,6 +112,64 @@ namespace Assignment1
             return inputType;
         }
 
+        public static EComparison BinaryComparison(string x, string y)
+        {
+            EComparison resultComparison = EComparison.Same;
+            char positiveSign = '0';
+            int lengthDifference = x.Length - y.Length;
+            bool bNegativeComparison = false;
+
+            // Check sign
+            if (x[0] == positiveSign && y[0] != positiveSign)
+            {
+                return EComparison.Bigger;
+            }
+            else if (x[0] != positiveSign && y[0] == positiveSign)
+            {
+                return EComparison.Smaller;
+            }
+            else if (x[0] == positiveSign && y[0] == positiveSign)
+            {
+                if (lengthDifference > 0)
+                {
+                    return EComparison.Bigger;
+                }
+                else if (lengthDifference < 0)
+                {
+                    return EComparison.Smaller;
+                }
+            }
+            else if (x[0] != positiveSign && y[0] != positiveSign)
+            {
+                if (lengthDifference > 0)
+                {
+                    return EComparison.Smaller;
+                }
+                else if (lengthDifference < 0)
+                {
+                    return EComparison.Bigger;
+                }
+
+                bNegativeComparison = true;
+            }
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (x[i] > y[i])
+                {
+                    resultComparison = bNegativeComparison ? EComparison.Smaller : EComparison.Bigger;
+                    break;
+                }
+                else if (x[i] < y[i])
+                {
+                    resultComparison = bNegativeComparison ? EComparison.Bigger : EComparison.Smaller;
+                    break;
+                }
+            }
+
+            return resultComparison;
+        }
+
         public static EComparison SizeComparison(string x, string y)
         {
             EComparison result = EComparison.Same;
@@ -402,7 +460,6 @@ namespace Assignment1
 
         public static string[] DivideOperating(string denominator, string numerator)
         {
-
             EComparison resultComparison = SizeComparison(denominator, numerator);
 
             if (resultComparison == EComparison.Smaller)
