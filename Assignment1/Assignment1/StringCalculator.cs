@@ -117,7 +117,6 @@ namespace Assignment1
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
             int lengthDifference = x.Length - y.Length;
-            bool bNegativeComparison = false;
 
             // Check sign
             if (x[0] == positiveSign && y[0] != positiveSign)
@@ -149,21 +148,18 @@ namespace Assignment1
                 {
                     return EComparison.Bigger;
                 }
-
-                bNegativeComparison = true;
             }
 
             for (int i = 0; i < x.Length; i++)
             {
                 if (x[i] > y[i])
                 {
-                    resultComparison = bNegativeComparison ? EComparison.Smaller : EComparison.Bigger;
+                    resultComparison = EComparison.Bigger;
                     break;
                 }
                 else if (x[i] < y[i])
                 {
-                    resultComparison = bNegativeComparison ? EComparison.Bigger : EComparison.Smaller;
-                    break;
+                    resultComparison = EComparison.Smaller;
                 }
             }
 
