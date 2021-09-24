@@ -565,6 +565,8 @@ namespace Assignment1
             string input1 = "";
             string input2 = "";
             ENumberType numberType = StringCalculator.CheckInputNumberType(num1);
+            bool bIsNum1Negative = false;
+            bool bIsNum2Negative = false;
 
             if (numberType == ENumberType.NaN)
             {
@@ -573,6 +575,11 @@ namespace Assignment1
             else if (numberType != ENumberType.Binary)
             {
                 input1 = ConvertToBinary(num1, numberType);
+
+                if (num1[0] == '-')
+                {
+                    bIsNum1Negative = true;
+                }
             }
 
             numberType = StringCalculator.CheckInputNumberType(num2);
@@ -584,15 +591,54 @@ namespace Assignment1
             else if (numberType != ENumberType.Binary)
             {
                 input2 = ConvertToBinary(num2, numberType);
+
+                if (num2[0] == '-')
+                {
+                    bIsNum2Negative = true;
+                }
             }
 
-            if (StringCalculator.BinaryComparison(MaxBit, input1) == EComparison.Smaller || StringCalculator.BinaryComparison(MinBit, input1) == EComparison.Bigger)
+            int hasInput1OneBit = input1.Substring(1).IndexOf('1');
+            int hasInput2OneBit = input2.Substring(1).IndexOf('1');
+
+            if (bIsNum1Negative)
             {
-                return null;
+                if (StringCalculator.BinaryComparison(MinBit, input1) == EComparison.Bigger)
+                {
+                    return null;
+                }
             }
-            else if (StringCalculator.BinaryComparison(MaxBit, input2) == EComparison.Smaller || StringCalculator.BinaryComparison(MinBit, input2) == EComparison.Bigger)
+            else
             {
-                return null;
+                if (hasInput1OneBit < 0)
+                {
+                    input1 = input1.Insert(0, "0");
+                }
+
+                if (StringCalculator.BinaryComparison(MaxBit, input1) == EComparison.Smaller)
+                {
+                    return null;
+                }
+            }
+
+            if (bIsNum2Negative)
+            {
+                if (StringCalculator.BinaryComparison(MinBit, input2) == EComparison.Bigger)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (hasInput2OneBit < 0)
+                {
+                    input2 = input2.Insert(0, "0");
+                }
+
+                if (StringCalculator.BinaryComparison(MaxBit, input2) == EComparison.Smaller)
+                {
+                    return null;
+                }
             }
 
             string result = OperateByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
