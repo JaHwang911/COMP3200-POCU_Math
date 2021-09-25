@@ -77,19 +77,12 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("SER#$V@$V") == null);
 
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("-123"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-123") == "0b10000101");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("0"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0") == "0b0");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("10"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("10") == "0b01010");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("100"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("100") == "0b01100100");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("1000"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("1000") == "0b01111101000");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("10000"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("10000") == "0b010011100010000");
-            //Console.WriteLine(BigNumberCalculator.ToBinaryOrNull("-13579"));
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-13579") == "0b100101011110101");
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-135799753113579") == "0b100001000111110110100111111101001000000000010101");
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-9223372036854775809") == "0b10111111111111111111111111111111111111111111111111111111111111111");
@@ -187,6 +180,11 @@ namespace Assignment1
             Debug.Assert(calc3.SubtractOrNull("0b11", "0b0001", out bOverflow) == "0b11111110");
             Debug.Assert(!bOverflow);
             Debug.Assert(calc3.SubtractOrNull("0b10000000", "0b10000000", out bOverflow) == "0b00000000");
+            Debug.Assert(bOverflow);
+            Debug.Assert(calc3.AddOrNull("0b10000000", "0x7", out bOverflow) == "0b10000111");
+            Debug.Assert(!bOverflow);
+            Debug.Assert(calc3.AddOrNull("0b10000000", "0x6", out bOverflow) == "0b10000110");
+            Debug.Assert(!bOverflow);
 
             calc3 = new BigNumberCalculator(100, EMode.Decimal);
 
@@ -197,7 +195,7 @@ namespace Assignment1
             Debug.Assert(!bOverflow);
 
             Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-9223372036854775808") == "0b1000000000000000000000000000000000000000000000000000000000000000");
-
+            
             //for (int i = 0; i < 25; i++)
             //{
             //    Stopwatch sw = new Stopwatch();
