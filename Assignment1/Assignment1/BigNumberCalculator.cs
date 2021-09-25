@@ -19,7 +19,6 @@ namespace Assignment1
         {
             BitCount = bitCount;
             OutputType = mode;
-            GetMaxAndMinDecimal();
             GetMaxAndMinBinary();
         }
 
@@ -36,19 +35,6 @@ namespace Assignment1
 
             MaxBit = $"0{maxBit}";
             MinBit = $"1{minBit}";
-        }
-
-        public void GetMaxAndMinDecimal()
-        {
-            StringBuilder allOneBit = new StringBuilder();
-
-            for (int i = 0; i < BitCount - 1; i++)
-            {
-                allOneBit.Append("1");
-            }
-
-            MaxNumber = ConvertBinaryToDecimal(allOneBit.ToString());
-            MinNumber = $"-{StringCalculator.OperatePlus(MaxNumber, "1")}";
         }
 
         public static string ConvertTwoComplement(string inputBinary)
@@ -260,11 +246,11 @@ namespace Assignment1
                     binary.Insert(0, tempDecimal);
                     int hasOneBit = binary.ToString().IndexOf('1', 1);
 
-                    if (binary.Length % 4 == 0 && hasOneBit < 0)
-                    {
-                        result = binary.ToString();
-                        break;
-                    }
+                    //if (binary.Length % 4 == 0 && hasOneBit < 0)
+                    //{
+                    //    result = binary.ToString();
+                    //    break;
+                    //}
 
                     char signBit = '0';
                     binary.Insert(0, signBit);

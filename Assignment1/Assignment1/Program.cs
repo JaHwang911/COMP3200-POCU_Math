@@ -181,8 +181,7 @@ namespace Assignment1
             Debug.Assert(!bOverflow);
             Debug.Assert(calc3.SubtractOrNull("0b10000000", "0b10000000", out bOverflow) == "0b00000000");
             Debug.Assert(bOverflow);
-            Debug.Assert(calc3.AddOrNull("0b10000000", "0x7", out bOverflow) == "0b10000111");
-            Debug.Assert(!bOverflow);
+            
             Debug.Assert(calc3.AddOrNull("0b10000000", "0x6", out bOverflow) == "0b10000110");
             Debug.Assert(!bOverflow);
 
