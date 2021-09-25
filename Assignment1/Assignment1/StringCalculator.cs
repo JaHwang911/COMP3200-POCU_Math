@@ -117,9 +117,19 @@ namespace Assignment1
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
             int lengthDifference = x.Length - y.Length;
+            bool xNotZero = x.Contains('1');
+            bool yNotZero = y.Contains('1');
 
             // Check sign
-            if (x[0] == positiveSign && y[0] != positiveSign)
+            if (!xNotZero)
+            {
+                return EComparison.Smaller;
+            }
+            else if (!yNotZero)
+            {
+                return EComparison.Bigger;
+            }
+            else if (x[0] == positiveSign && y[0] != positiveSign)
             {
                 return EComparison.Bigger;
             }
@@ -127,39 +137,38 @@ namespace Assignment1
             {
                 return EComparison.Smaller;
             }
-            else if (x[0] == positiveSign && y[0] == positiveSign)
+
+            // 만약 input에 대입을 안하고 그냥 바꿔 버리면 아마 참조형이라 값이 바뀔듯?
+            string input1 = x;
+            string input2 = y;
+            
+            if (lengthDifference < 0)
             {
-                if (lengthDifference > 0)
+                lengthDifference *= -1;
+                for (int i = 0; i < lengthDifference; i++)
                 {
-                    return EComparison.Bigger;
-                }
-                else if (lengthDifference < 0)
-                {
-                    return EComparison.Smaller;
+                    input1 = input1.Insert(0, $"{input1[0]}");
                 }
             }
-            else if (x[0] != positiveSign && y[0] != positiveSign)
+            else if (lengthDifference >0)
             {
-                if (lengthDifference > 0)
+                for (int i = 0; i < lengthDifference; i++)
                 {
-                    return EComparison.Smaller;
-                }
-                else if (lengthDifference < 0)
-                {
-                    return EComparison.Bigger;
+                    input2 = input2.Insert(0, $"{input2[0]}");
                 }
             }
 
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < input1.Length; i++)
             {
-                if (x[i] > y[i])
+                if (input1[i] > input2[i])
                 {
                     resultComparison = EComparison.Bigger;
                     break;
                 }
-                else if (x[i] < y[i])
+                else if (input1[i] < input2[i])
                 {
                     resultComparison = EComparison.Smaller;
+                    break;
                 }
             }
 
