@@ -304,6 +304,7 @@ namespace Assignment1
                     }
                     break;
                 case ENumberType.Hex:
+                    //string[] hexIndex = { "1010", "1011", "1100", "1101", "1110", "1111" };
                     string tempHex = input.Substring(2);
                     string digitDecimal = ConvertHexToDecimal(tempHex[0]);
                     StringBuilder digitBinary = new StringBuilder(4);
@@ -316,6 +317,10 @@ namespace Assignment1
                         {
                             digitBinary.Insert(0, digitBinary[0]);
                         }
+                    }
+                    else if(digitBinary.Length > 4)
+                    {
+                        digitBinary.Remove(0, digitBinary.Length - 4);
                     }
 
                     binary.Append(digitBinary);
@@ -629,6 +634,12 @@ namespace Assignment1
             else if (numberType != ENumberType.Binary)
             {
                 input1 = ConvertToBinary(num1, numberType);
+                int hasInput1OneBit = input1.Substring(1).IndexOf('1');
+
+                if (hasInput1OneBit < 0) // 지워도 되는지? 그리고 ConvertToBinary hex input 일때 binary length 4개로 제한 한게 문제가 있는지 없느짖
+                {
+                    input1 = input1.Insert(0, "0");
+                }
 
                 if (num1[0] == '-' && StringCalculator.BinaryComparison(MinBit, input1) == EComparison.Bigger)
                 {
@@ -649,6 +660,12 @@ namespace Assignment1
             else if (numberType != ENumberType.Binary)
             {
                 input2 = ConvertToBinary(num2, numberType);
+                int hasInput2OneBit = input2.Substring(1).IndexOf('1');
+
+                if (hasInput2OneBit < 0)
+                {
+                    input2 = input2.Insert(0, "0");
+                }
 
                 if (num2[0] == '-' && StringCalculator.BinaryComparison(MinBit, input2) == EComparison.Bigger)
                 {
@@ -658,19 +675,6 @@ namespace Assignment1
                 {
                     return null;
                 }
-            }
-
-            int hasInput1OneBit = input1.Substring(1).IndexOf('1');
-            int hasInput2OneBit = input2.Substring(1).IndexOf('1');
-
-            if (hasInput1OneBit < 0)
-            {
-                input1 = input1.Insert(0, "0");
-            }
-
-            if (hasInput2OneBit < 0)
-            {
-                input2 = input2.Insert(0, "0");
             }
 
             string result = OperateByBinary(input1, input2, EOperatingMode.Add, out bOverflow);
