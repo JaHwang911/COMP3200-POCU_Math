@@ -140,6 +140,7 @@ namespace Assignment1
                 if (temp == input2)
                 {
                     input1 = BigNumberCalculator.ConvertTwoComplement(input1);
+                    negativeComparison = true;
                 }
                 else
                 {
@@ -153,6 +154,7 @@ namespace Assignment1
                 if (temp == input1)
                 {
                     input2 = BigNumberCalculator.ConvertTwoComplement(input2);
+                    negativeComparison = true;
                 }
                 else
                 {

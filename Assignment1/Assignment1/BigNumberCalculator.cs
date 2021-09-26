@@ -64,7 +64,7 @@ namespace Assignment1
 
             decimalOneBinary.Remove(0, 1);
             int remainder = 0;
-            
+
             for (int i = tempString.Length - 1; i >= 0; i--)
             {
                 int bigNum = tempString[i] - AsciiNumberOfZero;
@@ -90,24 +90,24 @@ namespace Assignment1
             string absoultValueY = y[0] == '1' ? ConvertTwoComplement(y) : y;
             bool bExpectedNegative = false;
 
-            //if (absoultValueX.Length < BitCount)
-            //{
-            //    int loopCount = BitCount - absoultValueX.Length;
+            if (absoultValueX.Length < BitCount)
+            {
+                int loopCount = BitCount - absoultValueX.Length;
 
-            //    for (int i = 0; i < loopCount; i++)
-            //    {
-            //        absoultValueX = absoultValueX.Insert(0, $"{absoultValueX[0]}");
-            //    }
-            //}
-            //if (absoultValueY.Length < BitCount)
-            //{
-            //    int loopCount = BitCount - absoultValueY.Length;
+                for (int i = 0; i < loopCount; i++)
+                {
+                    absoultValueX = absoultValueX.Insert(0, $"{absoultValueX[0]}");
+                }
+            }
+            if (absoultValueY.Length < BitCount)
+            {
+                int loopCount = BitCount - absoultValueY.Length;
 
-            //    for (int i = 0; i < loopCount; i++)
-            //    {
-            //        absoultValueY = absoultValueY.Insert(0, $"{absoultValueY[0]}");
-            //    }
-            //}
+                for (int i = 0; i < loopCount; i++)
+                {
+                    absoultValueY = absoultValueY.Insert(0, $"{absoultValueY[0]}");
+                }
+            }
             EComparison comparison = StringCalculator.ComparisonAbsoultBinary(absoultValueX, absoultValueY);
 
             if (operatingMode == EOperatingMode.Substract)
@@ -309,7 +309,7 @@ namespace Assignment1
                             digitBinary.Insert(0, digitBinary[0]);
                         }
                     }
-                    else if(digitBinary.Length > 4)
+                    else if (digitBinary.Length > 4)
                     {
                         digitBinary.Remove(0, digitBinary.Length - 4);
                     }
@@ -365,7 +365,7 @@ namespace Assignment1
             }
 
             binary.Insert(0, input);
-            
+
             return binary.ToString();
         }
 
@@ -383,7 +383,7 @@ namespace Assignment1
 
             return result.ToString();
         }
-        
+
         public static string ConvertBinaryToHex(string num)
         {
             int[] binaryIndex = { 1, 8, 4, 2 };
@@ -583,19 +583,11 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
             {
                 return null;
             }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
-            {
-                return null;
-            }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input2))
-            {
-                return null;
-            }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input2))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
             {
                 return null;
             }
@@ -624,19 +616,11 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
             {
                 return null;
             }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
-            {
-                return null;
-            }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input2))
-            {
-                return null;
-            }
-            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input2))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
             {
                 return null;
             }
@@ -651,4 +635,5 @@ namespace Assignment1
             return result;
         }
     }
+
 }
