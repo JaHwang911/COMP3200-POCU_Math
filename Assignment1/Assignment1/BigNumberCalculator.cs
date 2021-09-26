@@ -612,11 +612,11 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MinBit, input1))
             {
                 return null;
             }
-            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MaxBit, input1))
             {
                 return null;
             }
