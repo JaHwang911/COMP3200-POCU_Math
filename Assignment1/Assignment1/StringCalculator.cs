@@ -112,7 +112,7 @@ namespace Assignment1
             return inputType;
         }
 
-        public static EComparison BinaryCompare(string x, string y)
+        public static EComparison CompareBinary(string x, string y)
         {
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
@@ -379,107 +379,6 @@ namespace Assignment1
                 result.Clear();
                 result.Append(multiplyResult);
                 multiplyCount++;
-            }
-
-            return result.ToString();
-        }
-
-        public static string OperateMinus(string x, string y)
-        {
-            StringBuilder result = new StringBuilder(256);
-            string bigger = x;
-            StringBuilder smaller = new StringBuilder(256);
-            int asciiNumberOfZero = 48;
-            bool bNegativeOperating = false;
-
-            if (x[0] == '-' && y[0] != '-')
-            {
-                x = x.Substring(1);
-                result.Append(OperatePlus(x, y));
-
-                if (SizeComparison(x, y) == EComparison.Bigger)
-                {
-                    result.Insert(0, '-');
-                }
-
-                return result.ToString();
-            }
-            else if (x[0] != '-' && y[0] == '-')
-            {
-                y = y.Substring(1);
-                result.Append(OperatePlus(x, y));
-
-                if (SizeComparison(x, y) == EComparison.Smaller)
-                {
-                    result.Insert(0, '-');
-                }
-
-                return result.ToString();
-            }
-            else if (x[0] == '-' && y[0] == '-')
-            {
-                bNegativeOperating = true;
-                x = x.Substring(1);
-                y = y.Substring(1);
-            }
-
-            int difference = x.Length - y.Length;
-
-            if (difference >= 0) // SizeComparison
-            {
-                bigger = x;
-                smaller.Append(y);
-            }
-            else
-            {
-                bigger = y;
-                smaller.Append(x);
-                difference *= -1;
-                bNegativeOperating = true;
-            }
-
-            for (int i = 0; i < difference; i++)
-            {
-                smaller.Insert(0, '0');
-            }
-
-            int remainder = 0;
-            int sum = 0;
-
-            for (int i = bigger.Length - 1; i >= 0; i--)
-            {
-                int bigNum = bigger[i] - asciiNumberOfZero;
-                int smallNum = smaller[i] - asciiNumberOfZero;
-
-                if (bigNum < smallNum)
-                {
-                    sum = (10 + bigNum) - smallNum - remainder;
-                    remainder = 1;
-                }
-                else
-                {
-                    sum = bigNum - smallNum - remainder;
-                    remainder = 0;
-                }
-
-                result.Insert(0, sum);
-            }
-
-            while (true)
-            {
-                if (result[0] == '0' && result.Length > 1)
-                {
-                    result.Remove(0, 1);
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            if (bNegativeOperating)
-            {
-                result.Insert(0, '-');
             }
 
             return result.ToString();
