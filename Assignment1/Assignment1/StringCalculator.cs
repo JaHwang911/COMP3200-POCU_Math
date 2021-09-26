@@ -263,31 +263,7 @@ namespace Assignment1
             StringBuilder smaller = new StringBuilder(256);
             bool bNegativeOperating = false;
 
-            if (x[0] == '-' && y[0] != '-')
-            {
-                x = x.Substring(1);
-                result.Append(OperateMinus(x, y));
-
-                if (SizeComparison(x, y) == EComparison.Bigger)
-                {
-                    result.Insert(0, '-');
-                }
-
-                return result.ToString();
-            }
-            else if (x[0] != '-' && y[0] == '-')
-            {
-                y = y.Substring(1);
-                result.Append(OperateMinus(x, y));
-
-                if (SizeComparison(x, y) == EComparison.Smaller)
-                {
-                    result.Insert(0, '-');
-                }
-
-                return result.ToString();
-            }
-            else if (x[0] == '-' && y[0] == '-')
+            if (x[0] == '-' && y[0] == '-')
             {
                 bNegativeOperating = true;
                 x = x.Substring(1);
@@ -297,7 +273,7 @@ namespace Assignment1
             int asciiNumberOfZero = 48;
             int difference = x.Length - y.Length;
 
-            if (difference >= 0) // SizeComparison
+            if (difference >= 0)
             {
                 bigger = x;
                 smaller.Append(y);
