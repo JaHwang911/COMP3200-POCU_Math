@@ -89,13 +89,42 @@ namespace Assignment1
             string absoultValueX = x[0] == '1' ? ConvertTwoComplement(x) : x;
             string absoultValueY = y[0] == '1' ? ConvertTwoComplement(y) : y;
             bool bExpectedNegative = false;
-            EComparison comparison = StringCalculator.BinaryComparison(absoultValueX, absoultValueY);
+
+            //if (absoultValueX.Length < BitCount)
+            //{
+            //    int loopCount = BitCount - absoultValueX.Length;
+
+            //    for (int i = 0; i < loopCount; i++)
+            //    {
+            //        absoultValueX = absoultValueX.Insert(0, $"{absoultValueX[0]}");
+            //    }
+            //}
+            //if (absoultValueY.Length < BitCount)
+            //{
+            //    int loopCount = BitCount - absoultValueY.Length;
+
+            //    for (int i = 0; i < loopCount; i++)
+            //    {
+            //        absoultValueY = absoultValueY.Insert(0, $"{absoultValueY[0]}");
+            //    }
+            //}
+            EComparison comparison = StringCalculator.ComparisonAbsoultBinary(absoultValueX, absoultValueY);
 
             if (operatingMode == EOperatingMode.Substract)
             {
                 string temp = ConvertTwoComplement(subtrahend.ToString());
-                subtrahend.Clear();
-                subtrahend.Append(temp);
+
+                if (temp == subtrahend.ToString())
+                {
+                    subtrahend.Clear();
+                    subtrahend.Append('0');
+                    subtrahend.Append(temp);
+                }
+                else
+                {
+                    subtrahend.Clear();
+                    subtrahend.Append(temp);
+                }
             }
 
             if (comparison == EComparison.Bigger && minuend[0] == '1')
@@ -244,23 +273,24 @@ namespace Assignment1
                     }
 
                     binary.Insert(0, tempDecimal);
-                    int hasOneBit = binary.ToString().IndexOf('1', 1);
-
-                    //if (binary.Length % 4 == 0 && hasOneBit < 0)
-                    //{
-                    //    result = binary.ToString();
-                    //    break;
-                    //}
-
+                    int hasOneBit = binary.ToString().LastIndexOf('1');
                     char signBit = '0';
-                    binary.Insert(0, signBit);
-                    
+
                     if (bIsNegative)
                     {
-                        result = ConvertTwoComplement(binary.ToString());
+                        if (hasOneBit == 0)
+                        {
+                            result = binary.ToString();
+                        }
+                        else
+                        {
+                            binary.Insert(0, signBit);
+                            result = ConvertTwoComplement(binary.ToString());
+                        }
                     }
                     else
                     {
+                        binary.Insert(0, $"{signBit}");
                         result = binary.ToString();
                     }
                     break;
@@ -553,40 +583,19 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            int hasOneBit = input1.Substring(1).IndexOf('1');
-
-            if (hasOneBit < 0 && num1[0] != '-')
-            {
-                if (input1NumberType != ENumberType.Binary)
-                {
-                    input1 = input1.Insert(0, "0");
-                }
-
-                if (StringCalculator.BinaryComparison(MaxBit, input1) == EComparison.Smaller)
-                {
-                    return null;
-                }
-            }
-            else if (StringCalculator.BinaryComparison(MinBit, input1) == EComparison.Bigger)
+            if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
             {
                 return null;
             }
-
-            hasOneBit = input2.Substring(1).IndexOf('1');
-
-            if (hasOneBit < 0 && num2[0] != '-')
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
             {
-                if (input2NumberType != ENumberType.Binary)
-                {
-                    input2 = input2.Insert(0, "0");
-                }
-
-                if (StringCalculator.BinaryComparison(MaxBit, input2) == EComparison.Smaller)
-                {
-                    return null;
-                }
+                return null;
             }
-            else if (StringCalculator.BinaryComparison(MinBit, input2) == EComparison.Bigger)
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input2))
+            {
+                return null;
+            }
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input2))
             {
                 return null;
             }
@@ -615,40 +624,19 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            int hasOneBit = input1.Substring(1).IndexOf('1');
-
-            if (hasOneBit < 0 && num1[0] != '-')
-            {
-                if (input1NumberType != ENumberType.Binary)
-                {
-                    input1 = input1.Insert(0, "0");
-                }
-
-                if (StringCalculator.BinaryComparison(MaxBit, input1) == EComparison.Smaller)
-                {
-                    return null;
-                }
-            }
-            else if (StringCalculator.BinaryComparison(MinBit, input1) == EComparison.Bigger)
+            if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
             {
                 return null;
             }
-
-            hasOneBit = input2.Substring(1).IndexOf('1');
-
-            if (hasOneBit < 0 && num2[0] != '-')
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
             {
-                if (input2NumberType != ENumberType.Binary)
-                {
-                    input2 = input2.Insert(0, "0");
-                }
-
-                if (StringCalculator.BinaryComparison(MaxBit, input2) == EComparison.Smaller)
-                {
-                    return null;
-                }
+                return null;
             }
-            else if (StringCalculator.BinaryComparison(MinBit, input2) == EComparison.Bigger)
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input2))
+            {
+                return null;
+            }
+            else if (EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input2))
             {
                 return null;
             }

@@ -112,15 +112,14 @@ namespace Assignment1
             return inputType;
         }
 
-        public static EComparison BinaryComparison(string x, string y)
+        public static EComparison ComparisonAbsoultBinary(string x, string y)
         {
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
-            int lengthDifference = x.Length - y.Length;
+            bool negativeComparison = false;
             bool xNotZero = x.Contains('1');
             bool yNotZero = y.Contains('1');
 
-            // Check sign
             if (!xNotZero)
             {
                 return EComparison.Smaller;
@@ -129,47 +128,68 @@ namespace Assignment1
             {
                 return EComparison.Bigger;
             }
-            else if (x[0] == positiveSign && y[0] != positiveSign)
+
+            string input1 = x;
+            string input2 = y;
+
+
+            if (input1[0] == positiveSign && input2[0] != positiveSign)
+            {
+                string temp = BigNumberCalculator.ConvertTwoComplement(input2);
+
+                if (temp == input2)
+                {
+                    input1 = BigNumberCalculator.ConvertTwoComplement(input1);
+                }
+                else
+                {
+                    input2 = temp;
+                }
+            }
+            else if (input1[0] != positiveSign && input2[0] == positiveSign)
+            {
+                string temp = BigNumberCalculator.ConvertTwoComplement(input1);
+
+                if (temp == input1)
+                {
+                    input2 = BigNumberCalculator.ConvertTwoComplement(input2);
+                }
+                else
+                {
+                    input1 = temp;
+                }
+            }
+            else if (input1[0] != positiveSign && input2[0] != positiveSign)
+            {
+                negativeComparison = true;
+            }
+
+            if (input1.Length > input2.Length)
             {
                 return EComparison.Bigger;
             }
-            else if (x[0] != positiveSign && y[0] == positiveSign)
+            else if (input1.Length < input2.Length)
             {
                 return EComparison.Smaller;
             }
 
-            // 만약 input에 대입을 안하고 그냥 바꿔 버리면 아마 참조형이라 값이 바뀔듯?
-            string input1 = x;
-            string input2 = y;
-            
-            if (lengthDifference < 0)
-            {
-                lengthDifference *= -1;
-                for (int i = 0; i < lengthDifference; i++)
-                {
-                    input1 = input1.Insert(0, $"{input1[0]}");
-                }
-            }
-            else if (lengthDifference >0)
-            {
-                for (int i = 0; i < lengthDifference; i++)
-                {
-                    input2 = input2.Insert(0, $"{input2[0]}");
-                }
-            }
-
             for (int i = 0; i < input1.Length; i++)
             {
-                if (input1[i] > input2[i])
-                {
-                    resultComparison = EComparison.Bigger;
-                    break;
-                }
-                else if (input1[i] < input2[i])
+                if (input1[i] < input2[i])
                 {
                     resultComparison = EComparison.Smaller;
                     break;
                 }
+                else if (input1[i] > input2[i])
+                {
+                    resultComparison = EComparison.Bigger;
+                    break;
+                }
+            }
+
+            if (negativeComparison)
+            {
+                resultComparison = resultComparison == EComparison.Bigger ? EComparison.Smaller : EComparison.Bigger;
             }
 
             return resultComparison;
