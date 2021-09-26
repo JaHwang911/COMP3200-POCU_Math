@@ -185,6 +185,11 @@ namespace Assignment1
                 result.Insert(0, sum);
             }
 
+            if (result.Length > BitCount)
+            {
+                result.Remove(0, result.Length - BitCount);
+            }
+
             if (bExpectedNegative && result[0] == '0')
             {
                 bOverflow = true;
