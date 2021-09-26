@@ -108,7 +108,7 @@ namespace Assignment1
                     absoultValueY = absoultValueY.Insert(0, $"{absoultValueY[0]}");
                 }
             }
-            EComparison comparison = StringCalculator.ComparisonAbsoultBinary(absoultValueX, absoultValueY);
+            EComparison comparison = StringCalculator.BinaryComparison(absoultValueX, absoultValueY);
 
             if (operatingMode == EOperatingMode.Substract)
             {
@@ -560,10 +560,6 @@ namespace Assignment1
                 binary = num.Substring(2);
             }
 
-            if (binary.Length == 4 && binary[0] == '1' && num[0] != '-')
-            {
-                binary = "0000" + binary;
-            }
             string result = ConvertBinaryToHex(binary);
 
             return $"0x{result}";
@@ -583,11 +579,11 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MinBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MinBit, input1))
             {
                 return null;
             }
-            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.ComparisonAbsoultBinary(MaxBit, input1))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MaxBit, input1))
             {
                 return null;
             }
