@@ -116,15 +116,15 @@ namespace Assignment1
         {
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
-            bool negativeComparison = false;
-            bool xNotZero = x.Contains('1');
-            bool yNotZero = y.Contains('1');
+            bool bNegativeComparison = false;
+            bool bXNotZero = x.Contains('1');
+            bool bYNotZero = y.Contains('1');
 
-            if (!xNotZero)
+            if (!bXNotZero)
             {
                 return EComparison.Smaller;
             }
-            else if (!yNotZero)
+            else if (!bYNotZero)
             {
                 return EComparison.Bigger;
             }
@@ -140,7 +140,7 @@ namespace Assignment1
                 if (temp == input2)
                 {
                     input1 = BigNumberCalculator.ConvertTwoComplement(input1);
-                    negativeComparison = true;
+                    bNegativeComparison = true;
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace Assignment1
                 if (temp == input1)
                 {
                     input2 = BigNumberCalculator.ConvertTwoComplement(input2);
-                    negativeComparison = true;
+                    bNegativeComparison = true;
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace Assignment1
             }
             else if (input1[0] != positiveSign && input2[0] != positiveSign)
             {
-                negativeComparison = true;
+                bNegativeComparison = true;
             }
 
             if (input1.Length > input2.Length)
@@ -189,7 +189,7 @@ namespace Assignment1
                 }
             }
 
-            if (negativeComparison)
+            if (bNegativeComparison)
             {
                 resultComparison = resultComparison == EComparison.Bigger ? EComparison.Smaller : EComparison.Bigger;
             }
