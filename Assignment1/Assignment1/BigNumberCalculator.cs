@@ -108,7 +108,7 @@ namespace Assignment1
                     absoultValueY = absoultValueY.Insert(0, $"{absoultValueY[0]}");
                 }
             }
-            EComparison comparison = StringCalculator.BinaryComparison(absoultValueX, absoultValueY);
+            EComparison comparison = StringCalculator.BinaryCompare(absoultValueX, absoultValueY);
 
             if (operatingMode == EOperatingMode.Substract)
             {
@@ -185,10 +185,10 @@ namespace Assignment1
                 result.Insert(0, sum);
             }
 
-            if (result.Length > BitCount)
-            {
-                result.Remove(0, result.Length - BitCount);
-            }
+            //if (result.Length > BitCount)
+            //{
+            //    result.Remove(0, result.Length - BitCount);
+            //}
 
             if (bExpectedNegative && result[0] == '0')
             {
@@ -584,11 +584,19 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MinBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryCompare(MinBit, input1))
             {
                 return null;
             }
-            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MaxBit, input1))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryCompare(MaxBit, input1))
+            {
+                return null;
+            }
+            else if (input1.Length > BitCount)
+            {
+                return null;
+            }
+            else if (input2.Length > BitCount)
             {
                 return null;
             }
@@ -617,16 +625,29 @@ namespace Assignment1
             string input1 = ConvertToBinary(num1, input1NumberType);
             string input2 = ConvertToBinary(num2, input2NumberType);
 
-            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MinBit, input1))
+            if (input1[0] == '1' && EComparison.Smaller == StringCalculator.BinaryCompare(MinBit, input1))
             {
                 return null;
             }
-            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryComparison(MaxBit, input1))
+            else if (input1[0] != '1' && EComparison.Smaller == StringCalculator.BinaryCompare(MaxBit, input1))
+            {
+                return null;
+            }
+            else if (input1.Length > BitCount)
+            {
+                return null;
+            }
+            else if (input2.Length > BitCount)
             {
                 return null;
             }
 
             string result = OperateByBinary(input1, input2, EOperatingMode.Substract, out bOverflow);
+
+            if (result.Length - 2 > BitCount)
+            {
+                return null;
+            }
 
             if (OutputType == EMode.Decimal)
             {

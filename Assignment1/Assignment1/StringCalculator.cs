@@ -112,7 +112,7 @@ namespace Assignment1
             return inputType;
         }
 
-        public static EComparison BinaryComparison(string x, string y)
+        public static EComparison BinaryCompare(string x, string y)
         {
             EComparison resultComparison = EComparison.Same;
             char positiveSign = '0';
