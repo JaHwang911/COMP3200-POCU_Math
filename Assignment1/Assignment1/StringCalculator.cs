@@ -197,65 +197,6 @@ namespace Assignment1
             return resultComparison;
         }
 
-        public static EComparison SizeComparison(string x, string y)
-        {
-            EComparison result = EComparison.Same;
-            bool bNegativeComparison = false;
-
-            if (x[0] != '-' && y[0] == '-')
-            {
-                return EComparison.Bigger;
-            }
-            else if (x[0] == '-' && y[0] != '-')
-            {
-                return EComparison.Smaller;
-            }
-            else if (x[0] == '-' && y[0] == '-')
-            {
-                bNegativeComparison = true;
-                x = x.Substring(1);
-                y = y.Substring(1);
-            }
-
-            if (x.Length > y.Length)
-            {
-                return bNegativeComparison ? EComparison.Smaller : EComparison.Bigger;
-            }
-            else if (x.Length < y.Length)
-            {
-                return bNegativeComparison ? EComparison.Bigger : EComparison.Smaller;
-            }
-
-            for (int i = 0; i < x.Length; i++)
-            {
-                if (x[i] > y[i])
-                {
-                    result = EComparison.Bigger;
-                    break;
-                }
-                else if (x[i] < y[i])
-                {
-                    result = EComparison.Smaller;
-                    break;
-                }
-            }
-
-            if (bNegativeComparison && result != EComparison.Same)
-            {
-                switch (result)
-                {
-                    case EComparison.Bigger:
-                        result = EComparison.Smaller;
-                        break;
-                    case EComparison.Smaller:
-                        result = EComparison.Bigger;
-                        break;
-                }
-            }
-
-            return result;
-        }
-
         public static string OperatePlus(string x, string y)
         {
             StringBuilder result = new StringBuilder(256);
@@ -310,7 +251,7 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string MultiplyOperating(string x, string y)
+        public static string OperateMultiply(string x, string y)
         {
             StringBuilder result = new StringBuilder(256);
             StringBuilder bigger = new StringBuilder(256);
@@ -360,37 +301,28 @@ namespace Assignment1
             return result.ToString();
         }
 
-        public static string[] DivideOperating(string denominator, string numerator)
+        public static string[] OperateDivision(string numerator, string denominator)
         {
-            EComparison resultComparison = SizeComparison(denominator, numerator);
-
-            if (resultComparison == EComparison.Smaller)
-            {
-                return null;
-            }
-
             string[] result = new string[2];
-            StringBuilder tempDigit = new StringBuilder(256); // re
             StringBuilder resultQuotient = new StringBuilder(256);
-            int integerNumerator = int.Parse(numerator); // numerator가 너무 크면 불가능함
+            int integerDenominator = int.Parse(denominator); // denominator 너무 크면 불가능함
             int remainder = 0;
 
-            for (int i = 0; i < denominator.Length; i++)
+            for (int i = 0; i < numerator.Length; i++)
             {
-                tempDigit.Append(denominator[i]);
+                string tempDigit = $"{numerator[i]}";
                 remainder *= 10;
-                int digitValue = int.Parse(tempDigit.ToString()) + remainder;
+                int digitValue = int.Parse(tempDigit) + remainder;
 
-                if (digitValue < integerNumerator && i == 0)
+                if (digitValue < integerDenominator && i == 0)
                 {
                     continue;
                 }
 
-                int digitQuotient = digitValue / integerNumerator;
-                remainder = digitValue % integerNumerator;
+                int digitQuotient = digitValue / integerDenominator;
+                remainder = digitValue % integerDenominator;
 
                 resultQuotient.Append(digitQuotient);
-                tempDigit.Clear();
             }
 
             result[0] = resultQuotient.ToString();

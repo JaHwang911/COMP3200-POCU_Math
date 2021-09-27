@@ -9,11 +9,8 @@ namespace Assignment1
     {
         public static int BitCount { get; private set; }
         public EMode OutputType { get; private set; }
-        public string MaxNumber { get; private set; }
-        public string MinNumber { get; private set; }
         public string MaxBit { get; private set; }
         public string MinBit { get; private set; }
-        public static int AsciiNumberOfZero = 48;
 
         public BigNumberCalculator(int bitCount, EMode mode)
         {
@@ -64,11 +61,12 @@ namespace Assignment1
 
             decimalOneBinary.Remove(0, 1);
             int remainder = 0;
+            int asciiNumberOfZero = 48;
 
             for (int i = tempString.Length - 1; i >= 0; i--)
             {
-                int bigNum = tempString[i] - AsciiNumberOfZero;
-                int smallNum = decimalOneBinary[i] - AsciiNumberOfZero;
+                int bigNum = tempString[i] - asciiNumberOfZero;
+                int smallNum = decimalOneBinary[i] - asciiNumberOfZero;
                 int sum = bigNum + smallNum + remainder;
 
                 remainder = sum > 1 ? 1 : 0;
@@ -219,7 +217,7 @@ namespace Assignment1
                     result = StringCalculator.OperatePlus(result, binaryIndex);
                 }
 
-                binaryIndex = StringCalculator.MultiplyOperating(binaryIndex, "2");
+                binaryIndex = StringCalculator.OperateMultiply(binaryIndex, "2");
             }
 
             if (bIsNegative)
@@ -267,7 +265,7 @@ namespace Assignment1
 
                     while (tempDecimal != "1" && tempDecimal != "0")
                     {
-                        string[] bit = StringCalculator.DivideOperating(tempDecimal, "2");
+                        string[] bit = StringCalculator.OperateDivision(tempDecimal, "2");
                         binary.Insert(0, bit[1]);
                         tempDecimal = bit[0];
                     }
@@ -295,7 +293,6 @@ namespace Assignment1
                     }
                     break;
                 case ENumberType.Hex:
-                    //string[] hexIndex = { "1010", "1011", "1100", "1101", "1110", "1111" };
                     string tempHex = input.Substring(2);
                     string digitDecimal = ConvertHexToDecimal(tempHex[0]);
                     StringBuilder digitBinary = new StringBuilder(4);
@@ -346,27 +343,6 @@ namespace Assignment1
             }
 
             return result;
-        }
-
-        public static string ConvertDecimalToBinary(string input)
-        {
-            if (input == "0")
-            {
-                return "0000";
-            }
-
-            StringBuilder binary = new StringBuilder(256);
-
-            while (input != "1" && input != "0")
-            {
-                string[] bit = StringCalculator.DivideOperating(input, "2");
-                binary.Insert(0, bit[1]);
-                input = bit[0];
-            }
-
-            binary.Insert(0, input);
-
-            return binary.ToString();
         }
 
         public static string ConvertHexToDecimal(char num)
