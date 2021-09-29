@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Lab4
 {
@@ -96,6 +97,7 @@ namespace Lab4
             {
                 if (intersectionSet.Contains(element))
                 {
+                    intersectionSet.Remove(element);
                     continue;
                 }
                 else
@@ -117,25 +119,14 @@ namespace Lab4
             List<MultiSet> result = new List<MultiSet>();
             MultiSet emptySet= new MultiSet();
             result.Add(emptySet);
-            List<string> tempList = new List<string>();
+            List<string> thisSetList = new List<string>();
+            thisSetList.AddRange(ToList());
 
-            foreach (var element in mMultiplicity)
+            for (int i = 0; i < thisSetList.Count; i++)
             {
-                for (int i = 0; i < element.Value; i++)
-                {
-                    MultiSet tempSet = new MultiSet();
-                    tempList.Add(element.Key);
-                    tempSet.AddRange(tempList);
-                    result.Add(tempSet);
-                }
-            }
-
-            for (int i = 0; i < tempList.Count; i++)
-            {
-                tempList.RemoveAt(0);
-                MultiSet tempSet = new MultiSet();
-                tempSet.AddRange(tempList);
-                result.Add(tempSet);
+                List<string> powerSet = new List<string>(thisSetList.Count);
+                powerSet = thisSetList.GetRange(i, thisSetList.Count - i);
+                powerSetRecursive(result, powerSet);
             }
 
             return result;
@@ -149,6 +140,24 @@ namespace Lab4
         public bool IsSupersetOf(MultiSet other)
         {
             return false;
+        }
+
+        private void powerSetRecursive(List<MultiSet> result, List<string> setList)
+        {
+            MultiSet tempSet = new MultiSet();
+            if (setList.Count == 1)
+            {
+                tempSet.AddRange(setList);
+                result.Add(tempSet);
+                return;
+            }
+
+            List<string> thisLevelSet = new List<string>();
+            thisLevelSet.AddRange(setList);
+            setList.RemoveAt(setList.Count - 1);
+            powerSetRecursive(result, setList);
+            tempSet.AddRange(thisLevelSet);
+            result.Add(tempSet);
         }
 
         private List<string> getIntersectionSet(MultiSet other)
