@@ -53,12 +53,12 @@ namespace Lab4
             MultiSet resultSet = new MultiSet();
             List<string> intersectionSet = getIntersectionSet(other);
             List<string> tempThisSet = new List<string>();
-            List<string> otherSet = new List<string>();
+            List<string> otherSetList = new List<string>();
             List<string> sumSet = new List<string>();
             tempThisSet.AddRange(ToList());
-            otherSet.AddRange(other.ToList());
+            otherSetList.AddRange(other.ToList());
             sumSet.AddRange(tempThisSet);
-            sumSet.AddRange(otherSet);
+            sumSet.AddRange(otherSetList);
             
             for (int i = 0; i < sumSet.Count; i++)
             {
@@ -124,9 +124,23 @@ namespace Lab4
 
             for (int i = 0; i < thisSetList.Count; i++)
             {
+                MultiSet tempSet = new MultiSet();
                 List<string> powerSet = new List<string>(thisSetList.Count);
                 powerSet = thisSetList.GetRange(i, thisSetList.Count - i);
-                powerSetRecursive(result, powerSet);
+
+                if (i == 0 || thisSetList[i] != thisSetList[i - 1])
+                {
+                    powerSetRecursive(result, powerSet);
+                }
+                else if (thisSetList[i] == thisSetList[i - 1] && i == thisSetList.Count - 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    tempSet.AddRange(powerSet);
+                    result.Add(tempSet);
+                }
             }
 
             return result;
@@ -134,12 +148,46 @@ namespace Lab4
 
         public bool IsSubsetOf(MultiSet other)
         {
-            return false;
+            List<string> intersectionSet = getIntersectionSet(other);
+            List<string> thisSetList = new List<string>();
+            thisSetList.AddRange(ToList());
+
+            if (intersectionSet.Count != thisSetList.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < intersectionSet.Count; i++)
+            {
+                if (intersectionSet[i] != thisSetList[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool IsSupersetOf(MultiSet other)
         {
-            return false;
+            List<string> intersectionSet = getIntersectionSet(other);
+            List<string> otherSetList = new List<string>();
+            otherSetList.AddRange(other.ToList());
+
+            if (intersectionSet.Count != otherSetList.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < intersectionSet.Count; i++)
+            {
+                if (intersectionSet[i] != otherSetList[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void powerSetRecursive(List<MultiSet> result, List<string> setList)
@@ -164,11 +212,11 @@ namespace Lab4
         {
             List<string> intersectionSet = new List<string>();
             List<string> tempThisSet = new List<string>();
-            List<string> otherSet = new List<string>();
+            List<string> otherSetList = new List<string>();
             tempThisSet.AddRange(ToList());
-            otherSet.AddRange(other.ToList());
+            otherSetList.AddRange(other.ToList());
 
-            foreach (var element in otherSet)
+            foreach (var element in otherSetList)
             {
                 if (tempThisSet.Contains(element))
                 {

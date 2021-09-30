@@ -81,7 +81,97 @@ namespace Lab4
                 }
             }
 
+            Debug.Assert(!set.IsSubsetOf(set2));
+            Debug.Assert(set.IsSupersetOf(set2));
+
+            MultiSet set3 = new MultiSet();
+            set3.Add("b");
+            set3.Add("c");
+            set3.Add("c");
+            set3.Add("d");
+
+            List<MultiSet> testExpected = testSet();
+            List<MultiSet> set3PowerSet = set3.FindPowerSet();
+            Debug.Assert(set3PowerSet.Count == testExpected.Count);
+
+            for (int i = 0; i < testExpected.Count; i++)
+            {
+                List<string> testList = testExpected[i].ToList();
+                list = set3PowerSet[i].ToList();
+
+                Debug.Assert(testList.Count == list.Count);
+
+                for (int j = 0; j < testList.Count; j++)
+                {
+                    Debug.Assert(testList[j] == list[j]);
+                }
+            }
+
             Console.WriteLine("No probs");
+        }
+
+        private static List<MultiSet> testSet()
+        {
+            List<MultiSet> testExpected = new List<MultiSet>();
+            MultiSet testSet = new MultiSet();
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("b");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("b");
+            testSet.Add("c");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("b");
+            testSet.Add("c");
+            testSet.Add("c");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("b");
+            testSet.Add("c");
+            testSet.Add("c");
+            testSet.Add("d");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("c");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("c");
+            testSet.Add("c");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("c");
+            testSet.Add("c");
+            testSet.Add("d");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("c");
+            testSet.Add("d");
+
+            testExpected.Add(testSet);
+
+            testSet = new MultiSet();
+            testSet.Add("d");
+
+            testExpected.Add(testSet);
+
+            return testExpected;
         }
 
         private static List<MultiSet> getExpectedPowerset()
