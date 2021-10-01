@@ -117,31 +117,13 @@ namespace Lab4
         public List<MultiSet> FindPowerSet()
         {
             List<MultiSet> result = new List<MultiSet>();
-            MultiSet emptySet= new MultiSet();
+            MultiSet emptySet = new MultiSet();
             result.Add(emptySet);
             List<string> thisSetList = new List<string>();
             thisSetList.AddRange(ToList());
+            List<List<string>> totalPower = new List<List<string>>();
 
-            for (int i = 0; i < thisSetList.Count; i++)
-            {
-                MultiSet tempSet = new MultiSet();
-                List<string> powerSet = new List<string>(thisSetList.Count);
-                powerSet = thisSetList.GetRange(i, thisSetList.Count - i);
-
-                if (i == 0 || thisSetList[i] != thisSetList[i - 1])
-                {
-                    powerSetRecursive(result, powerSet);
-                }
-                else if (thisSetList[i] == thisSetList[i - 1] && i == thisSetList.Count - 1)
-                {
-                    continue;
-                }
-                else
-                {
-                    tempSet.AddRange(powerSet);
-                    result.Add(tempSet);
-                }
-            }
+            powerSetRecursive(totalPower, thisSetList);
 
             return result;
         }
@@ -190,22 +172,36 @@ namespace Lab4
             return true;
         }
 
-        private void powerSetRecursive(List<MultiSet> result, List<string> setList)
+        private void powerSetRecursive(List<List<string>> power, List<string> setList)
         {
             MultiSet tempSet = new MultiSet();
-            if (setList.Count == 1)
+            List<string> tempList = new List<string>();
+            if (setList.Count == 0)
             {
-                tempSet.AddRange(setList);
-                result.Add(tempSet);
+                power.Add(tempList);
                 return;
             }
 
-            List<string> thisLevelSet = new List<string>();
-            thisLevelSet.AddRange(setList);
-            setList.RemoveAt(setList.Count - 1);
-            powerSetRecursive(result, setList);
-            tempSet.AddRange(thisLevelSet);
-            result.Add(tempSet);
+            bool bEqualNextElement = false;
+
+            if (setList.Count > 1 && setList[0] == setList[1])
+            {
+                bEqualNextElement = true;
+            }
+            string currentElement = setList[0];
+            tempList.AddRange(setList.GetRange(1, setList.Count - 1));
+            powerSetRecursive(power, tempList);
+
+            if (!bEqualNextElement)
+            {
+                for (int i = 0; i < power.Count; i++)
+                {
+                    tempList = new List<string>();
+                    tempList.AddRange(power[i]);
+                    tempList.Add(currentElement);
+                    power.Add(tempList);
+                }
+            }
         }
 
         private List<string> getIntersectionSet(MultiSet other)
