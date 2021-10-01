@@ -121,9 +121,10 @@ namespace Lab4
             result.Add(emptySet);
             List<string> thisSetList = new List<string>();
             thisSetList.AddRange(ToList());
-            List<List<string>> totalPower = new List<List<string>>();
+            List<List<string>> power = new List<List<string>>();
 
-            powerSetRecursive(totalPower, thisSetList);
+            powerSetRecursive(power, thisSetList);
+            powerSetSort(power);
 
             return result;
         }
@@ -172,10 +173,16 @@ namespace Lab4
             return true;
         }
 
+        private void powerSetSort(List<List<string>> powerSet)
+        {
+            List<List<string>> sorted = new List<List<string>>(powerSet.Count);
+        }
+
         private void powerSetRecursive(List<List<string>> power, List<string> setList)
         {
             MultiSet tempSet = new MultiSet();
             List<string> tempList = new List<string>();
+
             if (setList.Count == 0)
             {
                 power.Add(tempList);
@@ -188,19 +195,36 @@ namespace Lab4
             {
                 bEqualNextElement = true;
             }
+
             string currentElement = setList[0];
             tempList.AddRange(setList.GetRange(1, setList.Count - 1));
             powerSetRecursive(power, tempList);
+            List<List<string>> tempPower = new List<List<string>>();
 
             if (!bEqualNextElement)
             {
                 for (int i = 0; i < power.Count; i++)
                 {
                     tempList = new List<string>();
-                    tempList.AddRange(power[i]);
                     tempList.Add(currentElement);
-                    power.Add(tempList);
+                    tempList.AddRange(power[i]);
+                    tempPower.Add(tempList);
                 }
+                power.AddRange(tempPower);
+            }
+            else
+            {
+                for (int i = 0; i < power.Count; i++)
+                {
+                    if (power[i].Count != 0 && currentElement == power[i][0])
+                    {
+                        tempList = new List<string>();
+                        tempList.Add(currentElement);
+                        tempList.AddRange(power[i]);
+                        tempPower.Add(tempList);
+                    }
+                }
+                power.AddRange(tempPower);
             }
         }
 
