@@ -117,14 +117,25 @@ namespace Lab4
         public List<MultiSet> FindPowerSet()
         {
             List<MultiSet> result = new List<MultiSet>();
-            MultiSet emptySet = new MultiSet();
-            result.Add(emptySet);
+            List<List<string>> powerSetList = new List<List<string>>();
             List<string> thisSetList = new List<string>();
             thisSetList.AddRange(ToList());
-            List<List<string>> power = new List<List<string>>();
+            int addIndex = 0;
 
-            powerSetRecursive(power, thisSetList);
-            powerSetSort(power);
+            powerSetRecursive(powerSetList, thisSetList, ref addIndex);
+            powerSetList = powerSetSort(powerSetList);
+
+            for (int i = 0; i < powerSetList.Count; i++)
+            {
+                MultiSet tempSet = new MultiSet();
+                for (int j = 0; j < powerSetList[i].Count; j++)
+                {
+                    tempSet.Add(powerSetList[i][j]);
+                }
+                result.Add(tempSet);
+            }
+
+            result[0] = new MultiSet();
 
             return result;
         }
@@ -173,73 +184,74 @@ namespace Lab4
             return true;
         }
 
-        private void powerSetSort(List<List<string>> powerSet)
+        private List<List<string>> powerSetSort(List<List<string>> powerSetList)
         {
-            for (int i = 0; i < powerSet.Count; i++)
+            List<string> combineList = new List<string>();
+            List<List<string>> result = new List<List<string>>();
+
+            for (int i = 0; i < powerSetList.Count; i++)
             {
-                if (powerSet[i].Count != 0)
-                {
-                    continue;
-                }
-
-                for (int j = i + 1; j < powerSet.Count; j++)
-                {
-                    
-                    if (powerSet[i][0] > powerSet[j][0])
-                    {
-
-                    }
-                }
+                string elements = string.Join("|", powerSetList[i]);
+                combineList.Add(elements);
             }
+            var sorted = combineList.OrderBy(e => e);
+
+            foreach (var element in sorted)
+            {
+                var convertedArray = element.Split('|');
+                result.Add(convertedArray.ToList());
+            }
+
+            return result;
         }
 
-        private void powerSetRecursive(List<List<string>> power, List<string> setList)
+        private void powerSetRecursive(List<List<string>> powerSetList, List<string> thisSetList, ref int addIndex)
         {
-            MultiSet tempSet = new MultiSet();
             List<string> tempList = new List<string>();
 
-            if (setList.Count == 0)
+            if (thisSetList.Count == 0)
             {
-                power.Add(tempList);
+                powerSetList.Add(tempList);
                 return;
             }
 
             bool bEqualNextElement = false;
 
-            if (setList.Count > 1 && setList[0] == setList[1])
+            if (thisSetList.Count > 1 && thisSetList[0] == thisSetList[1])
             {
                 bEqualNextElement = true;
             }
 
-            string currentElement = setList[0];
-            tempList.AddRange(setList.GetRange(1, setList.Count - 1));
-            powerSetRecursive(power, tempList);
+            string currentElement = thisSetList[0];
+            tempList.AddRange(thisSetList.GetRange(1, thisSetList.Count - 1));
+            powerSetRecursive(powerSetList, tempList, ref addIndex);
             List<List<string>> tempPower = new List<List<string>>();
 
             if (!bEqualNextElement)
             {
-                for (int i = 0; i < power.Count; i++)
+                for (int i = 0; i < powerSetList.Count; i++)
                 {
                     tempList = new List<string>();
                     tempList.Add(currentElement);
-                    tempList.AddRange(power[i]);
+                    tempList.AddRange(powerSetList[i]);
                     tempPower.Add(tempList);
                 }
-                power.AddRange(tempPower);
+
+                addIndex = powerSetList.Count;
+                powerSetList.AddRange(tempPower);
             }
             else
             {
-                for (int i = 0; i < power.Count; i++)
+                for (int i = addIndex; i < powerSetList.Count; i++)
                 {
-                    if (power[i].Count != 0 && currentElement == power[i][0])
-                    {
-                        tempList = new List<string>();
-                        tempList.Add(currentElement);
-                        tempList.AddRange(power[i]);
-                        tempPower.Add(tempList);
-                    }
+                    tempList = new List<string>();
+                    tempList.Add(currentElement);
+                    tempList.AddRange(powerSetList[i]);
+                    tempPower.Add(tempList);
                 }
-                power.AddRange(tempPower);
+
+                addIndex = powerSetList.Count;
+                powerSetList.AddRange(tempPower);
             }
         }
 

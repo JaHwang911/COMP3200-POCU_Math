@@ -8,81 +8,7 @@ namespace Lab4
     {
         static void Main(string[] args)
         {
-            //MultiSet set = new MultiSet();
-
-            //set.Add("cattle");
-            //set.Add("bee");
-            //set.Add("cattle");
-            //set.Add("bee");
-            //set.Add("happy");
-            //set.Add("zachariah");
-
-            //Debug.Assert(set.Remove("zachariah"));
-            //Debug.Assert(!set.Remove("fun"));
-
-            //Debug.Assert(set.GetMultiplicity("cattle") == 2);
-
-            //List<string> expectedList = new List<string> { "bee", "bee", "cattle", "cattle", "happy" };
-            //List<string> list = set.ToList();
             List<string> list = new List<string>();
-            //Debug.Assert(list.Count == 5);
-
-            //for (int i = 0; i < expectedList.Count; i++)
-            //{
-            //    Debug.Assert(expectedList[i] == list[i]);
-            //}
-
-            //MultiSet set2 = new MultiSet();
-
-            //set2.Add("cattle");
-            //set2.Add("cattle");
-            //set2.Add("bee");
-
-            //list = set.Union(set2).ToList();
-            //Debug.Assert(list.Count == 5);
-
-            //for (int i = 0; i < expectedList.Count; i++)
-            //{
-            //    Debug.Assert(expectedList[i] == list[i]);
-            //}
-
-            //expectedList = new List<string> { "bee", "cattle", "cattle" };
-            //list = set.Intersect(set2).ToList();
-            //Debug.Assert(list.Count == 3);
-
-            //for (int i = 0; i < expectedList.Count; i++)
-            //{
-            //    Debug.Assert(expectedList[i] == list[i]);
-            //}
-
-            //expectedList = new List<string> { "bee", "happy" };
-            //list = set.Subtract(set2).ToList();
-            //Debug.Assert(list.Count == 2);
-
-            //for (int i = 0; i < expectedList.Count; i++)
-            //{
-            //    Debug.Assert(expectedList[i] == list[i]);
-            //}
-
-            //List<MultiSet> expectedPowerset = getExpectedPowerset();
-            //List<MultiSet> set2PowerSet = set2.FindPowerSet();
-            //Debug.Assert(set2PowerSet.Count == expectedPowerset.Count);
-
-            //for (int i = 0; i < expectedPowerset.Count; i++)
-            //{
-            //    expectedList = expectedPowerset[i].ToList();
-            //    list = set2PowerSet[i].ToList();
-
-            //    Debug.Assert(expectedList.Count == list.Count);
-
-            //    for (int j = 0; j < expectedList.Count; j++)
-            //    {
-            //        Debug.Assert(expectedList[j] == list[j]);
-            //    }
-            //}
-
-            //Debug.Assert(!set.IsSubsetOf(set2));
-            //Debug.Assert(set.IsSupersetOf(set2));
 
             MultiSet set3 = new MultiSet();
             set3.Add("a");
@@ -91,14 +17,140 @@ namespace Lab4
             set3.Add("b");
             set3.Add("c");
 
-            List<MultiSet> testExpected = testSet();
+            MultiSet set4 = new MultiSet();
+            set4.Add("a");
+            set4.Add("a");
+            set4.Add("a");
+            set4.Add("a");
+            set4.Add("b");
+
+            MultiSet set5 = new MultiSet();
+            set5.Add("a");
+            set5.Add("a");
+            set5.Add("a");
+            set5.Add("b");
+            set5.Add("b");
+
+            MultiSet set6 = new MultiSet();
+            set6.Add("1");
+            set6.Add("2");
+            set6.Add("3");;
+
+            List<List<string>> testExpected = new List<List<string>>()
+            {
+                new List<string>() {},
+                new List<string>() {"a"},
+                new List<string>() {"a", "a"},
+                new List<string>() {"a", "a", "b"},
+                new List<string>() {"a", "a", "b", "b"},
+                new List<string>() {"a", "a", "b", "b", "c"},
+                new List<string>() {"a", "a", "b", "c"},
+                new List<string>() {"a", "a", "c"},
+                new List<string>() {"a", "b"},
+                new List<string>() {"a", "b", "b"},
+                new List<string>() {"a", "b", "b", "c"},
+                new List<string>() {"a", "b", "c"},
+                new List<string>() {"a", "c"},
+                new List<string>() {"b"},
+                new List<string>() {"b", "b"},
+                new List<string>() {"b", "b", "c"},
+                new List<string>() {"b", "c"},
+                new List<string>() {"c"},
+            };
             List<MultiSet> set3PowerSet = set3.FindPowerSet();
             Debug.Assert(set3PowerSet.Count == testExpected.Count);
 
             for (int i = 0; i < testExpected.Count; i++)
             {
-                List<string> testList = testExpected[i].ToList();
+                List<string> testList = testExpected[i];
                 list = set3PowerSet[i].ToList();
+
+                Debug.Assert(testList.Count == list.Count);
+
+                for (int j = 0; j < testList.Count; j++)
+                {
+                    Debug.Assert(testList[j] == list[j]);
+                }
+            }
+
+            testExpected = new List<List<string>>()
+            {
+                new List<string>() { },
+                new List<string>() { "a" },
+                new List<string>() { "a", "a" },
+                new List<string>() { "a", "a", "a" },
+                new List<string>() { "a", "a", "a", "a" },
+                new List<string>() { "a", "a", "a", "a", "b" },
+                new List<string>() { "a", "a", "a", "b" },
+                new List<string>() { "a", "a", "b" },
+                new List<string>() { "a", "b" },
+                new List<string>() { "b" }
+            };
+            List<MultiSet> set4PowerSet = set4.FindPowerSet();
+            Debug.Assert(set4PowerSet.Count == testExpected.Count);
+
+            for (int i = 0; i < testExpected.Count; i++)
+            {
+                List<string> testList = testExpected[i];
+                list = set4PowerSet[i].ToList();
+
+                Debug.Assert(testList.Count == list.Count);
+
+                for (int j = 0; j < testList.Count; j++)
+                {
+                    Debug.Assert(testList[j] == list[j]);
+                }
+            }
+
+            testExpected = new List<List<string>>()
+            {
+                new List<string>() {},
+                new List<string>() {"a"},
+                new List<string>() {"a", "a"},
+                new List<string>() {"a", "a", "a"},
+                new List<string>() {"a", "a", "a", "b"},
+                new List<string>() {"a", "a", "a", "b", "b"},
+                new List<string>() {"a", "a", "b"},
+                new List<string>() {"a", "a", "b", "b"},
+                new List<string>() {"a", "b"},
+                new List<string>() {"a", "b", "b"},
+                new List<string>() {"b"},
+                new List<string>() {"b", "b"},
+            };
+            List<MultiSet> set5PowerSet = set5.FindPowerSet();
+            Debug.Assert(set5PowerSet.Count == testExpected.Count);
+
+            for (int i = 0; i < testExpected.Count; i++)
+            {
+                List<string> testList = testExpected[i];
+                list = set5PowerSet[i].ToList();
+
+                Debug.Assert(testList.Count == list.Count);
+
+                for (int j = 0; j < testList.Count; j++)
+                {
+                    Debug.Assert(testList[j] == list[j]);
+                }
+            }
+
+            testExpected = new List<List<string>>()
+            {
+                new List<string>() {},
+                new List<string>() {"1"},
+                new List<string>() {"1", "2"},
+                new List<string>() {"1", "2", "3"},
+                new List<string>() {"1", "3"},
+                new List<string>() {"2"},
+                new List<string>() {"2", "3"},
+                new List<string>() {"3"}
+            };
+            List<MultiSet> set6PowerSet = set6.FindPowerSet();
+            Debug.Assert(set6PowerSet.Count == testExpected.Count);
+
+            for (int i = 0; i < testExpected.Count; i++)
+            {
+                List<string> testList = testExpected[i];
+                list = set6PowerSet[i].ToList();
 
                 Debug.Assert(testList.Count == list.Count);
 
