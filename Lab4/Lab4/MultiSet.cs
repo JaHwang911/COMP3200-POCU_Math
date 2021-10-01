@@ -175,7 +175,22 @@ namespace Lab4
 
         private void powerSetSort(List<List<string>> powerSet)
         {
-            List<List<string>> sorted = new List<List<string>>(powerSet.Count);
+            for (int i = 0; i < powerSet.Count; i++)
+            {
+                if (powerSet[i].Count != 0)
+                {
+                    continue;
+                }
+
+                for (int j = i + 1; j < powerSet.Count; j++)
+                {
+                    
+                    if (powerSet[i][0] > powerSet[j][0])
+                    {
+
+                    }
+                }
+            }
         }
 
         private void powerSetRecursive(List<List<string>> power, List<string> setList)
