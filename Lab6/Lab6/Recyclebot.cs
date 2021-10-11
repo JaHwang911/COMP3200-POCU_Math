@@ -50,9 +50,12 @@ namespace Lab6
             {
                 if (item.Volume == 15)
                 {
-                    if (item.Type == EType.Furniture || item.Type == EType.Electronics)
+                    if (item.IsToxicWaste == false)
                     {
-                        dumpResult.Add(item);
+                        if (item.Type == EType.Furniture || item.Type == EType.Electronics)
+                        {
+                            dumpResult.Add(item);
+                        }
                     }
                 }
                 else if (item.IsToxicWaste)
