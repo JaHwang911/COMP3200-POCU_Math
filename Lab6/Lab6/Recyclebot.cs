@@ -48,7 +48,7 @@ namespace Lab6
 
             foreach (var item in NonRecycleItems)
             {
-                // 10L, 11L, 15L 는 유독 폐기물이 아니야 10L, 11L, 15L 임에도 불구하고 유독폐기물이라면 가구나 전기 제품 이여야 해
+                // 10L, 11L, 15L 는 유독 폐기물이 아니야해 그런데 10L, 11L, 15L 임에도 불구하고 유독폐기물이라면 가구나 전기 제품 이여야 해
                 if (item.Volume != 10 || item.Volume != 11 || item.Volume != 15)
                 {
                     if (item.IsToxicWaste || item.Type == EType.Furniture || item.Type == EType.Electronics)
