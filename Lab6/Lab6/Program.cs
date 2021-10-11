@@ -16,6 +16,7 @@ namespace Lab6
             Item item6 = new Item(EType.Paper, 15.7, 15, true);
             Item item7 = new Item(EType.Electronics, 1.1, 15, false);
             Item item8 = new Item(EType.Furniture, 3.91, 11, true);
+            Item item9 = new Item(EType.Paper, 7.562, 15, false);
 
             List<Item> items = new List<Item>
             {
@@ -26,7 +27,8 @@ namespace Lab6
                 item5,
                 item6,
                 item7,
-                item8
+                item8,
+                item9
             };
 
             Recyclebot bot = new Recyclebot();
@@ -56,7 +58,8 @@ namespace Lab6
                 item4,
                 item5,
                 item6,
-                item7
+                item7,
+                item9
             };
 
             Debug.Assert(bot.NonRecycleItems.Count == expectedNonRecyclables.Count);

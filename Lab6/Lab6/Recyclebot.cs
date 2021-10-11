@@ -48,7 +48,14 @@ namespace Lab6
 
             foreach (var item in NonRecycleItems)
             {
-                if (item.IsToxicWaste)
+                if (item.Volume == 15)
+                {
+                    if (item.Type == EType.Furniture || item.Type == EType.Electronics)
+                    {
+                        dumpResult.Add(item);
+                    }
+                }
+                else if (item.IsToxicWaste)
                 {
                     if (item.Type == EType.Furniture || item.Type == EType.Electronics)
                     {
