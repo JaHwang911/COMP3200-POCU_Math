@@ -61,13 +61,6 @@ namespace Lab6
                         dumpResult.Add(item);
                     }
                 }
-                else
-                {
-                    if (item.IsToxicWaste)
-                    {
-                        dumpResult.Add(item);
-                    }
-                }
             }
 
             return dumpResult;
