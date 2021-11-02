@@ -226,33 +226,23 @@ namespace Lab4
             tempList.AddRange(thisSetList.GetRange(1, thisSetList.Count - 1));
             powerSetRecursive(powerSetList, tempList, ref addIndex);
             List<List<string>> tempPower = new List<List<string>>();
+            int startIndex = 0;
 
-            if (!bEqualNextElement)
+            if (bEqualNextElement)
             {
-                for (int i = 0; i < powerSetList.Count; i++)
-                {
-                    tempList = new List<string>();
-                    tempList.Add(currentElement);
-                    tempList.AddRange(powerSetList[i]);
-                    tempPower.Add(tempList);
-                }
-
-                addIndex = powerSetList.Count;
-                powerSetList.AddRange(tempPower);
+                startIndex = addIndex;
             }
-            else
+
+            for (int i = startIndex; i < powerSetList.Count; i++)
             {
-                for (int i = addIndex; i < powerSetList.Count; i++)
-                {
-                    tempList = new List<string>();
-                    tempList.Add(currentElement);
-                    tempList.AddRange(powerSetList[i]);
-                    tempPower.Add(tempList);
-                }
-
-                addIndex = powerSetList.Count;
-                powerSetList.AddRange(tempPower);
+                tempList = new List<string>();
+                tempList.Add(currentElement);
+                tempList.AddRange(powerSetList[i]);
+                tempPower.Add(tempList);
             }
+
+            addIndex = powerSetList.Count;
+            powerSetList.AddRange(tempPower);
         }
 
         private List<string> getIntersectionSet(MultiSet other)
