@@ -78,6 +78,13 @@ namespace Lab7
 
                 return;
             }
+            else if (frames.Count == 0)
+            {
+                return;
+            }
+
+            // 일단 분류
+            
         }
     }
 }
