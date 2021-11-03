@@ -6,6 +6,7 @@ namespace Lab7
         public EFeatureFlags Features { get; private set; }
         public uint ID { get; private set; }
         public string Name { get; private set; }
+        public int priority { get; set; }
 
         public Frame(uint id, string name)
         {
