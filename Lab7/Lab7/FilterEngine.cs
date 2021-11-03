@@ -57,34 +57,83 @@ namespace Lab7
         {
             List<int> priority = new List<int>(frames.Count);
             List<Frame> tempFrames = new List<Frame>(frames.Count);
+            List<List<Frame>> priorityFrames = new List<List<Frame>>(features.Count + 1);
             int index = 0;
 
             tempFrames.AddRange(frames);
+
+            // 먼저 우선 순위로만 나눔
+            for (int i = 0; i < features.Count; i++)
+            {
+                List<Frame> tempItem = new List<Frame>(frames.Count);
+
+                for (int j = 0; j < tempFrames.Count; j++)
+                {
+                    if ((tempFrames[j].Features & features[i]) != 0)
+                    {
+                        tempItem.Add(tempFrames[j]);
+                        tempFrames.RemoveAt(j);
+                        j--;
+                    }
+                }
+
+                if (tempItem.Count == 0)
+                {
+                    priorityFrames.Add(null);
+                }
+                else
+                {
+                    priorityFrames.Add(tempItem);
+                }
+
+                if (i == features.Count - 1 && tempFrames.Count > 0)
+                {
+                    tempItem = new List<Frame>(frames.Count);
+                    tempItem.AddRange(tempFrames);
+                    priorityFrames.Add(tempItem);
+                }
+            }
 
             return priority;
         }
 
         private static void setPriorityRecursive (List<Frame> frames, List<EFeatureFlags> features, ref int index)
         {
-            List<Frame> tempItem = new List<Frame>(frames.Count);
-
             if (features.Count == 0)
             {
-                foreach (var item in frames)
+                if (frames.Count  > 0)
                 {
-                    item.priority = index;
-                    index++;
+                    foreach (var item in frames)
+                    {
+                        item.priority = index;
+                        index++;
+                    }
                 }
 
                 return;
             }
-            else if (frames.Count == 0)
+
+            // 현재 특징을 가지는것들 분류
+            List<Frame> tempFrames = new List<Frame>(frames.Count);
+            tempFrames.AddRange(frames);
+
+            List<Frame> currentFeatureItems = new List<Frame>(frames.Count);
+
+            List<EFeatureFlags> tempFeatures = new List<EFeatureFlags>(features.Count);
+            tempFeatures.AddRange(features);
+            EFeatureFlags currentFeature = tempFeatures[0];
+
+            foreach (var item in tempFrames)
             {
-                return;
+                if ((item.Features & currentFeature) == 0)
+                {
+                    currentFeatureItems.Add(item);
+                    tempFrames.Remove(item);
+                }
             }
 
-            // 일단 분류
-            
+            tempFeatures.Remove(currentFeature);
+            setPriorityRecursive(tempFrames, tempFeatures, ref index);
         }
     }
 }
