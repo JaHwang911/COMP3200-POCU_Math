@@ -130,6 +130,38 @@ namespace Lab7
             Debug.Assert(sortedFrames[1].ID == frames[0].ID);
             Debug.Assert(sortedFrames[2].ID == frames[2].ID);
 
+            frames = new List<Frame>
+            {
+                new Frame(2, "Joseph-Marc"),
+                new Frame(3, "Derek Cardigan"),
+                new Frame(4, "Randy Jackson"),
+            };
+
+            frames[0].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Red);
+            frames[1].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Blue);
+            frames[2].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Round);
+
+            sortKeys = FilterEngine.GetSortKeys(frames, new List<EFeatureFlags> { EFeatureFlags.Men, EFeatureFlags.Black, EFeatureFlags.Rectangle, EFeatureFlags.Round, EFeatureFlags.Blue});
+
+            sortedFrames = sort(sortKeys, frames);
+
+            Debug.Assert(sortedFrames[0].ID == frames[2].ID);
+            Debug.Assert(sortedFrames[1].ID == frames[1].ID);
+            Debug.Assert(sortedFrames[2].ID == frames[0].ID);
+
+            frames = new List<Frame>
+            {
+                new Frame(2, "Joseph-Marc"),
+                new Frame(3, "Derek Cardigan"),
+                new Frame(4, "Randy Jackson"),
+            };
+
+            frames[0].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Red);
+            frames[1].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Blue);
+            frames[2].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Round);
+
+            sortKeys = FilterEngine.GetSortKeys(frames, new List<EFeatureFlags> { EFeatureFlags.Men, EFeatureFlags.Black, EFeatureFlags.Rectangle, EFeatureFlags.Round, EFeatureFlags.Blue });
+
             Console.WriteLine("No prob");
         }
 

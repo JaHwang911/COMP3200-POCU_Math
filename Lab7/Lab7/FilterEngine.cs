@@ -142,14 +142,14 @@ namespace Lab7
             if (currentFeatureItems.Count == 0)
             {
                 currentFeatureItems.AddRange(tempFrames);
+                tempFrames = new List<Frame>();
             }
 
             setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
 
-            foreach (var item in tempFrames)
+            if (tempFrames.Count != 0)
             {
-                item.Priority = index;
-                index--;
+                setPriorityRecursive(tempFrames, tempFeatures, ref index);
             }
 
             return;
