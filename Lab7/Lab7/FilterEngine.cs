@@ -57,41 +57,44 @@ namespace Lab7
         {
             List<int> priority = new List<int>(frames.Count);
             List<Frame> tempFrames = new List<Frame>(frames.Count);
-            List<List<Frame>> priorityFrames = new List<List<Frame>>(features.Count + 1);
-            int index = 0;
+            int index = frames.Count;
 
             tempFrames.AddRange(frames);
 
             // 먼저 우선 순위로만 나눔
             for (int i = 0; i < features.Count; i++)
             {
-                List<Frame> tempItem = new List<Frame>(frames.Count);
+                List<Frame> currentFeatureItems = new List<Frame>(frames.Count);
 
                 for (int j = 0; j < tempFrames.Count; j++)
                 {
                     if ((tempFrames[j].Features & features[i]) != 0)
                     {
-                        tempItem.Add(tempFrames[j]);
+                        currentFeatureItems.Add(tempFrames[j]);
                         tempFrames.RemoveAt(j);
                         j--;
                     }
                 }
 
-                if (tempItem.Count == 0)
+                List<EFeatureFlags> tempFeatures = new List<EFeatureFlags>(features.Count);
+                tempFeatures.AddRange(features.GetRange(i + 1, features.Count - 1 - i));
+
+                if (currentFeatureItems.Count != 0)
                 {
-                    priorityFrames.Add(null);
-                }
-                else
-                {
-                    priorityFrames.Add(tempItem);
+                    setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
                 }
 
                 if (i == features.Count - 1 && tempFrames.Count > 0)
                 {
-                    tempItem = new List<Frame>(frames.Count);
-                    tempItem.AddRange(tempFrames);
-                    priorityFrames.Add(tempItem);
+                    currentFeatureItems = new List<Frame>(frames.Count);
+                    currentFeatureItems.AddRange(tempFrames);
+                    setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
                 }
+            }
+
+            foreach (var item in frames)
+            {
+                priority.Add(item.priority);
             }
 
             return priority;
@@ -101,39 +104,55 @@ namespace Lab7
         {
             if (features.Count == 0)
             {
-                if (frames.Count  > 0)
+                foreach (var item in frames)
                 {
-                    foreach (var item in frames)
-                    {
-                        item.priority = index;
-                        index++;
-                    }
+                    item.priority = index;
+                    index--;
                 }
 
                 return;
             }
+            else if (frames.Count == 1)
+            {
+                frames[0].priority = index;
+                index--;
+                return;
+            }
 
-            // 현재 특징을 가지는것들 분류
             List<Frame> tempFrames = new List<Frame>(frames.Count);
-            tempFrames.AddRange(frames);
-
             List<Frame> currentFeatureItems = new List<Frame>(frames.Count);
-
             List<EFeatureFlags> tempFeatures = new List<EFeatureFlags>(features.Count);
+
+            tempFrames.AddRange(frames);
             tempFeatures.AddRange(features);
             EFeatureFlags currentFeature = tempFeatures[0];
 
-            foreach (var item in tempFrames)
+            for (int i = 0; i < tempFrames.Count; i++)
             {
-                if ((item.Features & currentFeature) == 0)
+                if ((tempFrames[i].Features & currentFeature) != 0)
                 {
-                    currentFeatureItems.Add(item);
-                    tempFrames.Remove(item);
+                    currentFeatureItems.Add(tempFrames[i]);
+                    tempFrames.Remove(tempFrames[i]);
+                    i--;
                 }
             }
 
             tempFeatures.Remove(currentFeature);
-            setPriorityRecursive(tempFrames, tempFeatures, ref index);
+
+            if (currentFeatureItems.Count == 0)
+            {
+                currentFeatureItems.AddRange(tempFrames);
+            }
+
+            setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
+
+            foreach (var item in tempFrames)
+            {
+                item.priority = index;
+                index--;
+            }
+
+            return;
         }
     }
 }
