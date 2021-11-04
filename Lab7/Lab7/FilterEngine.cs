@@ -6,7 +6,7 @@ namespace Lab7
 {
     public static class FilterEngine
     {
-        public static List<Frame> FilterFrames (List<Frame> frames, EFeatureFlags features)
+        public static List<Frame> FilterFrames(List<Frame> frames, EFeatureFlags features)
         {
             List<Frame> filtered = new List<Frame>(frames.Count);
 
@@ -94,19 +94,19 @@ namespace Lab7
 
             foreach (var item in frames)
             {
-                priority.Add(item.priority);
+                priority.Add(item.Priority);
             }
 
             return priority;
         }
 
-        private static void setPriorityRecursive (List<Frame> frames, List<EFeatureFlags> features, ref int index)
+        private static void setPriorityRecursive(List<Frame> frames, List<EFeatureFlags> features, ref int index)
         {
             if (features.Count == 0)
             {
                 foreach (var item in frames)
                 {
-                    item.priority = index;
+                    item.Priority = index;
                     index--;
                 }
 
@@ -114,7 +114,7 @@ namespace Lab7
             }
             else if (frames.Count == 1)
             {
-                frames[0].priority = index;
+                frames[0].Priority = index;
                 index--;
                 return;
             }
@@ -148,7 +148,7 @@ namespace Lab7
 
             foreach (var item in tempFrames)
             {
-                item.priority = index;
+                item.Priority = index;
                 index--;
             }
 

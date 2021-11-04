@@ -110,6 +110,26 @@ namespace Lab7
             Debug.Assert(sortedFrames[5].ID == frames[3].ID || sortedFrames[5].ID == frames[4].ID);
             Debug.Assert(sortedFrames[6].ID == frames[3].ID || sortedFrames[6].ID == frames[4].ID);
 
+            frames = new List<Frame>
+            {
+                new Frame(2, "Joseph-Marc"),
+                new Frame(3, "Derek Cardigan"),
+                new Frame(4, "Randy Jackson"),
+            };
+
+            frames[0].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Women | EFeatureFlags.Rectangle | EFeatureFlags.Round | EFeatureFlags.Aviator | EFeatureFlags.Red | EFeatureFlags.Blue);
+            frames[1].TurnOnFeatures(EFeatureFlags.Black);
+            frames[2].TurnOnFeatures(EFeatureFlags.Blue);
+
+            sortKeys = FilterEngine.GetSortKeys(frames, new List<EFeatureFlags> { EFeatureFlags.Black, EFeatureFlags.Women, EFeatureFlags.Blue });
+            Debug.Assert(sortKeys.Count == frames.Count);
+
+            sortedFrames = sort(sortKeys, frames);
+
+            Debug.Assert(sortedFrames[0].ID == frames[1].ID);
+            Debug.Assert(sortedFrames[1].ID == frames[0].ID);
+            Debug.Assert(sortedFrames[2].ID == frames[2].ID);
+
             Console.WriteLine("No prob");
         }
 
