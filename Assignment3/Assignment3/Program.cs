@@ -6,7 +6,7 @@ namespace Assignment3
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var test = StepMaker.MakeSteps(new int[] { 100, 160 });
         }
     }
 }
