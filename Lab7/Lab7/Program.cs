@@ -153,14 +153,32 @@ namespace Lab7
             {
                 new Frame(2, "Joseph-Marc"),
                 new Frame(3, "Derek Cardigan"),
-                new Frame(4, "Randy Jackson"),
+                new Frame(4, "Gucci"),
+                new Frame(5, "Balanciaga"),
+                new Frame(6, "Kenzo"),
+                new Frame(7, "Versace"),
+                new Frame(8, "Cartier"),
             };
 
-            frames[0].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Red);
-            frames[1].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Blue);
-            frames[2].TurnOnFeatures(EFeatureFlags.Men | EFeatureFlags.Black | EFeatureFlags.Round);
+            frames[0].TurnOnFeatures(EFeatureFlags.Black | EFeatureFlags.Aviator | EFeatureFlags.Rectangle | EFeatureFlags.Men);
+            frames[1].TurnOnFeatures(EFeatureFlags.Black | EFeatureFlags.Aviator | EFeatureFlags.Round | EFeatureFlags.Rectangle | EFeatureFlags.Women);
+            frames[2].TurnOnFeatures(EFeatureFlags.Black | EFeatureFlags.Rectangle | EFeatureFlags.Men);
+            frames[3].TurnOnFeatures(EFeatureFlags.Black | EFeatureFlags.Rectangle | EFeatureFlags.Women);
+            frames[4].TurnOnFeatures(EFeatureFlags.Black | EFeatureFlags.Aviator | EFeatureFlags.Round | EFeatureFlags.Rectangle | EFeatureFlags.Men);
+            frames[5].TurnOnFeatures(EFeatureFlags.Red | EFeatureFlags.Women);
+            frames[6].TurnOnFeatures(EFeatureFlags.Men);
 
-            sortKeys = FilterEngine.GetSortKeys(frames, new List<EFeatureFlags> { EFeatureFlags.Men, EFeatureFlags.Black, EFeatureFlags.Rectangle, EFeatureFlags.Round, EFeatureFlags.Blue });
+            sortKeys = FilterEngine.GetSortKeys(frames, new List<EFeatureFlags> { EFeatureFlags.Black, EFeatureFlags.Aviator, EFeatureFlags.Rectangle, EFeatureFlags.Men });
+
+            sortedFrames = sort(sortKeys, frames);
+
+            Debug.Assert(sortedFrames[0].ID == frames[0].ID || sortedFrames[0].ID == frames[4].ID);
+            Debug.Assert(sortedFrames[1].ID == frames[0].ID || sortedFrames[1].ID == frames[4].ID);
+            Debug.Assert(sortedFrames[2].ID == frames[1].ID);
+            Debug.Assert(sortedFrames[3].ID == frames[2].ID);
+            Debug.Assert(sortedFrames[4].ID == frames[3].ID);
+            Debug.Assert(sortedFrames[5].ID == frames[6].ID);
+            Debug.Assert(sortedFrames[6].ID == frames[5].ID);
 
             Console.WriteLine("No prob");
         }

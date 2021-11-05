@@ -57,40 +57,13 @@ namespace Lab7
         {
             List<int> priority = new List<int>(frames.Count);
             List<Frame> tempFrames = new List<Frame>(frames.Count);
+            List<EFeatureFlags> tempFeatures = new List<EFeatureFlags>(features.Count);
             int index = frames.Count;
 
             tempFrames.AddRange(frames);
+            tempFeatures.AddRange(features);
 
-            // 먼저 우선 순위로만 나눔
-            for (int i = 0; i < features.Count; i++)
-            {
-                List<Frame> currentFeatureItems = new List<Frame>(frames.Count);
-
-                for (int j = 0; j < tempFrames.Count; j++)
-                {
-                    if ((tempFrames[j].Features & features[i]) != 0)
-                    {
-                        currentFeatureItems.Add(tempFrames[j]);
-                        tempFrames.RemoveAt(j);
-                        j--;
-                    }
-                }
-
-                List<EFeatureFlags> tempFeatures = new List<EFeatureFlags>(features.Count);
-                tempFeatures.AddRange(features.GetRange(i + 1, features.Count - 1 - i));
-
-                if (currentFeatureItems.Count != 0)
-                {
-                    setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
-                }
-
-                if (i == features.Count - 1 && tempFrames.Count > 0)
-                {
-                    currentFeatureItems = new List<Frame>(frames.Count);
-                    currentFeatureItems.AddRange(tempFrames);
-                    setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
-                }
-            }
+            setPriorityRecursive(tempFrames, tempFeatures, ref index);
 
             foreach (var item in frames)
             {
@@ -137,13 +110,13 @@ namespace Lab7
                 }
             }
 
-            tempFeatures.Remove(currentFeature);
-
             if (currentFeatureItems.Count == 0)
             {
                 currentFeatureItems.AddRange(tempFrames);
                 tempFrames = new List<Frame>();
             }
+
+            tempFeatures.Remove(currentFeature);
 
             setPriorityRecursive(currentFeatureItems, tempFeatures, ref index);
 
