@@ -72,7 +72,7 @@ namespace Assignment3
             return steps;
         }
 
-        public static List<int> ver3AddStepsRecursive(double[] newStepDistanceAmount, int depth, double min, double max, INoise noise)
+        public static List<int> ver3AddStepsRecursive(double[] newStepDistanceAmount, int depth, int min, int max, INoise noise)
         {
             List<int> steps = new List<int>();
             double newStepDistance = (max - min) * newStepDistanceAmount[0];
@@ -81,14 +81,15 @@ namespace Assignment3
             {
                 for (int i = 0; i < newStepDistanceAmount.Length; i++)
                 {
-                    newStepDistance = (max - min) * newStepDistanceAmount[0];
-                    steps.Add((int)(newStepDistance + min) + noise.GetNext(depth));
+                    newStepDistance = (max - min) * newStepDistanceAmount[i];
+                    min = (int)(newStepDistance + min);
+                    steps.Add(min + noise.GetNext(depth));
                 }
 
                 return steps;
             }
 
-            steps = ver3AddStepsRecursive(newStepDistanceAmount, depth + 1, min, newStepDistance + min, noise);
+            steps = ver3AddStepsRecursive(newStepDistanceAmount, depth + 1, min, (int)(newStepDistance + min), noise);
 
             return steps;
         }

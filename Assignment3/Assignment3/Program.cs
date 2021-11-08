@@ -53,8 +53,23 @@ namespace Assignment3
             //List<int> ver2newSteps = StepMaker.ver2AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
 
             noise = new SineNoise();
+            int[] testLevel = new int[8];
 
-            var test = StepMaker.ver3AddStepsRecursive(reverseDistanceAmout, 0, 112, 170, noise);
+            testLevel[0] = 0;
+            testLevel[1] = 0;
+            testLevel[2] = 0;
+            testLevel[3] = 0;
+            testLevel[4] = 1;
+            testLevel[5] = 1;
+            testLevel[6] = 1;
+            testLevel[7] = 1;
+
+            for (int i = 0; i < testLevel.Length; i++)
+            {
+                Console.WriteLine(noise.GetNext(testLevel[i]));
+            }
+
+            var test = StepMaker.ver3AddStepsRecursive(reverseDistanceAmout, 1, 112, 170, noise);
 
             Console.WriteLine("No prob");
         }
