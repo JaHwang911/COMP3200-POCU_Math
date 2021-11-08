@@ -45,7 +45,7 @@ namespace Assignment3
             double newStepNumber = (max - min) * newStepDistanceAmout[recursiveLevel];
 
             max = min + newStepNumber;
-            int noiseStep = noise.GetNext(recursiveLevel); // 위치 중요
+            int noiseStep = noise.GetNext(recursiveLevel);
             recursiveLevel++;
             steps = AddStepsRecursive(newStepDistanceAmout, recursiveLevel, min, max, noise);
             steps.Add((int)max + noiseStep);
@@ -72,21 +72,23 @@ namespace Assignment3
             return steps;
         }
 
-        public static List<int> ver3AddStepsRecursive(double[] newStepDistanceAmout, int recursiveLevel, double min, double max, INoise noise)
+        public static List<int> ver3AddStepsRecursive(double[] newStepDistanceAmount, int depth, double min, double max, INoise noise)
         {
             List<int> steps = new List<int>();
+            double newStepDistance = (max - min) * newStepDistanceAmount[0];
 
-            if (recursiveLevel == newStepDistanceAmout.Length - 1)
+            if (newStepDistance <= 10)
             {
+                for (int i = 0; i < newStepDistanceAmount.Length; i++)
+                {
+                    newStepDistance = (max - min) * newStepDistanceAmount[0];
+                    steps.Add((int)(newStepDistance + min) + noise.GetNext(depth));
+                }
+
                 return steps;
             }
 
-            double newStepNumber = (max - min) * newStepDistanceAmout[recursiveLevel];
-
-            min += newStepNumber;
-            steps = ver3AddStepsRecursive(newStepDistanceAmout, recursiveLevel + 1, min, max, noise);
-            int noiseStep = noise.GetNext(recursiveLevel); // 위치 중요
-            steps.Add((int)min+ noiseStep);
+            steps = ver3AddStepsRecursive(newStepDistanceAmount, depth + 1, min, newStepDistance + min, noise);
 
             return steps;
         }

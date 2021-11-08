@@ -35,7 +35,7 @@ namespace Assignment3
             //}
 
             double[] newStepDistanceAmout = new double[5];
-            double[] reverseDistanceAmout = new double[5];
+            double[] reverseDistanceAmout = new double[4];
 
             newStepDistanceAmout[0] = 0.8;
             newStepDistanceAmout[1] = 0.75;
@@ -52,43 +52,9 @@ namespace Assignment3
             //noise = new SineNoise();
             //List<int> ver2newSteps = StepMaker.ver2AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
 
-            
-            int[] noiseResult = new int[4];
+            noise = new SineNoise();
 
-            for (int i = 3; i >= 0; i--)
-            {
-                noiseResult[i] = noise.GetNext(i);
-            }
-
-            Console.WriteLine(string.Join(",", noiseResult));
-
-            for (int i = 3; i >= 0; i--)
-            {
-                noiseResult[i] = noise.GetNext(i);
-            }
-
-            Console.WriteLine(string.Join(",", noiseResult));
-
-            for (int i = 3; i >= 0; i--)
-            {
-                noiseResult[i] = noise.GetNext(i);
-            }
-
-            Console.WriteLine(string.Join(",", noiseResult));
-
-            for (int i = 3; i >= 0; i--)
-            {
-                noiseResult[i] = noise.GetNext(i);
-            }
-
-            Console.WriteLine(string.Join(",", noiseResult));
-
-            for (int i = 3; i >= 0; i--)
-            {
-                noiseResult[i] = noise.GetNext(i);
-            }
-
-            Console.WriteLine(string.Join(",", noiseResult));
+            var test = StepMaker.ver3AddStepsRecursive(reverseDistanceAmout, 0, 112, 170, noise);
 
             Console.WriteLine("No prob");
         }
