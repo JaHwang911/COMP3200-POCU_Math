@@ -34,15 +34,61 @@ namespace Assignment3
             //    Debug.Assert(expectedValue2[i] == newSteps[i]);
             //}
 
-            INoise noise = new SineNoise();
             double[] newStepDistanceAmout = new double[5];
+            double[] reverseDistanceAmout = new double[5];
 
             newStepDistanceAmout[0] = 0.8;
             newStepDistanceAmout[1] = 0.75;
             newStepDistanceAmout[2] = 0.67;
             newStepDistanceAmout[3] = 0.5;
 
-            List<int> newSteps = StepMaker.AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
+            reverseDistanceAmout[0] = 0.2;
+            reverseDistanceAmout[1] = 0.25;
+            reverseDistanceAmout[2] = 0.33;
+            reverseDistanceAmout[3] = 0.5;
+
+            INoise noise = new SineNoise();
+            //List<int> newSteps = StepMaker.AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
+            //noise = new SineNoise();
+            //List<int> ver2newSteps = StepMaker.ver2AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
+
+            
+            int[] noiseResult = new int[4];
+
+            for (int i = 3; i >= 0; i--)
+            {
+                noiseResult[i] = noise.GetNext(i);
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
+
+            for (int i = 3; i >= 0; i--)
+            {
+                noiseResult[i] = noise.GetNext(i);
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
+
+            for (int i = 3; i >= 0; i--)
+            {
+                noiseResult[i] = noise.GetNext(i);
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
+
+            for (int i = 3; i >= 0; i--)
+            {
+                noiseResult[i] = noise.GetNext(i);
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
+
+            for (int i = 3; i >= 0; i--)
+            {
+                noiseResult[i] = noise.GetNext(i);
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
 
             Console.WriteLine("No prob");
         }
