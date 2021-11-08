@@ -53,43 +53,30 @@ namespace Assignment3
             return steps;
         }
 
-        public static List<int> ver2AddStepsRecursive(double[] newStepDistanceAmout, int recursiveLevel, int min, double max, INoise noise)
+        public static List<int> ver2AddStepsRecursive(double[] newStepDistanceAmount, int level, double min, double max, INoise noise)
         {
             List<int> steps = new List<int>();
+            steps.Add((int)min);
 
-            if (recursiveLevel == newStepDistanceAmout.Length - 1)
+            for (int i = 0; i < newStepDistanceAmount.Length; i++)
             {
-                return steps;
+                double newStepDistance = (max - min) * newStepDistanceAmount[i];
+                min += newStepDistance;
+                steps.Add((int)min + noise.GetNext(level));
             }
 
-            double newStepNumber = (max - min) * newStepDistanceAmout[recursiveLevel];
+            steps.Add((int)max);
 
-            max = min + newStepNumber;
-            steps = ver2AddStepsRecursive(newStepDistanceAmout, recursiveLevel + 1, min, max, noise);
-            int noiseStep = noise.GetNext(recursiveLevel); // 위치 중요
-            steps.Add((int)max + noiseStep);
-
-            return steps;
-        }
-
-        public static List<int> ver3AddStepsRecursive(double[] newStepDistanceAmount, int depth, int min, int max, INoise noise)
-        {
-            List<int> steps = new List<int>();
-            double newStepDistance = (max - min) * newStepDistanceAmount[0];
-
-            if (newStepDistance <= 10)
+            for (int i = 0; i < steps.Count; i++)
             {
-                for (int i = 0; i < newStepDistanceAmount.Length; i++)
+                if (i + 1 < steps.Count && steps[i + 1] - steps[i] > 10)
                 {
-                    newStepDistance = (max - min) * newStepDistanceAmount[i];
-                    min = (int)(newStepDistance + min);
-                    steps.Add(min + noise.GetNext(depth));
+                    steps.InsertRange(i + 1, ver2AddStepsRecursive(newStepDistanceAmount, level + 1, steps[i], steps[i + 1], noise));
                 }
-
-                return steps;
             }
 
-            steps = ver3AddStepsRecursive(newStepDistanceAmount, depth + 1, min, (int)(newStepDistance + min), noise);
+            steps.RemoveAt(0);
+            steps.RemoveAt(steps.Count - 1);
 
             return steps;
         }
