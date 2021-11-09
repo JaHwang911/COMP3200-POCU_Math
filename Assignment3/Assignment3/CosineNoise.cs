@@ -2,7 +2,7 @@
 
 namespace Assignment3
 {
-    public sealed class SineNoise : INoise
+    public sealed class CosineNoise : INoise
     {
         private const double BASE_SAMPLING_WIDTH = Math.PI / 4;
         private double mX = -BASE_SAMPLING_WIDTH;
@@ -10,7 +10,7 @@ namespace Assignment3
         public int GetNext(int level)
         {
             mX += BASE_SAMPLING_WIDTH / Math.Pow(2, level);
-            return (int)(5 * Math.Sin(mX));
+            return (int)(5 * Math.Cos(mX));
         }
     }
 }
