@@ -34,23 +34,44 @@ namespace Assignment3
             //    Debug.Assert(expectedValue2[i] == newSteps[i]);
             //}
 
-            double[] newStepDistanceAmout = new double[5];
-            double[] reverseDistanceAmout = new double[4];
+            double[] newStepDistanceAmount = new double[4];
+            double[] reverseDistanceAmount = new double[4];
 
-            newStepDistanceAmout[0] = 0.8;
-            newStepDistanceAmout[1] = 0.75;
-            newStepDistanceAmout[2] = 0.67;
-            newStepDistanceAmout[3] = 0.5;
+            newStepDistanceAmount[0] = 0.2;
+            newStepDistanceAmount[1] = 0.4;
+            newStepDistanceAmount[2] = 0.6;
+            newStepDistanceAmount[3] = 0.8;
 
-            reverseDistanceAmout[0] = 0.2;
-            reverseDistanceAmout[1] = 0.25;
-            reverseDistanceAmout[2] = 0.33;
-            reverseDistanceAmout[3] = 0.5;
+            reverseDistanceAmount[0] = 0.2;
+            reverseDistanceAmount[1] = 0.25;
+            reverseDistanceAmount[2] = 0.33;
+            reverseDistanceAmount[3] = 0.5;
 
             INoise noise = new SineNoise();
-            //List<int> newSteps = StepMaker.AddStepsRecursive(newStepDistanceAmout, 0, 112, 170, noise);
+            int[] level = new int[11];
+            List<int> noiseResult = new();
 
-            var test = StepMaker.ver2AddStepsRecursive(reverseDistanceAmout, 0, 112, 170, noise);
+            level[0] = 1;
+            level[1] = 2;
+            level[2] = 2;
+            level[3] = 2;
+            level[4] = 2;
+            level[5] = 1;
+            level[6] = 2;
+            level[7] = 2;
+            level[8] = 2;
+            level[9] = 2;
+            level[10] = 1;
+
+            for (int i = 0; i < 11; i++)
+            {
+                noiseResult.Add(noise.GetNext(level[i]));
+            }
+
+            Console.WriteLine(string.Join(",", noiseResult));
+
+            noise = new SineNoise();
+            var test = StepMaker.AddStepsRecursive(reverseDistanceAmount, 1, 112, 170, noise);
 
             Console.WriteLine("No prob");
         }

@@ -6,7 +6,10 @@ namespace Lab8
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            int[] v1 = new int[] { 3, 5, 1};
+            int[] v2 = new int[] { -2, 4, -1};
+            int dot = Matrix.DotProduct(v1, v2);
+            Console.WriteLine(dot);
         }
     }
 }
