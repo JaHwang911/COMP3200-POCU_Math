@@ -71,7 +71,7 @@ namespace Assignment3
             Console.WriteLine(string.Join(",", noiseResult));
 
             noise = new SineNoise();
-            var test = StepMaker.AddStepsRecursive(reverseDistanceAmount, 1, 112, 170, noise);
+            var test = StepMaker.AddStepsRecursive(reverseDistanceAmount, 0, 112, 170, noise);
 
             Console.WriteLine("No prob");
         }

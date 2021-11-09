@@ -33,20 +33,21 @@ namespace Assignment3
             return resultSteps;
         }
 
-        public static List<int> AddStepsRecursive(double[] newStepDistanceAmount, int level, int min, int max, INoise noise)
+        public static List<int> AddStepsRecursive(double[] newStepDistanceAmount, int level, double min, double max, INoise noise)
         {
             List<int> steps = new ();
 
-            steps.Add(min);
+            steps.Add((int)min);
 
             for (int i = 0; i < newStepDistanceAmount.Length; i++)
             {
-                int newStepDistance = (int)((max - min) * newStepDistanceAmount[i]);
-                min = min + newStepDistance + noise.GetNext(level);
-                steps.Add(min);
+                double newStepDistance = (max - min) * newStepDistanceAmount[i];
+                int resultNoise = noise.GetNext(level);
+                min = min + (int)newStepDistance + resultNoise;
+                steps.Add((int)min);
             }
 
-            steps.Add(max);
+            steps.Add((int)max);
 
             for (int i = 0; i < steps.Count; i++)
             {
@@ -55,6 +56,9 @@ namespace Assignment3
                     steps.InsertRange(i + 1, AddStepsRecursive(newStepDistanceAmount, level + 1, steps[i], steps[i + 1], noise));
                 }
             }
+
+            steps.RemoveAt(0);
+            steps.RemoveAt(steps.Count - 1);
 
             return steps;
         }
