@@ -34,8 +34,7 @@ namespace Assignment3
                 Debug.Assert(expectedValue2[i] == newSteps[i]);
             }
 
-            noise = new SineNoise();
-            newSteps = StepMaker.MakeSteps(steps, noise);
+            newSteps = StepMaker.MakeSteps(steps, new SineNoise());
 
             Debug.Assert(expectedValue3.Count == newSteps.Count);
 
