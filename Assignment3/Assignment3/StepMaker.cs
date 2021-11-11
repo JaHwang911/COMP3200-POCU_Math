@@ -38,7 +38,6 @@ namespace Assignment3
             for (int i = 0; i < amount.Length; i++)
             {
                 int newStep = (int)(min + (max - min) * amount[i]);
-                //int newStep = (int)(min * amount[amount.Length - 1 - i] + max * amount[i]);
                 steps.Add(newStep + noise.GetNext(level));
             }
 
