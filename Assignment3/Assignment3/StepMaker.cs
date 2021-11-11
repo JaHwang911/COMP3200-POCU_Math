@@ -22,14 +22,14 @@ namespace Assignment3
 
                 if (difference > 10)
                 {
-                    resultSteps.InsertRange(i + 1, AddStepsRecursive(newStepDistanceAmout, 0, resultSteps[i], resultSteps[i + 1], noise));
+                    resultSteps.InsertRange(i + 1, AddFourStepsRecursive(newStepDistanceAmout, 0, resultSteps[i], resultSteps[i + 1], noise));
                 }
             }
 
             return resultSteps;
         }
 
-        public static List<int> AddStepsRecursive(double[] amount, int level, int min, int max, INoise noise)
+        public static List<int> AddFourStepsRecursive(double[] amount, int level, int min, int max, INoise noise)
         {
             List<int> steps = new List<int>();
 
@@ -39,13 +39,6 @@ namespace Assignment3
             {
                 int newStep = (int)(min * amount[amount.Length - 1 - i] + max * amount[i]);
                 steps.Add(newStep + noise.GetNext(level));
-
-                //int difference = steps[i + 1] - steps[i] > 0 ? steps[i + 1] - steps[i] : (steps[i + 1] - steps[i]) * -1;
-
-                //if (difference > 10)
-                //{
-                //    steps.InsertRange(i + 1, AddStepsRecursive(amount, level + 1, steps[i], steps[i + 1], noise));
-                //}
             }
 
             steps.Add(max);
@@ -56,7 +49,7 @@ namespace Assignment3
 
                 if (difference > 10)
                 {
-                    steps.InsertRange(i + 1, AddStepsRecursive(amount, level + 1, steps[i], steps[i + 1], noise));
+                    steps.InsertRange(i + 1, AddFourStepsRecursive(amount, level + 1, steps[i], steps[i + 1], noise));
                 }
             }
 
