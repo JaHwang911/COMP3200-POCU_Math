@@ -41,7 +41,22 @@ namespace Lab8
                 { -5, 6, 1, 1 }
             };
 
-            int[] col = Matrix.GetColumnOrNull(matrix, 1); // col: [ 4, -1, 6 ]
+            int[] col = Matrix.GetColumnOrNull(matrix, 1);
+
+            matrix = new int[,]
+            {
+                { 2, 4, -5 },
+                { 4, -1, 6 },
+                { 6, 5, 1 },
+                { 7, 6, 1 }
+
+            };
+
+            int[] vector = new int[] { 1, -1, 5, 3 };
+
+            int[] product = Matrix.MultiplyMatrixVectorOrNull(matrix, vector);
+
+            Console.WriteLine(string.Join(",", product));
         }
 
         public static void PrintMatrix(int[,] matrix)

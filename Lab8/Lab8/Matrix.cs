@@ -85,5 +85,59 @@ namespace Lab8
 
             return result;
         }
+
+        public static int[] MultiplyMatrixVectorOrNull(int[,] matrix, int[] vector)
+        {
+            if (matrix.GetLength(0) != vector.Length && matrix.GetLength(1) != vector.Length)
+            {
+                return null;
+            }
+            else if (matrix.GetLength(0) != vector.Length)
+            {
+                matrix = Transpose(matrix);
+            }
+
+            int[] result = new int[matrix.GetLength(1)];
+
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                int tempSum = 0;
+
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                {
+                    tempSum += matrix[j, i] * vector[j];
+                }
+
+                result[i] = tempSum;
+            }
+
+            return result;
+        }
+
+        public static int[,] MultiplyOrNull(int[,] multiplicand, int[,] multiplier)
+        {
+            if (multiplicand.GetLength(1) != multiplier.GetLength(0) && multiplicand.GetLength(1) != multiplier.GetLength(1))
+            {
+                return null;
+            }
+            else if (multiplicand.GetLength(1) != multiplier.GetLength(0))
+            {
+                multiplier = Transpose(multiplier);
+            }
+
+            int[,] result = new int[multiplier.GetLength(0), multiplier.GetLength(0)];
+
+            for (int i = 0; i < multiplicand.GetLength(0); i++)
+            {
+                int tempSum = 0;
+
+                for (int j = 0; j < multiplicand.GetLength(1); j++)
+                {
+                    tempSum += multiplicand[i, j] * multiplier[j, i];
+                }
+            }
+
+            return result;
+        }
     }
 }
