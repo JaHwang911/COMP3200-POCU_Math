@@ -93,10 +93,10 @@ namespace Lab8
             {
                 return null;
             }
-            else if (matrix.GetLength(0) != vector.Length)
-            {
-                matrix = Transpose(matrix);
-            }
+            //else if (matrix.GetLength(0) != vector.Length)
+            //{
+            //    matrix = Transpose(matrix);
+            //}
 
             int[] result = new int[matrix.GetLength(1)];
 
@@ -115,16 +115,21 @@ namespace Lab8
             return result;
         }
 
+        public static int[] MultiplyVectorMatrixOrNull(int[] vector, int[,] matrix)
+        {
+            return MultiplyMatrixVectorOrNull(matrix, vector);
+        }
+
         public static int[,] MultiplyOrNull(int[,] multiplicand, int[,] multiplier)
         {
             if (multiplicand.GetLength(1) != multiplier.GetLength(0) && multiplicand.GetLength(1) != multiplier.GetLength(1))
             {
                 return null;
             }
-            else if (multiplicand.GetLength(1) != multiplier.GetLength(0))
-            {
-                multiplier = Transpose(multiplier);
-            }
+            //else if (multiplicand.GetLength(1) != multiplier.GetLength(0))
+            //{
+            //    multiplier = Transpose(multiplier);
+            //}
 
             int[,] result = new int[multiplicand.GetLength(0), multiplier.GetLength(1)];
 
