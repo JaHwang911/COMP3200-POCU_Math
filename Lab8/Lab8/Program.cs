@@ -57,6 +57,22 @@ namespace Lab8
             int[] product = Matrix.MultiplyMatrixVectorOrNull(matrix, vector);
 
             Console.WriteLine(string.Join(",", product));
+            Console.WriteLine("------------------------------");
+
+            int[,] multiplicand = new int[2, 3]
+            {
+                { 2, 3, 1 },
+                { 1, 4, 3 }
+            };
+
+            int[,] multiplier = new int[3, 2]
+            {
+                { 3, 4 },
+                { 1, 1 },
+                { 2, 5 }
+            };
+
+            PrintMatrix(Matrix.MultiplyOrNull(multiplicand, multiplier));
         }
 
         public static void PrintMatrix(int[,] matrix)

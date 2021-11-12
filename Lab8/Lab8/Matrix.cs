@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+
 namespace Lab8
 {
     public static class Matrix
@@ -125,15 +126,22 @@ namespace Lab8
                 multiplier = Transpose(multiplier);
             }
 
-            int[,] result = new int[multiplier.GetLength(0), multiplier.GetLength(0)];
+            int[,] result = new int[multiplicand.GetLength(0), multiplier.GetLength(1)];
 
             for (int i = 0; i < multiplicand.GetLength(0); i++)
             {
-                int tempSum = 0;
+                List<int> tempMultiplicand = new List<int>();
 
                 for (int j = 0; j < multiplicand.GetLength(1); j++)
                 {
-                    tempSum += multiplicand[i, j] * multiplier[j, i];
+                    tempMultiplicand.Add(multiplicand[i, j]);
+                }
+
+                int[] tempComponent = MultiplyMatrixVectorOrNull(multiplier, tempMultiplicand.ToArray());
+
+                for (int j = 0; j < tempComponent.Length; j++)
+                {
+                    result[i, j] = tempComponent[j];
                 }
             }
 
