@@ -89,13 +89,33 @@ namespace Lab8
 
         public static int[] MultiplyMatrixVectorOrNull(int[,] matrix, int[] vector)
         {
-            if (matrix.GetLength(0) != vector.Length && matrix.GetLength(1) != vector.Length)
+            if (matrix.GetLength(1) != vector.Length)
             {
                 return null;
             }
-            else if (matrix.GetLength(0) != vector.Length && matrix.GetLength(1) == vector.Length)
+
+            int[] result = new int[matrix.GetLength(0)];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                matrix = Transpose(matrix);
+                int tempSum = 0;
+
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    tempSum += matrix[i, j] * vector[j];
+                }
+
+                result[i] = tempSum;
+            }
+
+            return result;
+        }
+
+        public static int[] MultiplyVectorMatrixOrNull(int[] vector, int[,] matrix)
+        {
+            if (matrix.GetLength(0) != vector.Length)
+            {
+                return null;
             }
 
             int[] result = new int[matrix.GetLength(1)];
@@ -115,20 +135,11 @@ namespace Lab8
             return result;
         }
 
-        public static int[] MultiplyVectorMatrixOrNull(int[] vector, int[,] matrix)
-        {
-            return MultiplyMatrixVectorOrNull(matrix, vector);
-        }
-
         public static int[,] MultiplyOrNull(int[,] multiplicand, int[,] multiplier)
         {
-            if (multiplicand.GetLength(1) != multiplier.GetLength(0) && multiplicand.GetLength(1) != multiplier.GetLength(1))
+            if (multiplicand.GetLength(1) != multiplier.GetLength(0))
             {
                 return null;
-            }
-            else if (multiplicand.GetLength(1) != multiplier.GetLength(0) && multiplicand.GetLength(1) == multiplier.GetLength(1))
-            {
-                multiplier = Transpose(multiplier);
             }
 
             int[,] result = new int[multiplicand.GetLength(0), multiplier.GetLength(1)];
@@ -142,7 +153,7 @@ namespace Lab8
                     tempMultiplicand.Add(multiplicand[i, j]);
                 }
 
-                int[] tempComponent = MultiplyMatrixVectorOrNull(multiplier, tempMultiplicand.ToArray());
+                int[] tempComponent = MultiplyVectorMatrixOrNull(tempMultiplicand.ToArray(), multiplier);
 
                 for (int j = 0; j < tempComponent.Length; j++)
                 {
