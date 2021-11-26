@@ -7,14 +7,14 @@ namespace Assignment3
         public static List<int> MakeSteps(int[] steps, INoise noise)
         {
             List<int> resultSteps = new List<int>();
-            double[] newStepDistanceAmout = new double[4];
+            double[] newStepDistanceAmount = new double[4];
             
             resultSteps.AddRange(steps);
 
-            newStepDistanceAmout[0] = 0.2;
-            newStepDistanceAmout[1] = 0.4;
-            newStepDistanceAmout[2] = 0.6;
-            newStepDistanceAmout[3] = 0.8;
+            newStepDistanceAmount[0] = 0.2;
+            newStepDistanceAmount[1] = 0.4;
+            newStepDistanceAmount[2] = 0.6;
+            newStepDistanceAmount[3] = 0.8;
 
             for (int i = 0; i < resultSteps.Count - 1; i++)
             {
@@ -22,7 +22,7 @@ namespace Assignment3
 
                 if (difference > 10)
                 {
-                    resultSteps.InsertRange(i + 1, AddFourStepsRecursive(newStepDistanceAmout, 0, resultSteps[i], resultSteps[i + 1], noise));
+                    resultSteps.InsertRange(i + 1, AddFourStepsRecursive(newStepDistanceAmount, 0, resultSteps[i], resultSteps[i + 1], noise));
                 }
             }
 
