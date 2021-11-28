@@ -6,7 +6,7 @@ namespace Assignment4
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var test = SignalProcessor.GetGaussianFilter1D(1);
         }
     }
 }
