@@ -6,7 +6,7 @@ namespace squared
     {
         static void Main(string[] args)
         {
-            double value = 1 - 0.11954765751;
+            double value = 1 - 0.1081081081;
             double errorLimit = 0.04;
             double currentValue = 1;
             int count = 0;
@@ -21,14 +21,14 @@ namespace squared
 
             int[] input = new int[8]
             {
-                1473,
-                1315,
-                967,
-                869,
-                1501,
-                1421,
-                1545,
-                1481
+                1021,
+                1299,
+                1597,
+                1443,
+                982,
+                907,
+                956,
+                1012
             };
             double sum = 0;
             double sqrtSum = 0;

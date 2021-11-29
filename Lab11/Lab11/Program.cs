@@ -6,7 +6,8 @@ namespace Lab11
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            int[] test = new int[6] { 5, 5, 6, 6, 6, 8};
+            FrequencyTable.GetFrequencyTable(test, 4);
         }
     }
 }
