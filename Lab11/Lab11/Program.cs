@@ -107,6 +107,18 @@ namespace Lab11
             Debug.Assert(frequencyTable[4].Item1.Item2 == 51);
             Debug.Assert(frequencyTable[4].Item2 == 4);
 
+            data = new int[] { 33, 48, 37, 43, 40, 47, 35, 48, 42, 34, 48, 38, 34, 34, 40, 35, 48, 34, 46, 37 };
+            frequencyTable = FrequencyTable.GetFrequencyTable(data, 15);
+            Debug.Assert(getTotalCount(frequencyTable) == data.Length);
+
+            data = new int[] { 33, 43, 36, 35, 39, 38, 43, 34, 43, 39, 34, 43, 37, 33, 33, 38, 34, 43, 34, 41 };
+            frequencyTable = FrequencyTable.GetFrequencyTable(data, 11);
+            Debug.Assert(getTotalCount(frequencyTable) == data.Length);
+
+            data = new int[] { 33, 43, 36, 35, 39, 38, 43, 34, 43, 39, 34, 43, 37, 33, 33, 38, 34, 43, 34, 41 };
+            frequencyTable = FrequencyTable.GetFrequencyTable(data, 1);
+            Debug.Assert(getTotalCount(frequencyTable) == data.Length);
+
             Console.WriteLine("No prob");
         }
 
