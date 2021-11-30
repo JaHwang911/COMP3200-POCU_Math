@@ -16,12 +16,25 @@ namespace Lab11
             //계급의 폭을 구한다.
             //C = R / K = 25 / 4 = 6.25-> 7
             //각 계급의 구간-- > 7~13, 14~20, 21~27, 28~34
+            List<Tuple<Tuple<int, int>, int>> result = new List<Tuple<Tuple<int, int>, int>>();
             List<int> input = new List<int>(data.Length);
             input.AddRange(data);
             input.Sort();
 
             double classCount = 1 + Math.Log(input.Count) / Math.Log(2);
-            double range = (input[input.Count - 1] - input[0]) / classCount;
+            int rangeDistance = (int)Math.Ceiling((input[input.Count - 1] - input[0]) / classCount);
+            int rangeStartNum = input[0];
+            int index = 0;
+            classCount = Math.Ceiling(classCount);
+
+            for (int i = 0; i < classCount; i++)
+            {
+                Tuple<int, int> range = new Tuple<int, int>(rangeStartNum, rangeStartNum + rangeDistance);
+                //int count = input.IndexOf(range.Item2) - index > 0 ? ;
+
+                result.Add(new Tuple<Tuple<int, int>, int>(range, index));
+                rangeStartNum += rangeDistance;
+            }
 
             return null;
         }
