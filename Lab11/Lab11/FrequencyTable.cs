@@ -24,7 +24,8 @@ namespace Lab11
             int rangeStartNum = input[0];
             double classCount = 1 + Math.Log(input.Count) / Math.Log(2);
             classCount = Math.Ceiling(classCount) > maxBinCount ? Math.Truncate(classCount) : Math.Round(classCount);
-            int rangeDistance = (int)Math.Ceiling((input[input.Count - 1] - input[0]) / classCount);
+            //int rangeDistance = (int)Math.Ceiling((input[input.Count - 1] - input[0]) / classCount);
+            int rangeDistance = (int)Math.Truncate((input[input.Count - 1] - input[0]) / (double)maxBinCount);
 
             if (rangeDistance < 1)
             {
