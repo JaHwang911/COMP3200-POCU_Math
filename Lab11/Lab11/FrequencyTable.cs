@@ -21,22 +21,46 @@ namespace Lab11
             input.AddRange(data);
             input.Sort();
 
-            double classCount = 1 + Math.Log(input.Count) / Math.Log(2);
-            int rangeDistance = (int)Math.Ceiling((input[input.Count - 1] - input[0]) / classCount);
             int rangeStartNum = input[0];
-            int index = 0;
+            double classCount = 1 + Math.Log(input.Count) / Math.Log(2);
+            classCount = Math.Ceiling(classCount) > maxBinCount ? Math.Truncate(classCount) : Math.Round(classCount);
+            int rangeDistance = (int)Math.Ceiling((input[input.Count - 1] - input[0]) / classCount);
+
+            if (rangeDistance < 1)
+            {
+                rangeDistance = 1;
+            }
+            else if (input[0] + rangeDistance * classCount <= input[input.Count - 1])
+            {
+                rangeDistance++;
+            }
+
             classCount = Math.Ceiling(classCount);
 
             for (int i = 0; i < classCount; i++)
             {
                 Tuple<int, int> range = new Tuple<int, int>(rangeStartNum, rangeStartNum + rangeDistance);
-                //int count = input.IndexOf(range.Item2) - index > 0 ? ;
+                int count = 0;
 
-                result.Add(new Tuple<Tuple<int, int>, int>(range, index));
+                for (int j = 0; j < input.Count; j++)
+                {
+                    if (input[j] < range.Item2)
+                    {
+                        count++;
+                    }
+                }
+
+                input.RemoveRange(0, count);
+                result.Add(new Tuple<Tuple<int, int>, int>(range, count));
                 rangeStartNum += rangeDistance;
+
+                if (input.Count == 0)
+                {
+                    break;
+                }
             }
 
-            return null;
+            return result;
         }
     }
 }
