@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Diagnostics;
+using System.IO;
+using System.Drawing.Imaging;
+
 namespace Assignment4
 {
     class Program
@@ -63,7 +67,56 @@ namespace Assignment4
             }, result1D, 0.00001);
             #endregion
 
+            #region 2D_GAUSSIAN_FILTER
+            double[,] filter2D = SignalProcessor.GetGaussianFilter2D(0.5);
+
+            assertMatrixEqual(new double[3, 3]
+            {
+                { 0.0116600978601128, 0.0861571172073945, 0.0116600978601128 },
+                { 0.0861571172073945, 0.636619772367581, 0.0861571172073945 },
+                { 0.0116600978601128, 0.0861571172073945, 0.0116600978601128 }
+            }, filter2D, 0.00001);
+
+            filter2D = SignalProcessor.GetGaussianFilter2D(1);
+
+            assertMatrixEqual(new double[7, 7]
+            {
+                { 1.96412803463974E-05, 0.000239279779200471, 0.00107237757119565, 0.00176805171185202, 0.00107237757119565, 0.000239279779200471, 1.96412803463974E-05 },
+                { 0.000239279779200471, 0.00291502446502819, 0.0130642332846849, 0.0215392793018486, 0.0130642332846849, 0.00291502446502819,0.000239279779200471 },
+                { 0.00107237757119565, 0.0130642332846849, 0.0585498315243192, 0.0965323526300539, 0.0585498315243192, 0.0130642332846849, 0.00107237757119565 },
+                { 0.00176805171185202, 0.0215392793018486, 0.0965323526300539, 0.159154943091895, 0.0965323526300539, 0.0215392793018486, 0.00176805171185202 },
+                { 0.00107237757119565, 0.0130642332846849, 0.0585498315243192, 0.0965323526300539, 0.0585498315243192, 0.0130642332846849, 0.00107237757119565 },
+                { 0.000239279779200471, 0.00291502446502819, 0.0130642332846849,  0.0215392793018486, 0.0130642332846849, 0.00291502446502819, 0.000239279779200471 },
+                { 1.96412803463974E-05, 0.000239279779200471, 0.00107237757119565, 0.00176805171185202, 0.00107237757119565, 0.000239279779200471, 1.96412803463974E-05 }
+            }, filter2D, 0.00001);
+            #endregion
+
+            using (FileStream fs = File.OpenRead("earth.png"))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 }
+                }))
+            {
+                newImage.Save("image_box_filtered.png", ImageFormat.Png); // 결과를 image_box_filtered.png 파일에 저장
+            }
+
             Console.WriteLine("No prob");
+        }
+
+        private static void assertMatrixEqual(double[,] expected, double[,] actual, double epsilon)
+        {
+            Debug.Assert(expected.GetLength(0) == actual.GetLength(0));
+            Debug.Assert(expected.GetLength(1) == actual.GetLength(1));
+
+            for (int i = 0; i < expected.GetLength(0); ++i)
+            {
+                for (int j = 0; j < expected.GetLength(1); ++j)
+                {
+                    Debug.Assert(Math.Abs(expected[i, j] - actual[i, j]) <= epsilon);
+                }
+            }
         }
 
         private static void assertArrayEqual(double[] expected, double[] actual, double epsilon)

@@ -8,21 +8,20 @@ namespace Assignment4
     {
         public static double[] GetGaussianFilter1D(double sigma)
         {
-            double powSigma = sigma * sigma;
             int filterLength = (sigma * 6) % 2 != 0 ? (int)(sigma * 6): (int)(sigma * 6) + 1;
             int firstValue = (filterLength / 2 + 1) - filterLength;
-            double[] gaussianResult = new double[filterLength];
+            double[] gaussianFilter = new double[filterLength];
 
             for (int i = 0; i < filterLength; i++)
             {
                 double variable = firstValue + i;
                 double coefficient = 1 / (sigma * Math.Sqrt(2 * Math.PI));
-                double pow = (variable * variable) / (2.0 * powSigma) * -1;
-                double term = Math.Exp(pow);
-                gaussianResult[i] = coefficient * term;
+                double exponent = (variable * variable) / (2.0 * Math.Pow(sigma, 2)) * -1;
+                double term = Math.Exp(exponent);
+                gaussianFilter[i] = coefficient * term;
             }
 
-            return gaussianResult;
+            return gaussianFilter;
         }
 
         public static double[] Convolve1D(double[] signal, double[] filter)
@@ -33,13 +32,14 @@ namespace Assignment4
             int extraElementCount = filter.Length % 2 != 0 ? filter.Length / 2 : filter.Length / 2 + 1;
 
             Array.Reverse(filter);
-            tempSignal.AddRange(signal);
             tempFilter.AddRange(filter);
 
             for (int i = 0; i < extraElementCount; i++)
             {
-                tempSignal.Insert(0, 0);
+                tempSignal.Add(0);
             }
+
+            tempSignal.AddRange(signal);
 
             for (int i = 0; i < extraElementCount; i++)
             {
@@ -64,12 +64,30 @@ namespace Assignment4
 
         public static double[,] GetGaussianFilter2D(double sigma)
         {
-            return null;
+            // 짝수길이 틀릴 수
+            int filterLength = (sigma * 6) % 2 != 0 ? (int)(sigma * 6): (int)(sigma * 6) + 1;
+            double[,] gaussianFilter = new double[filterLength, filterLength];
+            int midValue = filterLength / 2;
+
+            for (int i = 0; i < gaussianFilter.GetLength(0); i++)
+            {
+                for (int j = 0; j < gaussianFilter.GetLength(1); j++)
+                {
+                    int xValue = j - midValue;
+                    int yValue = i - midValue;
+                    double coefficient = 1 / (2 * Math.PI * Math.Pow(sigma, 2));
+                    double exponent = (Math.Pow(xValue, 2) + Math.Pow(yValue, 2)) / (2 * Math.Pow(sigma, 2)) * -1;
+                    double term = Math.Exp(exponent);
+                    gaussianFilter[i, j] = coefficient * term;
+                }
+            }
+
+            return gaussianFilter;
         }
 
-        //public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
-        //{
-        //    return null;
-        //}
+        public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
+        {
+            return null;
+        }
     }
 }
