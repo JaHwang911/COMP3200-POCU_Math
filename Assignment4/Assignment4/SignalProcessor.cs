@@ -85,8 +85,57 @@ namespace Assignment4
             return gaussianFilter;
         }
 
-        public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
+        public static Bitmap ConvolveImage(Bitmap bitmap, Bitmap result, double[,] filter)
         {
+            Rectangle cloneRect = new Rectangle(0, 0, 250, 250);
+            System.Drawing.Imaging.PixelFormat format = bitmap.PixelFormat;
+            Bitmap cloneBitmap = bitmap.Clone(cloneRect, format);
+            int imgWidth = cloneBitmap.Width;
+            int imgHeight = cloneBitmap.Height;
+            int paddingValue = filter.GetLength(0) / 2;
+            var test1 = cloneBitmap.GetPixel(100, 100);
+
+            for (int i = 0; i < imgHeight; i++)
+            {
+                for (int j = 0; j < imgWidth; j++)
+                {
+                    double rValue = 0;
+                    double gValue = 0;
+                    double bValue = 0;
+                    int kIndex = -1;
+
+                    for (int k = 0; k < filter.GetLength(0); k++)
+                    {
+                        int lIndex = -1;
+
+                        for (int l = 0; l < filter.GetLength(1); l++)
+                        {
+                            int x = i + kIndex;
+                            int y = j + lIndex;
+
+                            if (x < 0 || x >= imgHeight || y < 0 || y >= imgWidth)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Color value = bitmap.GetPixel(x, y);
+                                rValue += filter[k, l] * value.R;
+                                gValue += filter[k, l] * value.G;
+                                bValue += filter[k, l] * value.B;
+                            }
+                            
+                            lIndex++;
+                        }
+                    }
+
+                    Color filteredValue = Color.FromArgb((int)rValue, (int)gValue, (int)bValue);
+                    cloneBitmap.SetPixel(i, j, filteredValue);
+                }
+            }
+
+            var test = cloneBitmap.GetPixel(100, 100);
+            var expected = result.GetPixel(100, 100);
             return null;
         }
     }
