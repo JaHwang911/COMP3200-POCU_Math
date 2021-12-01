@@ -67,6 +67,11 @@ namespace Assignment4
             }, result1D, 0.00001);
             #endregion
 
+            signal = new double[] { 10, 50, 60, 10, 20, 40, 30 };
+            filter1D = new double[] { 0, 0, 1 };
+
+            result1D = SignalProcessor.Convolve1D(signal, filter1D);
+
             #region 2D_GAUSSIAN_FILTER
             double[,] filter2D = SignalProcessor.GetGaussianFilter2D(0.5);
 
@@ -91,18 +96,18 @@ namespace Assignment4
             }, filter2D, 0.00001);
             #endregion
 
-            using (FileStream fs = File.OpenRead("earth.png"))
-            using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
-            using (Bitmap image = new Bitmap(fs))
-            using (Bitmap image2 = new Bitmap(fs2))
-            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, image2, new double[,] {
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 }
-                }))
-            {
-                newImage.Save("image_box_filtered.png", ImageFormat.Png); // 결과를 image_box_filtered.png 파일에 저장
-            }
+            //using (FileStream fs = File.OpenRead("earth.png"))
+            //using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
+            //using (Bitmap image = new Bitmap(fs))
+            //using (Bitmap image2 = new Bitmap(fs2))
+            //using (Bitmap newImage = SignalProcessor.ConvolveImage(image, image2, new double[,] {
+            //        { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
+            //        { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
+            //        { 1 / 9.0, 1 / 9.0, 1 / 9.0 }
+            //    }))
+            //{
+            //    newImage.Save("image_box_filtered.png", ImageFormat.Png); // 결과를 image_box_filtered.png 파일에 저장
+            //}
 
             Console.WriteLine("No prob");
         }

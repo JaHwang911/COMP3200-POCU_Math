@@ -8,7 +8,7 @@ namespace Assignment4
     {
         public static double[] GetGaussianFilter1D(double sigma)
         {
-            int filterLength = (sigma * 6) % 2 != 0 ? (int)(sigma * 6): (int)(sigma * 6) + 1;
+            int filterLength = Math.Ceiling(sigma * 6) % 2 != 0 ? (int)Math.Ceiling(sigma * 6) : (int)Math.Ceiling(sigma * 6) + 1;
             int firstValue = (filterLength / 2 + 1) - filterLength;
             double[] gaussianFilter = new double[filterLength];
 
@@ -26,13 +26,13 @@ namespace Assignment4
 
         public static double[] Convolve1D(double[] signal, double[] filter)
         {
-            List<double> Convolved = new List<double>();
+            List<double> convolved = new List<double>();
             List<double> tempSignal = new List<double>(256);
             List<double> tempFilter = new List<double>(filter.Length);
             int extraElementCount = filter.Length % 2 != 0 ? filter.Length / 2 : filter.Length / 2 + 1;
 
-            Array.Reverse(filter);
             tempFilter.AddRange(filter);
+            tempFilter.Reverse();
 
             for (int i = 0; i < extraElementCount; i++)
             {
@@ -56,16 +56,15 @@ namespace Assignment4
                     value += tempFilter[j] * tempSignal[index];
                 }
 
-                Convolved.Add(value);
+                convolved.Add(value);
             }
 
-            return Convolved.ToArray();
+            return convolved.ToArray();
         }
 
         public static double[,] GetGaussianFilter2D(double sigma)
         {
-            // 짝수길이 틀릴 수
-            int filterLength = (sigma * 6) % 2 != 0 ? (int)(sigma * 6): (int)(sigma * 6) + 1;
+            int filterLength = Math.Ceiling(sigma * 6) % 2 != 0 ? (int)Math.Ceiling(sigma * 6) : (int)Math.Ceiling(sigma * 6) + 1;
             double[,] gaussianFilter = new double[filterLength, filterLength];
             int midValue = filterLength / 2;
 
