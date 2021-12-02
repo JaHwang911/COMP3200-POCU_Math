@@ -109,13 +109,15 @@ namespace Assignment4
 
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
-            Rectangle cloneRect = new Rectangle(0, 0, 250, 250);
-            System.Drawing.Imaging.PixelFormat format = bitmap.PixelFormat;
-            Bitmap cloneBitmap = bitmap.Clone(cloneRect, format);
+            //Rectangle cloneRect = new Rectangle(0, 0, 250, 250);
+            //System.Drawing.Imaging.PixelFormat format = bitmap.PixelFormat;
+            //Bitmap cloneBitmap = bitmap.Clone(cloneRect, format);
+
+            Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
             List<double> filter1D = new List<double>();
-            int imgWidth = cloneBitmap.Width;
-            int imgHeight = cloneBitmap.Height;
+            int imgWidth = resultBitmap.Width;
+            int imgHeight = resultBitmap.Height;
             //int midValue = filter.GetLength(0) / 2;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
@@ -156,7 +158,7 @@ namespace Assignment4
                             }
                             else
                             {
-                                pixel.Add(cloneBitmap.GetPixel(x, y));
+                                pixel.Add(resultBitmap.GetPixel(x, y));
                             }
 
                             jIndex++;
@@ -167,11 +169,11 @@ namespace Assignment4
                     }
 
                     var value = convolve2D(pixels, tempFilter);
-                    cloneBitmap.SetPixel(j, i, value);
+                    resultBitmap.SetPixel(j, i, value);
                 }
             }
 
-            return cloneBitmap;
+            return resultBitmap;
         }
 
         public static Bitmap ConvolveImageTest(Bitmap bitmap, Bitmap expected, double[,] filter)
