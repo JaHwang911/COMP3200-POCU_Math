@@ -148,7 +148,7 @@ namespace Assignment4
                             }
                             else
                             {
-                                pixel.Add(bitmap.GetPixel(x, y)); // xy이것만 바꿔서 확인 위에서 부터 아래로
+                                pixel.Add(bitmap.GetPixel(x, y));
                             }
 
                             jIndex++;
