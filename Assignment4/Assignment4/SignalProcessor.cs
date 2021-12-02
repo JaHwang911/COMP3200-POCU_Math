@@ -110,8 +110,6 @@ namespace Assignment4
         {
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
-            int imgWidth = resultBitmap.Width;
-            int imgHeight = resultBitmap.Height;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
             {
@@ -126,9 +124,9 @@ namespace Assignment4
                 tempFilter.Add(temp);
             }
 
-            for (int i = 0; i < imgHeight; i++)
+            for (int i = 0; i < resultBitmap.Height; i++)
             {
-                for (int j = 0; j < imgWidth; j++)
+                for (int j = 0; j < resultBitmap.Width; j++)
                 {
                     List<List<Color>> pixels = new List<List<Color>>();
 
@@ -144,13 +142,13 @@ namespace Assignment4
                             int x = j + jIndex;
                             int y = i + iIndex;
 
-                            if (x < 0 || x >= imgWidth || y < 0 || y >= imgHeight)
+                            if (x < 0 || x >= resultBitmap.Width || y < 0 || y >= resultBitmap.Height)
                             {
                                 pixel.Add(Color.FromArgb(0, 0, 0));
                             }
                             else
                             {
-                                pixel.Add(bitmap.GetPixel(x, y));
+                                pixel.Add(bitmap.GetPixel(x, y)); // xy이것만 바꿔서 확인 위에서 부터 아래로
                             }
 
                             jIndex++;
@@ -166,84 +164,6 @@ namespace Assignment4
             }
 
             return resultBitmap;
-        }
-
-        public static Bitmap ConvolveImageTest(Bitmap bitmap, Bitmap expected, double[,] filter)
-        {
-            Rectangle cloneRect = new Rectangle(0, 0, 250, 250);
-            System.Drawing.Imaging.PixelFormat format = bitmap.PixelFormat;
-            Bitmap cloneBitmap = bitmap.Clone(cloneRect, format);
-            List<List<double>> tempFilter = new List<List<double>>();
-            List<double> filter1D = new List<double>();
-            int imgWidth = cloneBitmap.Width;
-            int imgHeight = cloneBitmap.Height;
-            //int midValue = filter.GetLength(0) / 2;
-
-            for (int i = filter.GetLength(0) - 1; i >= 0; i--)
-            {
-                List<double> temp = new List<double>(filter.GetLength(1));
-
-                for (int j = 0; j < filter.GetLength(1); j++)
-                {
-                    temp.Add(filter[i, j]);
-                }
-
-                temp.Reverse();
-                filter1D.AddRange(temp);
-                tempFilter.Add(temp);
-            }
-
-            for (int i = 0; i < imgHeight; i++)
-            {
-                for (int j = 0; j < imgWidth; j++)
-                {
-                    List<List<Color>> pixels = new List<List<Color>>();
-
-                    int iIndex = -1;
-
-                    if (j == 3)
-                    {
-                        Console.WriteLine("check");
-                    }
-
-                    for (int k = 0; k < tempFilter.Count; k++)
-                    {
-                        int jIndex = -1;
-                        List<Color> pixel = new List<Color>();
-
-                        for (int l = 0; l < tempFilter[k].Count; l++)
-                        {
-                            int y = i + iIndex;
-                            int x = j + jIndex;
-
-                            if (x < 0 || x >= imgHeight || y < 0 || y >= imgWidth)
-                            {
-                                pixel.Add(Color.FromArgb(0, 0, 0));
-                            }
-                            else
-                            {
-                                pixel.Add(cloneBitmap.GetPixel(x, y));
-                            }
-
-                            jIndex++;
-                            //Console.Write($"({x}, {y})  ");
-                        }
-
-                        //Console.WriteLine();
-                        pixels.Add(pixel);
-                        iIndex++;
-                    }
-
-                    //Console.WriteLine();
-                    //Console.WriteLine("==========================");
-                    var value = convolve2D(pixels, tempFilter);
-                    cloneBitmap.SetPixel(j, i, value);
-                    var expectedPixel = expected.GetPixel(i, j);
-                    bool bCheck = value.Equals(expectedPixel);
-                }
-            }
-
-            return cloneBitmap;
         }
     }
 }
