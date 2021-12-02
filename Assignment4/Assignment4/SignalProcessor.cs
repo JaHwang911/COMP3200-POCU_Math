@@ -96,9 +96,9 @@ namespace Assignment4
             {
                 for (int j = 0; j < filter[i].Count; j++)
                 {
-                    rValue += pixels[i][j].R * filter[i][j];
-                    gValue += pixels[i][j].G * filter[i][j];
-                    bValue += pixels[i][j].B * filter[i][j];
+                    rValue = rValue + pixels[i][j].R * filter[i][j] > 255 ? 255 : rValue + pixels[i][j].R * filter[i][j];
+                    gValue = gValue + pixels[i][j].G * filter[i][j] > 255 ? 255 : gValue + pixels[i][j].G * filter[i][j];
+                    bValue = bValue + pixels[i][j].B * filter[i][j] > 255 ? 255 : bValue + pixels[i][j].B * filter[i][j];
                 }
             }
 
