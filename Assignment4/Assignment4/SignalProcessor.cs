@@ -87,7 +87,6 @@ namespace Assignment4
 
         private static Color convolve2D(List<List<Color>> pixels, List<List<double>> filter)
         {
-            List<int> colorResult = new List<int>(3);
             double rValue = 0;
             double gValue = 0;
             double bValue = 0;
@@ -109,16 +108,10 @@ namespace Assignment4
 
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
-            //Rectangle cloneRect = new Rectangle(0, 0, 250, 250);
-            //System.Drawing.Imaging.PixelFormat format = bitmap.PixelFormat;
-            //Bitmap cloneBitmap = bitmap.Clone(cloneRect, format);
-
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
-            List<double> filter1D = new List<double>();
             int imgWidth = resultBitmap.Width;
             int imgHeight = resultBitmap.Height;
-            //int midValue = filter.GetLength(0) / 2;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
             {
@@ -130,7 +123,6 @@ namespace Assignment4
                 }
 
                 temp.Reverse();
-                filter1D.AddRange(temp);
                 tempFilter.Add(temp);
             }
 
@@ -149,16 +141,16 @@ namespace Assignment4
 
                         for (int l = 0; l < tempFilter[k].Count; l++)
                         {
-                            int y = i + iIndex;
                             int x = j + jIndex;
+                            int y = i + iIndex;
 
-                            if (x < 0 || x >= imgHeight || y < 0 || y >= imgWidth)
+                            if (x < 0 || x >= imgWidth || y < 0 || y >= imgHeight)
                             {
                                 pixel.Add(Color.FromArgb(0, 0, 0));
                             }
                             else
                             {
-                                pixel.Add(resultBitmap.GetPixel(x, y));
+                                pixel.Add(bitmap.GetPixel(x, y));
                             }
 
                             jIndex++;

@@ -108,34 +108,6 @@ namespace Assignment4
             }
 
             using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            using (FileStream fs2 = File.OpenRead(IMAGE_FILE_NAME))
-            using (Bitmap image = new Bitmap(fs))
-            using (Bitmap expected = new Bitmap(fs2))
-            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
-                    { 0, 0, 0 },
-                    { 0, 1, 0 },
-                    { 0, 0, 0 }
-                }))
-            {
-                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_same.png", ImageFormat.Png);
-                assertBitmapEqual(expected, newImage, 0);
-            }
-
-            //using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            //using (FileStream fs2 = File.OpenRead("earth_shift_left_expected.png"))
-            //using (Bitmap image = new Bitmap(fs))
-            //using (Bitmap expected = new Bitmap(fs2))
-            //using (Bitmap newImage = SignalProcessor.ConvolveImageTest(image, expected, new double[,] {
-            //        { 0, 0, 0 },
-            //        { 1, 0, 0 },
-            //        { 0, 0, 0 }
-            //    }))
-            //{
-            //    newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_shift_left.png", ImageFormat.Png);
-            //    assertBitmapEqual(expected, newImage, 0);
-            //}
-
-            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
             using (FileStream fs2 = File.OpenRead("earth_box_expected.png"))
             using (Bitmap image = new Bitmap(fs))
             using (Bitmap expected = new Bitmap(fs2))
