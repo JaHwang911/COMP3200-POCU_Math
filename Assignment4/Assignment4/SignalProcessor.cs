@@ -106,6 +106,66 @@ namespace Assignment4
             return result;
         }
 
+        //public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
+        //{
+        //    Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+        //    List<List<double>> tempFilter = new List<List<double>>();
+        //    int filterMidValue = filter.GetLength(0) / 2;
+
+        //    for (int i = filter.GetLength(0) - 1; i >= 0; i--)
+        //    {
+        //        List<double> temp = new List<double>(filter.GetLength(1));
+
+        //        for (int j = 0; j < filter.GetLength(1); j++)
+        //        {
+        //            temp.Add(filter[i, j]);
+        //        }
+
+        //        temp.Reverse();
+        //        tempFilter.Add(temp);
+        //    }
+
+        //    for (int i = 0; i < resultBitmap.Height; i++)
+        //    {
+        //        for (int j = 0; j < resultBitmap.Width; j++)
+        //        {
+        //            List<List<Color>> pixels = new List<List<Color>>();
+        //            int indexY = filterMidValue * -1;
+
+        //            for (int k = 0; k < tempFilter.Count; k++)
+        //            {
+        //                List<Color> pixel = new List<Color>();
+        //                int indexX = filterMidValue * -1;
+
+        //                for (int l = 0; l < tempFilter[k].Count; l++)
+        //                {
+        //                    int x = j + indexX;
+        //                    int y = i + indexY;
+
+        //                    if (x < 0 || x >= resultBitmap.Width || y < 0 || y >= resultBitmap.Height)
+        //                    {
+        //                        pixel.Add(Color.FromArgb(0, 0, 0));
+        //                    }
+        //                    else
+        //                    {
+        //                        pixel.Add(bitmap.GetPixel(x, y));
+        //                    }
+
+        //                    indexX++;
+        //                }
+
+        //                pixels.Add(pixel);
+        //                indexY++;
+        //            }
+
+        //            var value = convolve2D(pixels, tempFilter);
+        //            resultBitmap.SetPixel(j, i, value);
+        //        }
+        //    }
+
+        //    return resultBitmap;
+        //}
+
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
@@ -131,10 +191,12 @@ namespace Assignment4
                 {
                     List<List<Color>> pixels = new List<List<Color>>();
                     int indexY = filterMidValue * -1;
+                    double rValue = 0.0;
+                    double gValue = 0.0;
+                    double bValue = 0.0;
 
                     for (int k = 0; k < tempFilter.Count; k++)
                     {
-                        List<Color> pixel = new List<Color>();
                         int indexX = filterMidValue * -1;
 
                         for (int l = 0; l < tempFilter[k].Count; l++)
@@ -142,23 +204,21 @@ namespace Assignment4
                             int x = j + indexX;
                             int y = i + indexY;
 
-                            if (x < 0 || x >= resultBitmap.Width || y < 0 || y >= resultBitmap.Height)
+                            if (0 <= x && x < resultBitmap.Width && 0 <= y && y < resultBitmap.Height)
                             {
-                                pixel.Add(Color.FromArgb(0, 0, 0));
-                            }
-                            else
-                            {
-                                pixel.Add(bitmap.GetPixel(x, y));
+                                Color pixel = bitmap.GetPixel(x, y);
+                                rValue = rValue + pixel.R * tempFilter[k][l] > 255 ? 255 : rValue + pixel.R * tempFilter[k][l];
+                                gValue = gValue + pixel.G * tempFilter[k][l] > 255 ? 255 : gValue + pixel.G * tempFilter[k][l];
+                                bValue = bValue + pixel.B * tempFilter[k][l] > 255 ? 255 : bValue + pixel.B * tempFilter[k][l];
                             }
 
                             indexX++;
                         }
 
-                        pixels.Add(pixel);
                         indexY++;
                     }
 
-                    var value = convolve2D(pixels, tempFilter);
+                    Color value = Color.FromArgb((int)rValue, (int)gValue, (int)bValue);
                     resultBitmap.SetPixel(j, i, value);
                 }
             }
