@@ -134,7 +134,21 @@ namespace Assignment4
             }
             #endregion
 
+            Console.WriteLine("===========================");
             Console.WriteLine("No prob");
+        }
+
+        private static void printMatrix(double[,] filter)
+        {
+            for (int i = 0; i < filter.GetLength(0); i++)
+            {
+                for (int j = 0; j < filter.GetLength(1); j++)
+                {
+                    Console.Write($"{filter[i, j]}   ");
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+            }
         }
 
         private static void assertBitmapEqual(Bitmap expected, Bitmap actual, int epsilon)

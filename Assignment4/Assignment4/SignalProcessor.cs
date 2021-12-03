@@ -110,7 +110,7 @@ namespace Assignment4
         {
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
-            int filterMidValue = filter.GetLength(0) / 2;
+            int filterMidValue = (filter.GetLength(0) - 1) / 2;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
             {
