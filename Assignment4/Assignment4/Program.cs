@@ -93,19 +93,19 @@ namespace Assignment4
             #endregion
 
             #region CONVOLVE_2D
-            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            using (FileStream fs2 = File.OpenRead("earth_shift_left_expected.png"))
-            using (Bitmap image = new Bitmap(fs))
-            using (Bitmap expected = new Bitmap(fs2))
-            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
-                    { 0, 0, 0 },
-                    { 1, 0, 0 },
-                    { 0, 0, 0 }
-                }))
-            {
-                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_shift_left.png", ImageFormat.Png);
-                assertBitmapEqual(expected, newImage, 0);
-            }
+            //using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            //using (FileStream fs2 = File.OpenRead("earth_shift_left_expected.png"))
+            //using (Bitmap image = new Bitmap(fs))
+            //using (Bitmap expected = new Bitmap(fs2))
+            //using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
+            //        { 0, 0, 0 },
+            //        { 1, 0, 0 },
+            //        { 0, 0, 0 }
+            //    }))
+            //{
+            //    newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_shift_left.png", ImageFormat.Png);
+            //    assertBitmapEqual(expected, newImage, 0);
+            //}
 
             using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
             using (FileStream fs2 = File.OpenRead("earth_box_expected.png"))
@@ -121,54 +121,20 @@ namespace Assignment4
                 assertBitmapEqual(expected, newImage, 1);
             }
 
-            filter2D = SignalProcessor.GetGaussianFilter2D(1);
-
-            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
-            using (Bitmap image = new Bitmap(fs))
-            using (Bitmap expected = new Bitmap(fs2))
-            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter2D))
-            {
-                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gaussian.png", ImageFormat.Png);
-                assertBitmapEqual(expected, newImage, 1);
-            }
+            //filter2D = SignalProcessor.GetGaussianFilter2D(1);
 
             //using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            //using (FileStream fs2 = File.OpenRead("earth_ident_expected.png"))
+            //using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
             //using (Bitmap image = new Bitmap(fs))
             //using (Bitmap expected = new Bitmap(fs2))
+            //using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter2D))
             //{
-            //    for (int i = 1; i < 11; ++i)
-            //    {
-            //        int center = (i - 1) >> 1;
-                    
-            //        double[,] filter = new double[i, i];
-            //        filter[center, center] = 1.0;
-                    
-            //        using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter))
-            //        {
-            //            newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_ident.png", ImageFormat.Png);
-            //            assertBitmapEqual(expected, newImage, 1);
-            //        }
-            //    }
+            //    newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gaussian.png", ImageFormat.Png);
+            //    assertBitmapEqual(expected, newImage, 1);
             //}
             #endregion
 
-            Console.WriteLine("===========================");
-            Console.WriteLine("No prob");
-        }
-
-        private static void printMatrix(double[,] filter)
-        {
-            for (int i = 0; i < filter.GetLength(0); i++)
-            {
-                for (int j = 0; j < filter.GetLength(1); j++)
-                {
-                    Console.Write($"{filter[i, j]}   ");
-                }
-                Console.WriteLine();
-                Console.WriteLine();
-            }
+            Console.WriteLine("======= No prob =======");
         }
 
         private static void assertBitmapEqual(Bitmap expected, Bitmap actual, int epsilon)
@@ -182,7 +148,7 @@ namespace Assignment4
                 {
                     Color expectedColor = expected.GetPixel(i, j);
                     Color color = actual.GetPixel(i, j);
-
+                    
                     Debug.Assert(Math.Abs((int)expectedColor.R - (int)color.R) <= epsilon);
                     Debug.Assert(Math.Abs((int)expectedColor.G - (int)color.G) <= epsilon);
                     Debug.Assert(Math.Abs((int)expectedColor.B - (int)color.B) <= epsilon);
