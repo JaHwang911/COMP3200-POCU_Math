@@ -137,7 +137,7 @@ namespace Assignment4
                         indexY++;
                     }
 
-                    Color value = Color.FromArgb((int)rValue, (int)gValue, (int)bValue);
+                    Color value = Color.FromArgb((byte)rValue, (byte)gValue, (byte)bValue);
                     resultBitmap.SetPixel(j, i, value);
                 }
             }
