@@ -130,33 +130,32 @@ namespace Assignment4
                 for (int j = 0; j < resultBitmap.Width; j++)
                 {
                     List<List<Color>> pixels = new List<List<Color>>();
-
-                    int iIndex = filterMidValue * -1;
+                    int indexY = filterMidValue * -1;
 
                     for (int k = 0; k < tempFilter.Count; k++)
                     {
-                        int jIndex = filterMidValue * -1;
                         List<Color> pixel = new List<Color>();
+                        int indexX = filterMidValue * -1;
 
                         for (int l = 0; l < tempFilter[k].Count; l++)
                         {
-                            int x = j + jIndex;
-                            int y = i + iIndex;
+                            int x = j + indexX;
+                            int y = i + indexY;
 
-                            if (x < 0 || x >= resultBitmap.Width || y < 0 || y >= resultBitmap.Height)
-                            {
-                                pixel.Add(Color.FromArgb(0, 0, 0));
-                            }
-                            else
+                            try
                             {
                                 pixel.Add(bitmap.GetPixel(x, y));
                             }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                pixel.Add(Color.FromArgb(0, 0, 0));
+                            }
 
-                            jIndex++;
+                            indexX++;
                         }
 
                         pixels.Add(pixel);
-                        iIndex++;
+                        indexY++;
                     }
 
                     var value = convolve2D(pixels, tempFilter);
