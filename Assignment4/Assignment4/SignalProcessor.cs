@@ -110,7 +110,7 @@ namespace Assignment4
         {
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
-            int filterMidValue = (filter.GetLength(0) - 1) / 2;
+            int filterMidValue = filter.GetLength(0) / 2;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
             {
@@ -142,13 +142,13 @@ namespace Assignment4
                             int x = j + indexX;
                             int y = i + indexY;
 
-                            try
-                            {
-                                pixel.Add(bitmap.GetPixel(x, y));
-                            }
-                            catch (ArgumentOutOfRangeException)
+                            if (x < 0 || x >= resultBitmap.Width || y < 0 || y >= resultBitmap.Height)
                             {
                                 pixel.Add(Color.FromArgb(0, 0, 0));
+                            }
+                            else
+                            {
+                                pixel.Add(bitmap.GetPixel(x, y));
                             }
 
                             indexX++;

@@ -132,6 +132,26 @@ namespace Assignment4
                 newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gaussian.png", ImageFormat.Png);
                 assertBitmapEqual(expected, newImage, 1);
             }
+
+            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            using (FileStream fs2 = File.OpenRead("earth_ident_expected.png"))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap expected = new Bitmap(fs2))
+            {
+                for (int i = 1; i < 11; ++i)
+                {
+                    int center = (i - 1) >> 1;
+                    
+                    double[,] filter = new double[i, i];
+                    filter[center, center] = 1.0;
+                    
+                    using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter))
+                    {
+                        newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_ident.png", ImageFormat.Png);
+                        assertBitmapEqual(expected, newImage, 1);
+                    }
+                }
+            }
             #endregion
 
             Console.WriteLine("===========================");
