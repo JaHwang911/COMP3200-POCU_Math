@@ -110,6 +110,7 @@ namespace Assignment4
         {
             Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
+            int filterMidValue = filter.GetLength(0) / 2;
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
             {
@@ -130,11 +131,11 @@ namespace Assignment4
                 {
                     List<List<Color>> pixels = new List<List<Color>>();
 
-                    int iIndex = -1;
+                    int iIndex = filterMidValue * -1;
 
                     for (int k = 0; k < tempFilter.Count; k++)
                     {
-                        int jIndex = -1;
+                        int jIndex = filterMidValue * -1;
                         List<Color> pixel = new List<Color>();
 
                         for (int l = 0; l < tempFilter[k].Count; l++)
