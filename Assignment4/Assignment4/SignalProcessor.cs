@@ -120,8 +120,8 @@ namespace Assignment4
 
                         for (int l = 0; l < tempFilter[k].Count; l++)
                         {
-                            int x = j + indexX;
-                            int y = i + indexY;
+                            int x = j + indexX + l;
+                            int y = i + indexY + k;
 
                             if (0 <= x && x < resultBitmap.Width && 0 <= y && y < resultBitmap.Height)
                             {
@@ -130,15 +130,31 @@ namespace Assignment4
                                 gValue = gValue + pixel.G * tempFilter[k][l] > 255 ? 255 : gValue + pixel.G * tempFilter[k][l];
                                 bValue = bValue + pixel.B * tempFilter[k][l] > 255 ? 255 : bValue + pixel.B * tempFilter[k][l];
                             }
-
-                            indexX++;
                         }
-
-                        indexY++;
                     }
 
                     Color value = Color.FromArgb((byte)rValue, (byte)gValue, (byte)bValue);
                     resultBitmap.SetPixel(j, i, value);
+                }
+            }
+
+            return resultBitmap;
+        }
+
+        public static Bitmap ConvolveGrayScale(Bitmap bitmap)
+        {
+            Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+            double[] grayScaleVector = new double[] { 0.2126, 0.7152, 0.0722 };
+
+            for (int i = 0; i < bitmap.Height; i++)
+            {
+                for (int j = 0; j < bitmap.Width; j++)
+                {
+                    Color pixel = bitmap.GetPixel(j, i);
+
+                    double grayValue = pixel.R * grayScaleVector[0] + pixel.G * grayScaleVector[1] + pixel.B * grayScaleVector[2];
+                    Color colorValue = Color.FromArgb((int)grayValue, (int)grayValue, (int)grayValue);
+                    resultBitmap.SetPixel(j, i, colorValue);
                 }
             }
 

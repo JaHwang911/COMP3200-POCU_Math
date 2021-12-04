@@ -93,49 +93,71 @@ namespace Assignment4
             #endregion
 
             #region CONVOLVE_2D
-            //using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            //using (FileStream fs2 = File.OpenRead("earth_shift_left_expected.png"))
-            //using (Bitmap image = new Bitmap(fs))
-            //using (Bitmap expected = new Bitmap(fs2))
-            //using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
-            //        { 0, 0, 0 },
-            //        { 1, 0, 0 },
-            //        { 0, 0, 0 }
-            //    }))
-            //{
-            //    newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_shift_left.png", ImageFormat.Png);
-            //    assertBitmapEqual(expected, newImage, 0);
-            //}
+            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            using (FileStream fs2 = File.OpenRead("earth_shift_left_expected.png"))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap expected = new Bitmap(fs2))
+            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
+                    { 0, 0, 0 },
+                    { 1, 0, 0 },
+                    { 0, 0, 0 }
+                }))
+            {
+                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_shift_left.png", ImageFormat.Png);
+                assertBitmapEqual(expected, newImage, 0);
+            }
 
             using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
             using (FileStream fs2 = File.OpenRead("earth_box_expected.png"))
             using (Bitmap image = new Bitmap(fs))
             using (Bitmap expected = new Bitmap(fs2))
             using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 },
-                    { 1 / 9.0, 1 / 9.0, 1 / 9.0 }
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0},
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0},
+                    { 1 / 9.0, 1 / 9.0, 1 / 9.0}
                 }))
             {
                 newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_box.png", ImageFormat.Png);
                 assertBitmapEqual(expected, newImage, 1);
             }
 
-            //filter2D = SignalProcessor.GetGaussianFilter2D(1);
+            filter2D = SignalProcessor.GetGaussianFilter2D(1);
 
-            //using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            //using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
-            //using (Bitmap image = new Bitmap(fs))
-            //using (Bitmap expected = new Bitmap(fs2))
-            //using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter2D))
-            //{
-            //    newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gaussian.png", ImageFormat.Png);
-            //    assertBitmapEqual(expected, newImage, 1);
-            //}
+            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            using (FileStream fs2 = File.OpenRead("earth_gaussian_expected.png"))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap expected = new Bitmap(fs2))
+            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, filter2D))
+            {
+                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gaussian.png", ImageFormat.Png);
+                assertBitmapEqual(expected, newImage, 1);
+            }
+            #endregion
+
+            #region Workout
+            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap newImage = SignalProcessor.ConvolveGrayScale(image))
+            {
+                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_gray_scale.png", ImageFormat.Png);
+            }
+
+            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
+            using (Bitmap image = new Bitmap(fs))
+            using (Bitmap newImage = SignalProcessor.ConvolveImage(image, new double[,] {
+                    { -1, -1, -1 },
+                    { -1, 9, -1 },
+                    { -1, -1, -1 }
+                }))
+            {
+                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_Edge.png", ImageFormat.Png);
+            }
             #endregion
 
             Console.WriteLine("======= No prob =======");
         }
+
+        #region Test functions
 
         private static void assertBitmapEqual(Bitmap expected, Bitmap actual, int epsilon)
         {
@@ -199,5 +221,6 @@ namespace Assignment4
 
             return signal;
         }
+        #endregion
     }
 }
