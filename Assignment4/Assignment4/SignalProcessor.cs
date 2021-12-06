@@ -90,7 +90,7 @@ namespace Assignment4
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
             int filterMidValue = filter.GetLength(0) / 2;
-            Bitmap resultBitmap = new Bitmap(bitmap.Width + filterMidValue, bitmap.Height + filterMidValue);
+            Bitmap resultBitmap = new Bitmap(bitmap.Width, bitmap.Height);
             List<List<double>> tempFilter = new List<List<double>>();
 
             for (int i = filter.GetLength(0) - 1; i >= 0; i--)
@@ -105,9 +105,9 @@ namespace Assignment4
                 tempFilter.Add(temp);
             }
 
-            for (int i = filterMidValue; i < resultBitmap.Height - filterMidValue; i++)
+            for (int i = 0; i < resultBitmap.Height; i++)
             {
-                for (int j = filterMidValue; j < resultBitmap.Width - filterMidValue; j++)
+                for (int j = 0; j < resultBitmap.Width; j++)
                 {
                     int indexY = filterMidValue * -1;
                     double rValue = 0.0;
@@ -123,19 +123,13 @@ namespace Assignment4
                             int x = j + indexX + l;
                             int y = i + indexY + k;
 
-                            //if (0 <= x && x < resultBitmap.Width && 0 <= y && y < resultBitmap.Height)
-                            //{
-                            //    Color pixel = bitmap.GetPixel(x, y);
-                            //    rValue = rValue + pixel.R * tempFilter[k][l] > 255 ? 255 : rValue + pixel.R * tempFilter[k][l];
-                            //    gValue = gValue + pixel.G * tempFilter[k][l] > 255 ? 255 : gValue + pixel.G * tempFilter[k][l];
-                            //    bValue = bValue + pixel.B * tempFilter[k][l] > 255 ? 255 : bValue + pixel.B * tempFilter[k][l];
-                            //}
-
-                            // test 코드 만들어서 해보길
-                            Color pixel = bitmap.GetPixel(x, y);
-                            rValue = rValue + pixel.R * tempFilter[k][l] > 255 ? 255 : rValue + pixel.R * tempFilter[k][l];
-                            gValue = gValue + pixel.G * tempFilter[k][l] > 255 ? 255 : gValue + pixel.G * tempFilter[k][l];
-                            bValue = bValue + pixel.B * tempFilter[k][l] > 255 ? 255 : bValue + pixel.B * tempFilter[k][l];
+                            if (0 <= x && x < resultBitmap.Width && 0 <= y && y < resultBitmap.Height)
+                            {
+                                Color pixel = bitmap.GetPixel(x, y);
+                                rValue = rValue + pixel.R * tempFilter[k][l] > 255 ? 255 : rValue + pixel.R * tempFilter[k][l];
+                                gValue = gValue + pixel.G * tempFilter[k][l] > 255 ? 255 : gValue + pixel.G * tempFilter[k][l];
+                                bValue = bValue + pixel.B * tempFilter[k][l] > 255 ? 255 : bValue + pixel.B * tempFilter[k][l];
+                            }
                         }
                     }
 
